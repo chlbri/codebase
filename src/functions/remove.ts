@@ -7,7 +7,7 @@ import {
   PATH_PROPERTY,
 } from '../constants';
 import { consoleStars, getAnalysis, transformModule } from '../helpers';
-import { FileAnalysis } from '../schemas';
+import { CodebaseAnalysis, FileAnalysis } from '../schemas';
 
 const transformModules = (
   entries: [string, FileAnalysis][],
@@ -38,9 +38,19 @@ const transformModules = (
   return out;
 };
 
-export const removeFiles = (...paths: string[]) => {
+export const remove = (...paths: string[]) => {
+  let CODEBASE_ANALYSIS: CodebaseAnalysis;
   try {
-    const CODEBASE_ANALYSIS = getAnalysis();
+    CODEBASE_ANALYSIS = getAnalysis();
+  } catch {
+    console.error(
+      "❌ Erreur lors de la récupération de l'analyse du codebase.",
+    );
+    return false;
+  }
+  const isEmpty = paths.length === 0;
+  if (isEmpty) return console.warn('No files specified for removal.');
+  try {
     const cwd = process.cwd();
     const json = join(cwd, JSON_FILE_NAME);
     let file: JsonEditor | undefined = edit(json);
@@ -134,7 +144,9 @@ export const removeFiles = (...paths: string[]) => {
     file = undefined;
   } catch {
     console.error(`❌ Erreur lors de la création des fichiers`);
+    consoleStars();
+    return false;
   }
-
   consoleStars();
+  return true;
 };

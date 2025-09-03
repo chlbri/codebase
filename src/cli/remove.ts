@@ -1,5 +1,5 @@
 import { command, restPositionals, string } from 'cmd-ts';
-import { removeFiles } from '../functions/remove';
+import { remove as _remove } from '../functions/remove';
 
 export const remove = command({
   name: 'remove',
@@ -11,9 +11,5 @@ export const remove = command({
       type: string,
     }),
   },
-  handler: async ({ files }) => {
-    const isEmpty = files.length === 0;
-    if (isEmpty) return console.warn('No files specified for removal.');
-    return removeFiles(...files);
-  },
+  handler: async ({ files }) => _remove(...files),
 });

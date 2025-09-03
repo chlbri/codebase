@@ -1,7 +1,5 @@
 import edit, { JsonEditor } from 'edit-json-file';
 import { dirname, join, relative, resolve } from 'node:path';
-import { CodebaseAnalysis } from '../schemas';
-import type { FileAnalysis, NOmit } from '../types';
 import {
   FILES_PROPERTY,
   JSON_FILE_NAME,
@@ -13,6 +11,8 @@ import {
   transformModule,
   writeFileAnalysis,
 } from '../helpers';
+import { CodebaseAnalysis } from '../schemas';
+import type { FileAnalysis, NOmit } from '../types';
 
 const processFileAnalysis = (
   analysis: NOmit<FileAnalysis, 'exports'>,
@@ -75,11 +75,19 @@ const processFileAnalysis = (
 };
 
 export const add = (...files: string[]) => {
+  let CODEBASE_ANALYSIS: CodebaseAnalysis;
+  try {
+    CODEBASE_ANALYSIS = getAnalysis();
+  } catch {
+    console.error(
+      "❌ Erreur lors de la récupération de l'analyse du codebase.",
+    );
+    return false;
+  }
+
   const isEmpty = files.length === 0;
   if (isEmpty) return console.warn('No files specified for addition.');
   try {
-    const CODEBASE_ANALYSIS = getAnalysis();
-
     const cwd = process.cwd();
     const json = join(cwd, JSON_FILE_NAME);
     let file: JsonEditor | undefined = edit(json);
@@ -132,7 +140,9 @@ export const add = (...files: string[]) => {
     file = undefined;
   } catch {
     console.error(`❌ Erreur lors de la création des fichiers`);
+    return false;
   }
 
   consoleStars();
+  return true;
 };

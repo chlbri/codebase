@@ -1,1 +1,1 @@
-export const BIN = 'bemedev';
+export const BIN = 'codebase';

@@ -74,9 +74,6 @@ export const generate = ({
     console.error("❌ Erreur lors de l'analyse du codebase:", error);
     process.exit(1);
   }
-};
 
-// Exécuter si ce fichier est appelé directement
-if (process.argv[1]) {
-  generate();
-}
+  return true;
+};

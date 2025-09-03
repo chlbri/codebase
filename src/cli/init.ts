@@ -1,6 +1,6 @@
 import { command, option, string } from 'cmd-ts';
 import { JSON_FILE_NAME } from '../constants';
-import { initBemedev as handler } from '../functions/init';
+import { init as handler } from '../functions/init';
 
 export const init = command({
   name: 'initialize',

@@ -46,7 +46,16 @@ export const createTypesStructure = (
   return PATHS;
 };
 
-export const initBemedev = (options?: InitOptions) => {
+export const init = (options?: InitOptions) => {
+  let CODEBASE_ANALYSIS: CodebaseAnalysis;
+  try {
+    CODEBASE_ANALYSIS = getAnalysis();
+  } catch {
+    console.error(
+      "❌ Erreur lors de la récupération de l'analyse du codebase.",
+    );
+    return false;
+  }
   const cwd = process.cwd();
   const configFile = join(cwd, options?.json ?? JSON_FILE_NAME);
   const configExists = existsSync(configFile);
@@ -74,12 +83,10 @@ export const initBemedev = (options?: InitOptions) => {
   let files: string[] = [];
   // 1.5. Créer la structure des fichiers types
   try {
-    const CODEBASE_ANALYSIS = getAnalysis();
     files = createTypesStructure(bemedevPath, CODEBASE_ANALYSIS);
-  } catch (error) {
+  } catch {
     console.error(
       `❌ Erreur lors de la création de la structure de types:`,
-      error,
     );
     return false;
   }
