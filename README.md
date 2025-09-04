@@ -1,8 +1,46 @@
-# Beatifull lib
+# Librairie bemedev
 
-A beautifull description
+Librairie Node.js pour la gestion et l'analyse de code, avec des
+utilitaires pour faciliter le développement, l'import/export de modules, la
+génération de schémas, et la création de CLI. Elle propose des fonctions
+pour manipuler les constantes, helpers, types, et schemas, ainsi qu'une CLI
+extensible.
 
-<br/>
+## Fonctionnalités principales
+
+- Analyse de code TypeScript et JavaScript
+- Génération automatique de schémas et types
+- Helpers pour l'import/export de modules
+- CLI pour automatiser les tâches courantes
+- Structure modulaire et extensible
+
+## Installation
+
+```bash
+pnpm install bemedev
+```
+
+## Utilisation
+
+Exemple d'import et d'utilisation : clear
+
+```ts
+import { analyse, generate, helpers } from 'bemedev';
+
+const result = analyse('src/index.ts');
+console.log(result);
+```
+
+## Scripts
+
+- `pnpm test` : lance les tests unitaires
+- `pnpm lint` : vérifie la qualité du code
+- `pnpm build` : génère les fichiers de production
+
+## Contribution
+
+Les contributions sont les bienvenues ! Veuillez ouvrir une issue ou une
+pull request pour proposer des améliorations ou signaler des bugs.
 
 ## Licence
 

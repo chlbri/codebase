@@ -1,4 +1,4 @@
-import { command, option, restPositionals, string } from 'cmd-ts';
+import { array, command, multioption, option, string } from 'cmd-ts';
 import { CODEBASE_FILE } from '../constants';
 import { generate as handler } from '../functions/generate';
 
@@ -13,10 +13,12 @@ export const cli = command({
       description: 'Output file path',
       defaultValue: () => CODEBASE_FILE,
     }),
-    excludes: restPositionals({
-      description: 'The files to exclude, relative to process.cwd()',
-      displayName: 'Excludes',
-      type: string,
+    excludes: multioption({
+      description: 'The files to exclude, globs',
+      long: 'excludes',
+      short: 'x',
+      type: array(string),
+      defaultValue: () => [],
     }),
   },
   handler,
