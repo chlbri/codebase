@@ -10,8 +10,8 @@ import {
   transformModule,
   writeFileAnalysis,
 } from '../helpers';
-import { CodebaseAnalysis } from '../schemas';
-import type { FileAnalysis, NOmit } from '../types';
+import { CodebaseAnalysis, type FileAnalysis } from '../schemas';
+import type { NOmit } from '../types';
 
 const processFileAnalysis = (
   analysis: NOmit<FileAnalysis, 'exports'>,

@@ -1,6 +1,19 @@
 ## CHANGELOG
 
 <br/>
+
+<details>
+
+<summary>
+
+### Version [0.0.4] --> _2025/09/04 23:10_
+
+</summary>
+
+- Upgrade files structure
+
+</details>
+
 <br/>
 
 <details>

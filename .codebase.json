@@ -2,7 +2,7 @@
   "STATS": {
     "files": 18,
     "imports": 51,
-    "exports": 77
+    "exports": 89
   },
   "CODEBASE_ANALYSIS": {
     "analyse": {
@@ -10,80 +10,58 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ]
+          "namedImports": ["join", "relative"]
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "Project"
-          ]
+          "namedImports": ["Project"]
         },
         {
           "moduleSpecifier": "./analyse.utils",
           "kind": "named",
-          "namedImports": [
-            "addJSDocToSourceText"
-          ]
+          "namedImports": ["addJSDocToSourceText"]
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "SRC_DIR"
-          ]
+          "namedImports": ["SRC_DIR"]
         },
         {
           "moduleSpecifier": "./exports",
           "kind": "named",
-          "namedImports": [
-            "analyzeExports"
-          ]
+          "namedImports": ["analyzeExports"]
         },
         {
           "moduleSpecifier": "./helpers",
           "kind": "named",
-          "namedImports": [
-            "toArray"
-          ]
+          "namedImports": ["toArray"]
         },
         {
           "moduleSpecifier": "./imports",
           "kind": "named",
-          "namedImports": [
-            "analyzeImports",
-            "buildImportStrings"
-          ]
+          "namedImports": ["analyzeImports", "buildImportStrings"]
         },
         {
-          "moduleSpecifier": "./types",
+          "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         },
         {
           "moduleSpecifier": "./utils",
           "kind": "named",
-          "namedImports": [
-            "pathToDotNotation"
-          ]
+          "namedImports": ["pathToDotNotation"]
         }
       ],
       "relativePath": "analyse.ts",
-      "text": "import { join, relative } from 'path';\nimport { Project } from 'ts-morph';\nimport { addJSDocToSourceText } from './analyse.utils';\nimport { SRC_DIR } from './constants';\nimport { analyzeExports } from './exports';\nimport { toArray } from './helpers';\nimport { analyzeImports, buildImportStrings } from './imports';\nimport { CodebaseAnalysis } from './types';\nimport { pathToDotNotation } from './utils';\n\n/**\n * AnalyzeOptions type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type AnalyzeOptions = {\n  src?: string;\n  excludes?: string | string[];\n};\n\n/**\n * Analyse tous les fichiers TypeScript dans src/ (sauf src/scripts/)\n */\n/**\n * analyze variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const analyze = ({\n  src = SRC_DIR,\n  excludes: _excludes,\n}: AnalyzeOptions = {}): CodebaseAnalysis => {\n  console.log('🔍 Analyse du codebase en cours...');\n  const excludes = toArray(_excludes);\n\n  // Initialiser le projet ts-morph\n  const project = new Project({\n    tsConfigFilePath: join(process.cwd(), 'tsconfig.json'),\n  });\n\n  // Ajouter tous les fichiers TypeScript du dossier src\n  const sourceFiles = project.addSourceFilesAtPaths(\n    [\n      'src/**/*.ts',\n      '!src/scripts/**/*', // Exclure le dossier scripts\n      '!src/**/*.test.ts', // Exclure les fichiers de test\n      '!src/**/*.spec.ts', // Exclure les fichiers de spec\n    ].concat(excludes.map(exclude => `!${exclude}`)),\n  );\n\n  const analysis: CodebaseAnalysis = {};\n  let processedCount = 0;\n\n  for (const sourceFile of sourceFiles) {\n    const filePath = sourceFile.getFilePath();\n    const relativePath = relative(src, filePath);\n\n    // Générer le texte modifié avec JSDoc pour les exports\n\n    const _text = addJSDocToSourceText(sourceFile);\n\n    // #region Analyser les imports et exports\n    const imports = analyzeImports(sourceFile);\n    const exports = analyzeExports(sourceFile);\n    // #endregion\n\n    // Construire les imports à partir de fileAnalysis.imports\n    const importsStrings = buildImportStrings(imports);\n\n    // Combiner imports et contenu\n    const importsSection =\n      importsStrings.length > 0 ? importsStrings.join('\\n') : '';\n\n    const text =\n      importsSection === ''\n        ? _text\n        : `${importsSection}\n\n${_text}\n    `;\n\n    analysis[pathToDotNotation(relativePath)] = {\n      relativePath,\n      imports,\n      exports,\n      text,\n    };\n\n    processedCount++;\n\n    // #region Afficher l'avancement de l'analyse par palliers de 50\n    if (processedCount % 50 === 0) {\n      console.log(\n        `📊 Analysé ${processedCount}/${sourceFiles.length} fichiers...`,\n      );\n    }\n    // #endregion\n  }\n\n  console.log(`✅ Analyse terminée: ${processedCount} fichiers analysés`);\n  return analysis;\n};\n\n    "
+      "text": "import { join, relative } from 'path';\nimport { Project } from 'ts-morph';\nimport { addJSDocToSourceText } from './analyse.utils';\nimport { SRC_DIR } from './constants';\nimport { analyzeExports } from './exports';\nimport { toArray } from './helpers';\nimport { analyzeImports, buildImportStrings } from './imports';\nimport { CodebaseAnalysis } from './schemas';\nimport { pathToDotNotation } from './utils';\n\n/**\n * AnalyzeOptions type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type AnalyzeOptions = {\n  src?: string;\n  excludes?: string | string[];\n};\n\n/**\n * Analyse tous les fichiers TypeScript dans src/ (sauf src/scripts/)\n */\n/**\n * analyze variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const analyze = ({\n  src = SRC_DIR,\n  excludes: _excludes,\n}: AnalyzeOptions = {}): CodebaseAnalysis => {\n  console.log('🔍 Analyse du codebase en cours...');\n  const excludes = toArray(_excludes);\n\n  // Initialiser le projet ts-morph\n  const project = new Project({\n    tsConfigFilePath: join(process.cwd(), 'tsconfig.json'),\n  });\n\n  // Ajouter tous les fichiers TypeScript du dossier src\n  const sourceFiles = project.addSourceFilesAtPaths(\n    [\n      'src/**/*.ts',\n      '!src/scripts/**/*', // Exclure le dossier scripts\n      '!src/**/*.test.ts', // Exclure les fichiers de test\n      '!src/**/*.spec.ts', // Exclure les fichiers de spec\n    ].concat(excludes.map(exclude => `!${exclude}`)),\n  );\n\n  const analysis: CodebaseAnalysis = {};\n  let processedCount = 0;\n\n  for (const sourceFile of sourceFiles) {\n    const filePath = sourceFile.getFilePath();\n    const relativePath = relative(src, filePath);\n\n    // Générer le texte modifié avec JSDoc pour les exports\n\n    const _text = addJSDocToSourceText(sourceFile);\n\n    // #region Analyser les imports et exports\n    const imports = analyzeImports(sourceFile);\n    const exports = analyzeExports(sourceFile);\n    // #endregion\n\n    // Construire les imports à partir de fileAnalysis.imports\n    const importsStrings = buildImportStrings(imports);\n\n    // Combiner imports et contenu\n    const importsSection =\n      importsStrings.length > 0 ? importsStrings.join('\\n') : '';\n\n    const text =\n      importsSection === ''\n        ? _text\n        : `${importsSection}\n\n${_text}\n    `;\n\n    analysis[pathToDotNotation(relativePath)] = {\n      relativePath,\n      imports,\n      exports,\n      text,\n    };\n\n    processedCount++;\n\n    // #region Afficher l'avancement de l'analyse par palliers de 50\n    if (processedCount % 50 === 0) {\n      console.log(\n        `📊 Analysé ${processedCount}/${sourceFiles.length} fichiers...`,\n      );\n    }\n    // #endregion\n  }\n\n  console.log(`✅ Analyse terminée: ${processedCount} fichiers analysés`);\n  return analysis;\n};\n\n    "
     },
     "analyse.utils": {
       "imports": [
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile"
-          ]
+          "namedImports": ["SourceFile"]
         }
       ],
       "relativePath": "analyse.utils.ts",
@@ -94,9 +72,7 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ]
+          "namedImports": ["join"]
         }
       ],
       "relativePath": "constants.ts",
@@ -107,55 +83,38 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ]
+          "namedImports": ["SourceFile", "SyntaxKind"]
         },
         {
-          "moduleSpecifier": "./types",
+          "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "ExportInfo"
-          ]
+          "namedImports": ["ExportInfo"]
         }
       ],
       "relativePath": "exports.ts",
-      "text": "import { SourceFile, SyntaxKind } from 'ts-morph';\nimport { ExportInfo } from './types';\n\n/**\n * analyzeExports variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const analyzeExports = (sourceFile: SourceFile) => {\n  const exports: ExportInfo[] = [];\n\n  // Export declarations (export ...)\n  sourceFile.getExportDeclarations().forEach(exportDecl => {\n    const moduleSpecifier = exportDecl.getModuleSpecifierValue();\n    const exportText = exportDecl.getText();\n\n    // Named exports\n    const namedExports = exportDecl.getNamedExports();\n    namedExports.forEach(namedExport => {\n      exports.push({\n        name: namedExport.getName(),\n        kind: 'named',\n        text: exportText,\n        moduleSpecifier,\n      });\n    });\n\n    // Namespace export (export * from '...')\n    if (exportDecl.isNamespaceExport()) {\n      exports.push({\n        name: '*',\n        kind: 'namespace',\n        text: exportText,\n        moduleSpecifier,\n      });\n    }\n  });\n\n  // Export assignments (export = ...)\n  sourceFile.getExportAssignments().forEach(exportAssignment => {\n    if (exportAssignment.isExportEquals()) {\n      exports.push({\n        name: 'default',\n        kind: 'default',\n        text: exportAssignment.getText(),\n      });\n    }\n  });\n\n  // Exported declarations (export function, export class, etc.)\n  sourceFile.getExportedDeclarations().forEach((declarations, name) => {\n    declarations.forEach(decl => {\n      let declarationKind: ExportInfo['declarationKind'];\n\n      if (decl.getKind() === SyntaxKind.FunctionDeclaration) {\n        declarationKind = 'function';\n      } else if (decl.getKind() === SyntaxKind.ClassDeclaration) {\n        declarationKind = 'class';\n      } else if (decl.getKind() === SyntaxKind.InterfaceDeclaration) {\n        declarationKind = 'interface';\n      } else if (decl.getKind() === SyntaxKind.TypeAliasDeclaration) {\n        declarationKind = 'type';\n      } else if (decl.getKind() === SyntaxKind.VariableDeclaration) {\n        declarationKind = 'variable';\n      } else if (decl.getKind() === SyntaxKind.EnumDeclaration) {\n        declarationKind = 'enum';\n      }\n\n      exports.push({\n        name,\n        kind: name === 'default' ? 'default' : 'named',\n        text: decl.getText(),\n        declarationKind,\n      });\n    });\n  });\n\n  return exports;\n};\n\n    "
+      "text": "import { SourceFile, SyntaxKind } from 'ts-morph';\nimport { ExportInfo } from './schemas';\n\n/**\n * analyzeExports variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const analyzeExports = (sourceFile: SourceFile) => {\n  const exports: ExportInfo[] = [];\n\n  // Export declarations (export ...)\n  sourceFile.getExportDeclarations().forEach(exportDecl => {\n    const moduleSpecifier = exportDecl.getModuleSpecifierValue();\n    const exportText = exportDecl.getText();\n\n    // Named exports\n    const namedExports = exportDecl.getNamedExports();\n    namedExports.forEach(namedExport => {\n      exports.push({\n        name: namedExport.getName(),\n        kind: 'named',\n        text: exportText,\n        moduleSpecifier,\n      });\n    });\n\n    // Namespace export (export * from '...')\n    if (exportDecl.isNamespaceExport()) {\n      exports.push({\n        name: '*',\n        kind: 'namespace',\n        text: exportText,\n        moduleSpecifier,\n      });\n    }\n  });\n\n  // Export assignments (export = ...)\n  sourceFile.getExportAssignments().forEach(exportAssignment => {\n    if (exportAssignment.isExportEquals()) {\n      exports.push({\n        name: 'default',\n        kind: 'default',\n        text: exportAssignment.getText(),\n      });\n    }\n  });\n\n  // Exported declarations (export function, export class, etc.)\n  sourceFile.getExportedDeclarations().forEach((declarations, name) => {\n    declarations.forEach(decl => {\n      let declarationKind: ExportInfo['declarationKind'];\n\n      if (decl.getKind() === SyntaxKind.FunctionDeclaration) {\n        declarationKind = 'function';\n      } else if (decl.getKind() === SyntaxKind.ClassDeclaration) {\n        declarationKind = 'class';\n      } else if (decl.getKind() === SyntaxKind.InterfaceDeclaration) {\n        declarationKind = 'interface';\n      } else if (decl.getKind() === SyntaxKind.TypeAliasDeclaration) {\n        declarationKind = 'type';\n      } else if (decl.getKind() === SyntaxKind.VariableDeclaration) {\n        declarationKind = 'variable';\n      } else if (decl.getKind() === SyntaxKind.EnumDeclaration) {\n        declarationKind = 'enum';\n      }\n\n      exports.push({\n        name,\n        kind: name === 'default' ? 'default' : 'named',\n        text: decl.getText(),\n        declarationKind,\n      });\n    });\n  });\n\n  return exports;\n};\n\n    "
     },
     "helpers": {
       "imports": [
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "mkdirSync",
-            "writeFileSync"
-          ]
+          "namedImports": ["mkdirSync", "writeFileSync"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ]
+          "namedImports": ["dirname", "join", "relative", "resolve"]
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "REPLACERS"
-          ]
+          "namedImports": ["REPLACERS"]
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "FileAnalysis"
-          ]
+          "namedImports": ["FileAnalysis"]
         }
       ],
       "relativePath": "helpers.ts",
@@ -166,34 +125,26 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ]
+          "namedImports": ["join", "relative"]
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ]
+          "namedImports": ["SourceFile", "SyntaxKind"]
         },
         {
-          "moduleSpecifier": "./types",
+          "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "ImportInfo"
-          ]
+          "namedImports": ["ImportInfo"]
         }
       ],
       "relativePath": "imports.ts",
-      "text": "import { join, relative } from 'node:path';\nimport { SourceFile, SyntaxKind } from 'ts-morph';\nimport { ImportInfo } from './types';\n\n/**\n * Résout le moduleSpecifier en utilisant les paths du tsconfig si il commence par \"#\"\n */\nconst resolveModuleSpecifier = (\n  sourceFile: SourceFile,\n  moduleSpecifier: string,\n): string => {\n  const paths = sourceFile.getProject().getCompilerOptions().paths;\n\n  if (!paths) return moduleSpecifier;\n\n  const baseUrl = sourceFile.getProject().getCompilerOptions().baseUrl;\n  const paths2 = Object.entries(paths);\n\n  // Chercher la correspondance dans les paths\n  for (const [pattern, mappings] of paths2) {\n    // Remplacer * par une regex pour matcher\n    const regexPattern = pattern.replace(/\\*/g, '(.*)');\n    const regex = new RegExp(`^${regexPattern}$`);\n    const match = moduleSpecifier.match(regex);\n\n    if (match) {\n      // Prendre le premier mapping disponible\n      const first = mappings[0];\n\n      // Résoudre le chemin absolu\n      let relativedPath = baseUrl ? join(baseUrl, first) : first;\n\n      if (match[1]) {\n        relativedPath = relativedPath.replace('*', match[1]);\n      }\n\n      // Calculer le chemin relatif depuis le fichier source actuel\n      const sourceFileDir = relative(\n        process.cwd(),\n        sourceFile.getDirectoryPath(),\n      );\n      const relativePath = relative(sourceFileDir, relativedPath);\n\n      // S'assurer que le chemin relatif commence par ./ ou ../\n      return relativePath.startsWith('.')\n        ? relativePath\n        : `./${relativePath}`;\n    }\n  }\n\n  return moduleSpecifier;\n};\n\n/**\n * Analyse les imports d'un fichier\n */\n/**\n * analyzeImports variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {\n  const imports: ImportInfo[] = [];\n\n  // Import declarations (import ... from '...')\n  sourceFile.getImportDeclarations().forEach(importDecl => {\n    const rawModuleSpecifier = importDecl.getModuleSpecifierValue();\n    const moduleSpecifier = resolveModuleSpecifier(\n      sourceFile,\n      rawModuleSpecifier,\n    );\n\n    // Import default\n    const defaultImport = importDecl.getDefaultImport();\n    if (defaultImport) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'default',\n        default: defaultImport.getText(),\n      });\n    }\n\n    // Import namespace (* as name)\n    const namespaceImport = importDecl.getNamespaceImport();\n    if (namespaceImport) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'namespace',\n        default: namespaceImport.getText(),\n      });\n    }\n\n    // Named imports ({ name1, name2 })\n    const namedImports = importDecl.getNamedImports();\n    if (namedImports.length > 0) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'named',\n        namedImports: namedImports.map(ni => ni.getName()),\n      });\n    }\n\n    // Side-effect import (import '...')\n    if (!defaultImport && !namespaceImport && namedImports.length === 0) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'side-effect',\n      });\n    }\n  });\n\n  // Dynamic imports (import('...'))\n  sourceFile\n    .getDescendantsOfKind(SyntaxKind.CallExpression)\n    .forEach(callExpr => {\n      if (\n        callExpr.getExpression().getKind() === SyntaxKind.ImportKeyword\n      ) {\n        const arg = callExpr.getArguments()[0];\n        if (arg && arg.getKind() === SyntaxKind.StringLiteral) {\n          const rawModuleSpecifier = arg.getText().replace(/['\"]/g, '');\n          const moduleSpecifier = resolveModuleSpecifier(\n            sourceFile,\n            rawModuleSpecifier,\n          );\n          imports.push({\n            moduleSpecifier,\n            kind: 'side-effect',\n            isDynamic: true,\n          });\n        }\n      }\n    });\n\n  return imports;\n};\n\n/**\n * buildImportStrings variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const buildImportStrings = (imports: ImportInfo[]) => {\n  return imports.map(imp => {\n    switch (imp.kind) {\n      case 'named': {\n        const namedImports = imp.namedImports?.join(', ') || '';\n        return `import { ${namedImports} } from '${imp.moduleSpecifier}';`;\n      }\n      case 'namespace':\n        return `import * as ${imp.default} from '${imp.moduleSpecifier}';`;\n      case 'side-effect': {\n        if (imp.isDynamic) {\n          return `// Dynamic import: import('${imp.moduleSpecifier}')`;\n        }\n        return `import '${imp.moduleSpecifier}';`;\n      }\n\n      case 'default':\n        return `import ${imp.default} from '${imp.moduleSpecifier}';`;\n      default:\n        return '';\n    }\n  });\n};\n\n    "
+      "text": "import { join, relative } from 'node:path';\nimport { SourceFile, SyntaxKind } from 'ts-morph';\nimport { ImportInfo } from './schemas';\n\n/**\n * Résout le moduleSpecifier en utilisant les paths du tsconfig si il commence par \"#\"\n */\nconst resolveModuleSpecifier = (\n  sourceFile: SourceFile,\n  moduleSpecifier: string,\n): string => {\n  const paths = sourceFile.getProject().getCompilerOptions().paths;\n\n  if (!paths) return moduleSpecifier;\n\n  const baseUrl = sourceFile.getProject().getCompilerOptions().baseUrl;\n  const paths2 = Object.entries(paths);\n\n  // Chercher la correspondance dans les paths\n  for (const [pattern, mappings] of paths2) {\n    // Remplacer * par une regex pour matcher\n    const regexPattern = pattern.replace(/\\*/g, '(.*)');\n    const regex = new RegExp(`^${regexPattern}$`);\n    const match = moduleSpecifier.match(regex);\n\n    if (match) {\n      // Prendre le premier mapping disponible\n      const first = mappings[0];\n\n      // Résoudre le chemin absolu\n      let relativedPath = baseUrl ? join(baseUrl, first) : first;\n\n      if (match[1]) {\n        relativedPath = relativedPath.replace('*', match[1]);\n      }\n\n      // Calculer le chemin relatif depuis le fichier source actuel\n      const sourceFileDir = relative(\n        process.cwd(),\n        sourceFile.getDirectoryPath(),\n      );\n      const relativePath = relative(sourceFileDir, relativedPath);\n\n      // S'assurer que le chemin relatif commence par ./ ou ../\n      return relativePath.startsWith('.')\n        ? relativePath\n        : `./${relativePath}`;\n    }\n  }\n\n  return moduleSpecifier;\n};\n\n/**\n * Analyse les imports d'un fichier\n */\n/**\n * analyzeImports variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {\n  const imports: ImportInfo[] = [];\n\n  // Import declarations (import ... from '...')\n  sourceFile.getImportDeclarations().forEach(importDecl => {\n    const rawModuleSpecifier = importDecl.getModuleSpecifierValue();\n    const moduleSpecifier = resolveModuleSpecifier(\n      sourceFile,\n      rawModuleSpecifier,\n    );\n\n    // Import default\n    const defaultImport = importDecl.getDefaultImport();\n    if (defaultImport) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'default',\n        default: defaultImport.getText(),\n      });\n    }\n\n    // Import namespace (* as name)\n    const namespaceImport = importDecl.getNamespaceImport();\n    if (namespaceImport) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'namespace',\n        default: namespaceImport.getText(),\n      });\n    }\n\n    // Named imports ({ name1, name2 })\n    const namedImports = importDecl.getNamedImports();\n    if (namedImports.length > 0) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'named',\n        namedImports: namedImports.map(ni => ni.getName()),\n      });\n    }\n\n    // Side-effect import (import '...')\n    if (!defaultImport && !namespaceImport && namedImports.length === 0) {\n      imports.push({\n        moduleSpecifier,\n        kind: 'side-effect',\n      });\n    }\n  });\n\n  // Dynamic imports (import('...'))\n  sourceFile\n    .getDescendantsOfKind(SyntaxKind.CallExpression)\n    .forEach(callExpr => {\n      if (\n        callExpr.getExpression().getKind() === SyntaxKind.ImportKeyword\n      ) {\n        const arg = callExpr.getArguments()[0];\n        if (arg && arg.getKind() === SyntaxKind.StringLiteral) {\n          const rawModuleSpecifier = arg.getText().replace(/['\"]/g, '');\n          const moduleSpecifier = resolveModuleSpecifier(\n            sourceFile,\n            rawModuleSpecifier,\n          );\n          imports.push({\n            moduleSpecifier,\n            kind: 'side-effect',\n            isDynamic: true,\n          });\n        }\n      }\n    });\n\n  return imports;\n};\n\n/**\n * buildImportStrings variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const buildImportStrings = (imports: ImportInfo[]) => {\n  return imports.map(imp => {\n    switch (imp.kind) {\n      case 'named': {\n        const namedImports = imp.namedImports?.join(', ') || '';\n        return `import { ${namedImports} } from '${imp.moduleSpecifier}';`;\n      }\n      case 'namespace':\n        return `import * as ${imp.default} from '${imp.moduleSpecifier}';`;\n      case 'side-effect': {\n        if (imp.isDynamic) {\n          return `// Dynamic import: import('${imp.moduleSpecifier}')`;\n        }\n        return `import '${imp.moduleSpecifier}';`;\n      }\n\n      case 'default':\n        return `import ${imp.default} from '${imp.moduleSpecifier}';`;\n      default:\n        return '';\n    }\n  });\n};\n\n    "
     },
     "index": {
       "imports": [],
       "relativePath": "index.ts",
-      "text": "export * from './functions';\n"
+      "text": "export * from './functions';\nexport * from './schemas';\nexport * from './types';\n"
     },
     "schemas": {
       "imports": [
@@ -205,18 +156,16 @@
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "PROPERTIES"
-          ]
+          "namedImports": ["PROPERTIES"]
         }
       ],
       "relativePath": "schemas.ts",
-      "text": "import * as v from 'valibot';\nimport { PROPERTIES } from './constants';\n\n// Schema pour DeclarationKind\n/**\n * DeclarationKindSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const DeclarationKindSchema = v.picklist([\n  'function',\n  'class',\n  'interface',\n  'type',\n  'variable',\n  'const',\n  'let',\n  'enum',\n]);\n\n// Schema pour ImportInfo\n/**\n * ImportInfoSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const ImportInfoSchema = v.object({\n  moduleSpecifier: v.string(),\n  kind: v.picklist(['default', 'named', 'namespace', 'side-effect']),\n  namedImports: v.optional(v.array(v.string())),\n  default: v.optional(v.string()),\n  isDynamic: v.optional(v.boolean()),\n});\n\n// Schema pour ExportInfo\n/**\n * ExportInfoSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const ExportInfoSchema = v.object({\n  name: v.string(),\n  kind: v.picklist(['default', 'named', 'namespace']),\n  text: v.optional(v.string()),\n  moduleSpecifier: v.optional(v.string()),\n  declarationKind: v.optional(DeclarationKindSchema),\n});\n\n// Schema pour FileAnalysis\n/**\n * FileAnalysisSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const FileAnalysisSchema = v.object({\n  relativePath: v.string(),\n  imports: v.array(ImportInfoSchema),\n  exports: v.optional(v.array(ExportInfoSchema)),\n  text: v.string(),\n});\n\n// Schema pour CodebaseAnalysis\n/**\n * CodebaseAnalysisSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const CodebaseAnalysisSchema = v.record(\n  v.string(),\n  FileAnalysisSchema,\n);\n\n// Schema pour les statistiques d'analyse\n/**\n * AnalysisStatsSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const AnalysisStatsSchema = v.object({\n  files: v.number(),\n  imports: v.number(),\n  exports: v.number(),\n});\n\n// Schema complet pour un fichier .code contenant l'analyse complète\n/**\n * CodeAnalysisFileSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const CodeAnalysisFileSchema = v.object({\n  [PROPERTIES.CODEBASE_ANALYSIS]: CodebaseAnalysisSchema,\n  [PROPERTIES.STATS]: v.optional(AnalysisStatsSchema),\n});\n\n// Types inférés des schémas\n/**\n * DeclarationKind type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type DeclarationKind = v.InferOutput<typeof DeclarationKindSchema>;\n/**\n * ImportInfo type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type ImportInfo = v.InferOutput<typeof ImportInfoSchema>;\n/**\n * ExportInfo type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type ExportInfo = v.InferOutput<typeof ExportInfoSchema>;\n/**\n * FileAnalysis type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type FileAnalysis = v.InferOutput<typeof FileAnalysisSchema>;\n/**\n * CodebaseAnalysis type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type CodebaseAnalysis = v.InferOutput<\n  typeof CodebaseAnalysisSchema\n>;\n/**\n * AnalysisStats type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type AnalysisStats = v.InferOutput<typeof AnalysisStatsSchema>;\n/**\n * CodeAnalysisFile type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type CodeAnalysisFile = v.InferOutput<\n  typeof CodeAnalysisFileSchema\n>;\n\n    "
+      "text": "import * as v from 'valibot';\nimport { PROPERTIES } from './constants';\n\n/**\n * DeclarationKindSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const DeclarationKindSchema = v.picklist([\n  'function',\n  'class',\n  'interface',\n  'type',\n  'variable',\n  'const',\n  'let',\n  'enum',\n]);\n\n/**\n * ImportInfoSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const ImportInfoSchema = v.object({\n  moduleSpecifier: v.string(),\n  kind: v.picklist(['default', 'named', 'namespace', 'side-effect']),\n  namedImports: v.optional(v.array(v.string())),\n  default: v.optional(v.string()),\n  isDynamic: v.optional(v.boolean()),\n});\n\n/**\n * ExportInfoSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const ExportInfoSchema = v.object({\n  name: v.string(),\n  kind: v.picklist(['default', 'named', 'namespace']),\n  text: v.optional(v.string()),\n  moduleSpecifier: v.optional(v.string()),\n  declarationKind: v.optional(DeclarationKindSchema),\n});\n\n/**\n * FileAnalysisSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const FileAnalysisSchema = v.object({\n  relativePath: v.string(),\n  imports: v.array(ImportInfoSchema),\n  exports: v.optional(v.array(ExportInfoSchema)),\n  text: v.string(),\n});\n\n// Schema pour CodebaseAnalysis\n/**\n * CodebaseAnalysisSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const CodebaseAnalysisSchema = v.record(\n  v.string(),\n  FileAnalysisSchema,\n);\n\n// Schema pour les statistiques d'analyse\n/**\n * AnalysisStatsSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const AnalysisStatsSchema = v.object({\n  files: v.number(),\n  imports: v.number(),\n  exports: v.number(),\n});\n\n// Schema complet pour un fichier .code contenant l'analyse complète\n/**\n * CodeAnalysisFileSchema variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const CodeAnalysisFileSchema = v.object({\n  [PROPERTIES.CODEBASE_ANALYSIS]: CodebaseAnalysisSchema,\n  [PROPERTIES.STATS]: v.optional(AnalysisStatsSchema),\n});\n\n// Types inférés des schémas\n/**\n * DeclarationKind type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type DeclarationKind = v.InferOutput<typeof DeclarationKindSchema>;\n/**\n * ImportInfo type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type ImportInfo = v.InferOutput<typeof ImportInfoSchema>;\n/**\n * ExportInfo type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type ExportInfo = v.InferOutput<typeof ExportInfoSchema>;\n/**\n * FileAnalysis type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type FileAnalysis = v.InferOutput<typeof FileAnalysisSchema>;\n/**\n * CodebaseAnalysis type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type CodebaseAnalysis = v.InferOutput<\n  typeof CodebaseAnalysisSchema\n>;\n/**\n * AnalysisStats type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type AnalysisStats = v.InferOutput<typeof AnalysisStatsSchema>;\n/**\n * CodeAnalysisFile type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type CodeAnalysisFile = v.InferOutput<\n  typeof CodeAnalysisFileSchema\n>;\n\n    "
     },
     "types": {
       "imports": [],
       "relativePath": "types.ts",
-      "text": "/**\n * DeclarationKind type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type DeclarationKind =\n  | 'function'\n  | 'class'\n  | 'interface'\n  | 'type'\n  | 'variable'\n  | 'const'\n  | 'let'\n  | 'enum';\n\n/**\n * ImportInfo type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type ImportInfo = {\n  /** Module importé (ex: './utils', 'fs', etc.) */\n  moduleSpecifier: string;\n  /** Type d'import (default, named, namespace, etc.) */\n  kind: 'default' | 'named' | 'namespace' | 'side-effect';\n  /** Noms importés pour les imports named */\n  namedImports?: string[];\n  /** Nom de l'import default ou namespace */\n  default?: string;\n  /** Import dynamique */\n  isDynamic?: boolean;\n};\n\n/**\n * ExportInfo type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type ExportInfo = {\n  /** Nom de l'export */\n  name: string;\n  /** Type d'export */\n  kind: 'default' | 'named' | 'namespace';\n  /** Texte complet de l'export */\n  text?: string;\n  /** Si c'est un re-export, le module source */\n  moduleSpecifier?: string;\n  /** Si c'est une déclaration (function, class, etc.) */\n  declarationKind?: DeclarationKind;\n};\n\n/**\n * FileAnalysis type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type FileAnalysis = {\n  /** Chemin relatif du fichier depuis src/ */\n  relativePath: string;\n  /** Liste des imports du fichier */\n  imports: ImportInfo[];\n  /** Liste des exports du fichier */\n  exports: ExportInfo[];\n  text: string;\n};\n\n/**\n * CodebaseAnalysis type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type CodebaseAnalysis = Record<string, FileAnalysis>;\n\n/**\n * NOmit type - Auto-generated expression\n *\n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * @author chlbri (bri_lvi@icloud.com)\n */\n/**\n * NOmit type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type NOmit<T, K extends keyof T> = Omit<T, K>;\n"
+      "text": "/**\n * NOmit type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type NOmit<T, K extends keyof T> = Omit<T, K>;\n"
     },
     "utils": {
       "imports": [],
@@ -239,20 +188,16 @@
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "CODEBASE_FILE"
-          ]
+          "namedImports": ["CODEBASE_FILE"]
         },
         {
           "moduleSpecifier": "../functions/generate",
           "kind": "named",
-          "namedImports": [
-            "generate"
-          ]
+          "namedImports": ["generate"]
         }
       ],
       "relativePath": "cli/cli.ts",
-      "text": "import { array, command, multioption, option, string } from 'cmd-ts';\nimport { CODEBASE_FILE } from '../constants';\nimport { generate } from '../functions/generate';\n\n/**\n * cli variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const cli = command({\n  name: 'generate',\n\n  args: {\n    output: option({\n      long: 'output',\n      short: 'o',\n      type: string,\n      description: 'Output file path',\n      defaultValue: () => CODEBASE_FILE,\n    }),\n    excludes: multioption({\n      description: 'The files to exclude, relative to process.cwd()',\n      long: 'excludes',\n      short: 'x',\n      type: array(string),\n      defaultValue: () => [],\n    }),\n  },\n  handler,\n});\n\n    "
+      "text": "import { array, command, multioption, option, string } from 'cmd-ts';\nimport { CODEBASE_FILE } from '../constants';\nimport { generate } from '../functions/generate';\n\n/**\n * cli variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const cli = command({\n  name: 'generate',\n\n  args: {\n    output: option({\n      long: 'output',\n      short: 'o',\n      type: string,\n      description: 'Output file path',\n      defaultValue: () => CODEBASE_FILE,\n    }),\n    excludes: multioption({\n      description: 'The files to exclude, globs',\n      long: 'excludes',\n      short: 'x',\n      type: array(string),\n      defaultValue: () => [],\n    }),\n  },\n  handler,\n});\n\n    "
     },
     "cli.constants": {
       "imports": [],
@@ -264,16 +209,12 @@
         {
           "moduleSpecifier": "cmd-ts",
           "kind": "named",
-          "namedImports": [
-            "run"
-          ]
+          "namedImports": ["run"]
         },
         {
           "moduleSpecifier": "./cli",
           "kind": "named",
-          "namedImports": [
-            "cli"
-          ]
+          "namedImports": ["cli"]
         }
       ],
       "relativePath": "cli/index.ts",
@@ -289,19 +230,12 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ]
+          "namedImports": ["JsonEditor"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ]
+          "namedImports": ["dirname", "join", "relative", "resolve"]
         },
         {
           "moduleSpecifier": "../constants",
@@ -324,63 +258,47 @@
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"]
         },
         {
           "moduleSpecifier": "../types",
           "kind": "named",
-          "namedImports": [
-            "FileAnalysis",
-            "NOmit"
-          ]
+          "namedImports": ["NOmit"]
         }
       ],
       "relativePath": "functions/add.ts",
-      "text": "import edit from 'edit-json-file';\nimport { JsonEditor } from 'edit-json-file';\nimport { dirname, join, relative, resolve } from 'node:path';\nimport { FILES_PROPERTY, JSON_FILE_NAME, PATH_PROPERTY } from '../constants';\nimport { consoleStars, transformModule, writeFileAnalysis } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\nimport { FileAnalysis, NOmit } from '../types';\n\nconst processFileAnalysis = (\n  analysis: NOmit<FileAnalysis, 'exports'>,\n  cwd: string,\n  additionals: [string, NOmit<FileAnalysis, 'exports'>][],\n  pathsEntries: [string, NOmit<FileAnalysis, 'exports'>][],\n  files: string[],\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n) => {\n  const relativePath = analysis.relativePath;\n\n  const keys = Object.keys(CODEBASE_ANALYSIS);\n  analysis.imports.forEach(({ moduleSpecifier }) => {\n    const _path = relative(\n      cwd,\n      resolve(dirname(relativePath), moduleSpecifier),\n    ).replaceAll('/', '.');\n\n    const toAdd =\n      CODEBASE_ANALYSIS[_path] ?? CODEBASE_ANALYSIS[`${_path}.index`];\n    if (!toAdd) return;\n\n    additionals.push([_path, toAdd]);\n\n    const all = additionals\n      .concat(pathsEntries)\n      .map(([key]) => key)\n      .concat(files);\n\n    const imports = toAdd.imports.filter(({ moduleSpecifier }) => {\n      const _path = transformModule({\n        cwd,\n        relativePath: toAdd.relativePath,\n        moduleSpecifier,\n      });\n\n      const array = [_path, `${_path}.index`].filter(p =>\n        keys.includes(p),\n      );\n\n      if (array.length < 1) return false;\n\n      return array.every(p => !all.includes(p));\n    });\n\n    const toAdd2 = { ...toAdd, imports };\n    const canRecurse = toAdd2.imports.length > 0;\n\n    if (canRecurse) {\n      processFileAnalysis(\n        toAdd2,\n        cwd,\n        additionals,\n        pathsEntries,\n        files,\n        CODEBASE_ANALYSIS,\n      );\n    }\n  });\n};\n\n/**\n * add variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const add = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  ...files: string[]\n) => {\n  const isEmpty = files.length === 0;\n  if (isEmpty) return console.warn('No files specified for addition.');\n  try {\n    const cwd = process.cwd();\n    const json = join(cwd, JSON_FILE_NAME);\n    let file: JsonEditor | undefined = edit(json);\n\n    if (!file) return;\n\n    const path = file.get(PATH_PROPERTY) as string;\n    const files = file.get(FILES_PROPERTY) as string[];\n\n    // Release resources\n\n    const additionals: [string, NOmit<FileAnalysis, 'exports'>][] = [];\n\n    const pathsEntries = Object.entries(CODEBASE_ANALYSIS)\n      .filter(([key]) => files.some(p => key.startsWith(p)))\n      .filter(([key]) => !files.includes(key));\n\n    pathsEntries.forEach(([, analysis]) => {\n      processFileAnalysis(\n        analysis,\n        cwd,\n        additionals,\n        pathsEntries,\n        files,\n        CODEBASE_ANALYSIS,\n      );\n    });\n\n    const entries = new Set(\n      pathsEntries.concat(additionals).filter(([, val]) => !!val),\n    );\n\n    consoleStars();\n    console.log(`🔧 Création des fichiers (${entries.size} fichiers)...`);\n\n    let success = 0;\n    const length = entries.size;\n\n    entries.forEach(([, fileAnalysis]) => {\n      const _path = writeFileAnalysis(fileAnalysis, path);\n      if (_path) {\n        files.push(_path);\n        file?.set(FILES_PROPERTY, files);\n        success++;\n      }\n    });\n\n    file.save();\n    console.log(`✅ Fichiers créés! (${success}/${length})`);\n    file = undefined;\n  } catch {\n    console.error(`❌ Erreur lors de la création des fichiers`);\n    return false;\n  }\n\n  consoleStars();\n  return true;\n};\n\n    "
+      "text": "import edit from 'edit-json-file';\nimport { JsonEditor } from 'edit-json-file';\nimport { dirname, join, relative, resolve } from 'node:path';\nimport { FILES_PROPERTY, JSON_FILE_NAME, PATH_PROPERTY } from '../constants';\nimport { consoleStars, transformModule, writeFileAnalysis } from '../helpers';\nimport { CodebaseAnalysis, FileAnalysis } from '../schemas';\nimport { NOmit } from '../types';\n\nconst processFileAnalysis = (\n  analysis: NOmit<FileAnalysis, 'exports'>,\n  cwd: string,\n  additionals: [string, NOmit<FileAnalysis, 'exports'>][],\n  pathsEntries: [string, NOmit<FileAnalysis, 'exports'>][],\n  files: string[],\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n) => {\n  const relativePath = analysis.relativePath;\n\n  const keys = Object.keys(CODEBASE_ANALYSIS);\n  analysis.imports.forEach(({ moduleSpecifier }) => {\n    const _path = relative(\n      cwd,\n      resolve(dirname(relativePath), moduleSpecifier),\n    ).replaceAll('/', '.');\n\n    const toAdd =\n      CODEBASE_ANALYSIS[_path] ?? CODEBASE_ANALYSIS[`${_path}.index`];\n    if (!toAdd) return;\n\n    additionals.push([_path, toAdd]);\n\n    const all = additionals\n      .concat(pathsEntries)\n      .map(([key]) => key)\n      .concat(files);\n\n    const imports = toAdd.imports.filter(({ moduleSpecifier }) => {\n      const _path = transformModule({\n        cwd,\n        relativePath: toAdd.relativePath,\n        moduleSpecifier,\n      });\n\n      const array = [_path, `${_path}.index`].filter(p =>\n        keys.includes(p),\n      );\n\n      if (array.length < 1) return false;\n\n      return array.every(p => !all.includes(p));\n    });\n\n    const toAdd2 = { ...toAdd, imports };\n    const canRecurse = toAdd2.imports.length > 0;\n\n    if (canRecurse) {\n      processFileAnalysis(\n        toAdd2,\n        cwd,\n        additionals,\n        pathsEntries,\n        files,\n        CODEBASE_ANALYSIS,\n      );\n    }\n  });\n};\n\n/**\n * add variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const add = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  ...files: string[]\n) => {\n  const isEmpty = files.length === 0;\n  if (isEmpty) return console.warn('No files specified for addition.');\n  try {\n    const cwd = process.cwd();\n    const json = join(cwd, JSON_FILE_NAME);\n    let file: JsonEditor | undefined = edit(json);\n\n    if (!file) return;\n\n    const path = file.get(PATH_PROPERTY) as string;\n    const files = file.get(FILES_PROPERTY) as string[];\n\n    // Release resources\n\n    const additionals: [string, NOmit<FileAnalysis, 'exports'>][] = [];\n\n    const pathsEntries = Object.entries(CODEBASE_ANALYSIS)\n      .filter(([key]) => files.some(p => key.startsWith(p)))\n      .filter(([key]) => !files.includes(key));\n\n    pathsEntries.forEach(([, analysis]) => {\n      processFileAnalysis(\n        analysis,\n        cwd,\n        additionals,\n        pathsEntries,\n        files,\n        CODEBASE_ANALYSIS,\n      );\n    });\n\n    const entries = new Set(\n      pathsEntries.concat(additionals).filter(([, val]) => !!val),\n    );\n\n    consoleStars();\n    console.log(`🔧 Création des fichiers (${entries.size} fichiers)...`);\n\n    let success = 0;\n    const length = entries.size;\n\n    entries.forEach(([, fileAnalysis]) => {\n      const _path = writeFileAnalysis(fileAnalysis, path);\n      if (_path) {\n        files.push(_path);\n        file?.set(FILES_PROPERTY, files);\n        success++;\n      }\n    });\n\n    file.save();\n    console.log(`✅ Fichiers créés! (${success}/${length})`);\n    file = undefined;\n  } catch {\n    console.error(`❌ Erreur lors de la création des fichiers`);\n    return false;\n  }\n\n  consoleStars();\n  return true;\n};\n\n    "
     },
     "functions.generate": {
       "imports": [
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "writeFileSync"
-          ]
+          "namedImports": ["writeFileSync"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "relative"
-          ]
+          "namedImports": ["relative"]
         },
         {
           "moduleSpecifier": "src/constants",
           "kind": "named",
-          "namedImports": [
-            "CODEBASE_FILE",
-            "SRC_DIR"
-          ]
+          "namedImports": ["CODEBASE_FILE", "SRC_DIR"]
         },
         {
           "moduleSpecifier": "../analyse",
           "kind": "named",
-          "namedImports": [
-            "analyze"
-          ]
+          "namedImports": ["analyze"]
         },
         {
-          "moduleSpecifier": "../types",
+          "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         }
       ],
       "relativePath": "functions/generate.ts",
-      "text": "import { writeFileSync } from 'node:fs';\nimport { relative } from 'node:path';\nimport { CODEBASE_FILE, SRC_DIR } from 'src/constants';\nimport { analyze } from '../analyse';\nimport { CodebaseAnalysis } from '../types';\n\n/**\n * transformJSON variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const transformJSON = (data: CodebaseAnalysis) => {\n  let imports = 0;\n  let exports = 0;\n  let files = 0;\n\n  const entries = Object.entries(data).map(\n    ([\n      key,\n      { imports: _imports, relativePath, text, exports: _exports },\n    ]) => {\n      imports += _imports.length;\n      exports += _exports.length;\n      files++;\n\n      const value = {\n        imports: _imports,\n        relativePath,\n        text,\n      };\n      return [key, value] as const;\n    },\n  );\n\n  const CODEBASE_ANALYSIS = Object.fromEntries(entries);\n\n  const STATS = {\n    files,\n    imports,\n    exports,\n  };\n\n  return {\n    STATS,\n    CODEBASE_ANALYSIS,\n  };\n};\n\n/**\n * GenerateOptions type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type GenerateOptions = {\n  output?: string;\n  excludes?: string[] | string;\n  src?: string;\n};\n\n/**\n * Fonction principale d'exécution\n */\n/**\n * generate variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const generate = ({\n  output = CODEBASE_FILE,\n  excludes,\n  src = SRC_DIR,\n}: GenerateOptions = {}) => {\n  const _output = output.endsWith('codebase.json')\n    ? output\n    : `${output}.codebase.json`;\n\n  try {\n    const analysis = analyze({ src, excludes });\n    const transformed = transformJSON(analysis);\n\n    const json = JSON.stringify(transformed, null, 2);\n    writeFileSync(_output, json);\n\n    console.log(\n      `📁 Analyse sauvegardée dans: ${relative(process.cwd(), _output)}`,\n    );\n    console.log(`📊 Statistiques:`);\n    console.log(`   - Fichiers analysés: ${transformed.STATS.files}`);\n    console.log(`   - Total imports: ${transformed.STATS.imports}`);\n    console.log(`   - Total exports: ${transformed.STATS.exports}`);\n  } catch (error) {\n    console.error(\"❌ Erreur lors de l'analyse du codebase:\", error);\n    process.exit(1);\n  }\n\n  return true;\n};\n\n    "
+      "text": "import { writeFileSync } from 'node:fs';\nimport { relative } from 'node:path';\nimport { CODEBASE_FILE, SRC_DIR } from 'src/constants';\nimport { analyze } from '../analyse';\nimport { CodebaseAnalysis } from '../schemas';\n\n/**\n * transformJSON variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const transformJSON = (data: CodebaseAnalysis) => {\n  let imports = 0;\n  let exports = 0;\n  let files = 0;\n\n  const entries = Object.entries(data).map(\n    ([\n      key,\n      { imports: _imports, relativePath, text, exports: _exports },\n    ]) => {\n      imports += _imports.length;\n      exports += _exports?.length ?? 0;\n      files++;\n\n      const value = {\n        imports: _imports,\n        relativePath,\n        text,\n      };\n      return [key, value] as const;\n    },\n  );\n\n  const CODEBASE_ANALYSIS = Object.fromEntries(entries);\n\n  const STATS = {\n    files,\n    imports,\n    exports,\n  };\n\n  return {\n    STATS,\n    CODEBASE_ANALYSIS,\n  };\n};\n\n/**\n * GenerateOptions type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type GenerateOptions = {\n  output?: string;\n  excludes?: string[] | string;\n  src?: string;\n};\n\n/**\n * Fonction principale d'exécution\n */\n/**\n * generate variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const generate = ({\n  output = CODEBASE_FILE,\n  excludes,\n  src = SRC_DIR,\n}: GenerateOptions = {}) => {\n  const _output = output.endsWith('codebase.json')\n    ? output\n    : `${output}.codebase.json`;\n\n  try {\n    const analysis = analyze({ src, excludes });\n    const transformed = transformJSON(analysis);\n\n    const json = JSON.stringify(transformed, null, 2);\n    writeFileSync(_output, json);\n\n    console.log(\n      `📁 Analyse sauvegardée dans: ${relative(process.cwd(), _output)}`,\n    );\n    console.log(`📊 Statistiques:`);\n    console.log(`   - Fichiers analysés: ${transformed.STATS.files}`);\n    console.log(`   - Total imports: ${transformed.STATS.imports}`);\n    console.log(`   - Total exports: ${transformed.STATS.exports}`);\n  } catch (error) {\n    console.error(\"❌ Erreur lors de l'analyse du codebase:\", error);\n    process.exit(1);\n  }\n\n  return true;\n};\n\n    "
     },
     "functions.index": {
       "imports": [],
@@ -402,31 +320,22 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ]
+          "namedImports": ["join"]
         },
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "PATH_KEY",
-            "PROPERTIES"
-          ]
+          "namedImports": ["PATH_KEY", "PROPERTIES"]
         },
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "writeFileAnalysis"
-          ]
+          "namedImports": ["writeFileAnalysis"]
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         }
       ],
       "relativePath": "functions/init.ts",
@@ -442,23 +351,17 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ]
+          "namedImports": ["JsonEditor"]
         },
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "unlinkSync"
-          ]
+          "namedImports": ["unlinkSync"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ]
+          "namedImports": ["join"]
         },
         {
           "moduleSpecifier": "../constants",
@@ -472,18 +375,12 @@
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "consoleStars",
-            "transformModule"
-          ]
+          "namedImports": ["consoleStars", "transformModule"]
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis",
-            "FileAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"]
         }
       ],
       "relativePath": "functions/remove.ts",
