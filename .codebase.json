@@ -10,67 +10,47 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ]
+          "namedImports": ["join", "relative"]
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "Project"
-          ]
+          "namedImports": ["Project"]
         },
         {
           "moduleSpecifier": "./analyse.utils",
           "kind": "named",
-          "namedImports": [
-            "addJSDocToSourceText"
-          ]
+          "namedImports": ["addJSDocToSourceText"]
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "SRC_DIR"
-          ]
+          "namedImports": ["SRC_DIR"]
         },
         {
           "moduleSpecifier": "./exports",
           "kind": "named",
-          "namedImports": [
-            "analyzeExports"
-          ]
+          "namedImports": ["analyzeExports"]
         },
         {
           "moduleSpecifier": "./helpers",
           "kind": "named",
-          "namedImports": [
-            "toArray"
-          ]
+          "namedImports": ["toArray"]
         },
         {
           "moduleSpecifier": "./imports",
           "kind": "named",
-          "namedImports": [
-            "analyzeImports",
-            "buildImportStrings"
-          ]
+          "namedImports": ["analyzeImports", "buildImportStrings"]
         },
         {
           "moduleSpecifier": "./types",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         },
         {
           "moduleSpecifier": "./utils",
           "kind": "named",
-          "namedImports": [
-            "pathToDotNotation"
-          ]
+          "namedImports": ["pathToDotNotation"]
         }
       ],
       "relativePath": "analyse.ts",
@@ -81,9 +61,7 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile"
-          ]
+          "namedImports": ["SourceFile"]
         }
       ],
       "relativePath": "analyse.utils.ts",
@@ -94,9 +72,7 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ]
+          "namedImports": ["join"]
         }
       ],
       "relativePath": "constants.ts",
@@ -107,17 +83,12 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ]
+          "namedImports": ["SourceFile", "SyntaxKind"]
         },
         {
           "moduleSpecifier": "./types",
           "kind": "named",
-          "namedImports": [
-            "ExportInfo"
-          ]
+          "namedImports": ["ExportInfo"]
         }
       ],
       "relativePath": "exports.ts",
@@ -128,34 +99,22 @@
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "mkdirSync",
-            "writeFileSync"
-          ]
+          "namedImports": ["mkdirSync", "writeFileSync"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ]
+          "namedImports": ["dirname", "join", "relative", "resolve"]
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "REPLACERS"
-          ]
+          "namedImports": ["REPLACERS"]
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "FileAnalysis"
-          ]
+          "namedImports": ["FileAnalysis"]
         }
       ],
       "relativePath": "helpers.ts",
@@ -166,25 +125,17 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ]
+          "namedImports": ["join", "relative"]
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ]
+          "namedImports": ["SourceFile", "SyntaxKind"]
         },
         {
           "moduleSpecifier": "./types",
           "kind": "named",
-          "namedImports": [
-            "ImportInfo"
-          ]
+          "namedImports": ["ImportInfo"]
         }
       ],
       "relativePath": "imports.ts",
@@ -205,9 +156,7 @@
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "PROPERTIES"
-          ]
+          "namedImports": ["PROPERTIES"]
         }
       ],
       "relativePath": "schemas.ts",
@@ -239,20 +188,16 @@
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "CODEBASE_FILE"
-          ]
+          "namedImports": ["CODEBASE_FILE"]
         },
         {
           "moduleSpecifier": "../functions/generate",
           "kind": "named",
-          "namedImports": [
-            "generate"
-          ]
+          "namedImports": ["generate"]
         }
       ],
       "relativePath": "cli/cli.ts",
-      "text": "import { array, command, multioption, option, string } from 'cmd-ts';\nimport { CODEBASE_FILE } from '../constants';\nimport { generate } from '../functions/generate';\n\n/**\n * cli variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const cli = command({\n  name: 'generate',\n\n  args: {\n    output: option({\n      long: 'output',\n      short: 'o',\n      type: string,\n      description: 'Output file path',\n      defaultValue: () => CODEBASE_FILE,\n    }),\n    excludes: multioption({\n      description: 'The files to exclude, relative to process.cwd()',\n      long: 'excludes',\n      short: 'x',\n      type: array(string),\n      defaultValue: () => [],\n    }),\n  },\n  handler,\n});\n\n    "
+      "text": "import { array, command, multioption, option, string } from 'cmd-ts';\nimport { CODEBASE_FILE } from '../constants';\nimport { generate } from '../functions/generate';\n\n/**\n * cli variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const cli = command({\n  name: 'generate',\n\n  args: {\n    output: option({\n      long: 'output',\n      short: 'o',\n      type: string,\n      description: 'Output file path',\n      defaultValue: () => CODEBASE_FILE,\n    }),\n    excludes: multioption({\n      description: 'The files to exclude, globs',\n      long: 'excludes',\n      short: 'x',\n      type: array(string),\n      defaultValue: () => [],\n    }),\n  },\n  handler,\n});\n\n    "
     },
     "cli.constants": {
       "imports": [],
@@ -264,16 +209,12 @@
         {
           "moduleSpecifier": "cmd-ts",
           "kind": "named",
-          "namedImports": [
-            "run"
-          ]
+          "namedImports": ["run"]
         },
         {
           "moduleSpecifier": "./cli",
           "kind": "named",
-          "namedImports": [
-            "cli"
-          ]
+          "namedImports": ["cli"]
         }
       ],
       "relativePath": "cli/index.ts",
@@ -289,19 +230,12 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ]
+          "namedImports": ["JsonEditor"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ]
+          "namedImports": ["dirname", "join", "relative", "resolve"]
         },
         {
           "moduleSpecifier": "../constants",
@@ -324,17 +258,12 @@
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         },
         {
           "moduleSpecifier": "../types",
           "kind": "named",
-          "namedImports": [
-            "FileAnalysis",
-            "NOmit"
-          ]
+          "namedImports": ["FileAnalysis", "NOmit"]
         }
       ],
       "relativePath": "functions/add.ts",
@@ -345,38 +274,27 @@
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "writeFileSync"
-          ]
+          "namedImports": ["writeFileSync"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "relative"
-          ]
+          "namedImports": ["relative"]
         },
         {
           "moduleSpecifier": "src/constants",
           "kind": "named",
-          "namedImports": [
-            "CODEBASE_FILE",
-            "SRC_DIR"
-          ]
+          "namedImports": ["CODEBASE_FILE", "SRC_DIR"]
         },
         {
           "moduleSpecifier": "../analyse",
           "kind": "named",
-          "namedImports": [
-            "analyze"
-          ]
+          "namedImports": ["analyze"]
         },
         {
           "moduleSpecifier": "../types",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         }
       ],
       "relativePath": "functions/generate.ts",
@@ -402,31 +320,22 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ]
+          "namedImports": ["join"]
         },
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "PATH_KEY",
-            "PROPERTIES"
-          ]
+          "namedImports": ["PATH_KEY", "PROPERTIES"]
         },
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "writeFileAnalysis"
-          ]
+          "namedImports": ["writeFileAnalysis"]
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis"]
         }
       ],
       "relativePath": "functions/init.ts",
@@ -442,23 +351,17 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ]
+          "namedImports": ["JsonEditor"]
         },
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "unlinkSync"
-          ]
+          "namedImports": ["unlinkSync"]
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ]
+          "namedImports": ["join"]
         },
         {
           "moduleSpecifier": "../constants",
@@ -472,18 +375,12 @@
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "consoleStars",
-            "transformModule"
-          ]
+          "namedImports": ["consoleStars", "transformModule"]
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis",
-            "FileAnalysis"
-          ]
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"]
         }
       ],
       "relativePath": "functions/remove.ts",
