@@ -3,9 +3,32 @@
 <br/>
 <br/>
 
-### Version [0.0.1] --> _date & hour_
+<details>
 
-- ✨ Première version de la bibliothèque
+<summary>
+
+### Version [0.0.2] --> _2025/09/04 11:30_
+
+</summary>
+
+- 📦 Add documentation
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
+### Version [0.0.1] --> _2025/09/04 11:30_
+
+</summary>
+
+- ✨ First version
+- 📦 Initial release
+
+</details>
 
 <br/>
 

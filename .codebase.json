@@ -229,9 +229,10 @@
           "moduleSpecifier": "cmd-ts",
           "kind": "named",
           "namedImports": [
+            "array",
             "command",
+            "multioption",
             "option",
-            "restPositionals",
             "string"
           ]
         },
@@ -251,7 +252,7 @@
         }
       ],
       "relativePath": "cli/cli.ts",
-      "text": "import { command, option, restPositionals, string } from 'cmd-ts';\nimport { CODEBASE_FILE } from '../constants';\nimport { generate } from '../functions/generate';\n\n/**\n * cli variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const cli = command({\n  name: 'generate',\n\n  args: {\n    output: option({\n      long: 'output',\n      short: 'o',\n      type: string,\n      description: 'Output file path',\n      defaultValue: () => CODEBASE_FILE,\n    }),\n    excludes: restPositionals({\n      description: 'The files to exclude, relative to process.cwd()',\n      displayName: 'Excludes',\n      type: string,\n    }),\n  },\n  handler,\n});\n\n    "
+      "text": "import { array, command, multioption, option, string } from 'cmd-ts';\nimport { CODEBASE_FILE } from '../constants';\nimport { generate } from '../functions/generate';\n\n/**\n * cli variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const cli = command({\n  name: 'generate',\n\n  args: {\n    output: option({\n      long: 'output',\n      short: 'o',\n      type: string,\n      description: 'Output file path',\n      defaultValue: () => CODEBASE_FILE,\n    }),\n    excludes: multioption({\n      description: 'The files to exclude, relative to process.cwd()',\n      long: 'excludes',\n      short: 'x',\n      type: array(string),\n      defaultValue: () => [],\n    }),\n  },\n  handler,\n});\n\n    "
     },
     "cli.constants": {
       "imports": [],
