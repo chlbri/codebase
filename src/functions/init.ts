@@ -5,13 +5,8 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { join } from 'node:path';
-import {
-  FILES_PROPERTY,
-  JSON_FILE_NAME,
-  PATH_KEY,
-  PATH_PROPERTY,
-} from '../constants';
-import { getAnalysis, writeFileAnalysis } from '../helpers';
+import { PATH_KEY, PROPERTIES } from '../constants';
+import { writeFileAnalysis } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
 export interface InitOptions {
@@ -19,16 +14,16 @@ export interface InitOptions {
    * Emplacement personnalisé pour le dossier .bemedev
    * Par défaut: 'src/.bemedev' si src existe, sinon '.bemedev' à la racine
    */
-  root?: string;
-  json?: string;
+  root: string;
+  json: string;
 }
 
 export const createTypesStructure = (
-  bemedevPath: string,
+  folderPath: string,
   CODEBASE_ANALYSIS: CodebaseAnalysis,
 ) => {
   const entries = Object.entries(CODEBASE_ANALYSIS).filter(([key]) => {
-    return key.endsWith('.types') || key.endsWith('.constants');
+    return key.endsWith('types') || key.endsWith('constants');
   });
 
   const PATHS: string[] = [];
@@ -38,7 +33,7 @@ export const createTypesStructure = (
   );
 
   for (const [, fileAnalysis] of entries) {
-    const file = writeFileAnalysis(fileAnalysis, bemedevPath);
+    const file = writeFileAnalysis(fileAnalysis, folderPath);
     if (file) PATHS.push(file);
   }
 
@@ -46,32 +41,22 @@ export const createTypesStructure = (
   return PATHS;
 };
 
-export const init = (options?: InitOptions) => {
-  let CODEBASE_ANALYSIS: CodebaseAnalysis;
-  try {
-    CODEBASE_ANALYSIS = getAnalysis();
-  } catch {
-    console.error(
-      "❌ Erreur lors de la récupération de l'analyse du codebase.",
-    );
-    return false;
-  }
+export const init = (
+  CODEBASE_ANALYSIS: CodebaseAnalysis,
+  { root, json }: InitOptions,
+) => {
   const cwd = process.cwd();
-  const configFile = join(cwd, options?.json ?? JSON_FILE_NAME);
+  const configFile = join(cwd, json);
   const configExists = existsSync(configFile);
 
   if (configExists) return true;
-
   const srcExists = existsSync(join(cwd, 'src'));
+  const folderPath = srcExists ? join(cwd, 'src', root) : join(cwd, root);
 
-  // Déterminer l'emplacement du dossier .bemedev
-  const path = options?.root ?? (srcExists ? 'src/.bemedev' : '.bemedev');
-  const bemedevPath = join(cwd, path);
-
-  // 1. Créer le dossier .bemedev
+  // 1. Créer le dossier
   try {
-    mkdirSync(join(bemedevPath), { recursive: true });
-    console.log(`✅ Dossier .bemedev créé dans: ${path}`);
+    mkdirSync(folderPath, { recursive: true });
+    console.log(`✅ Dossier .bemedev créé dans: ${root}`);
   } catch (error) {
     console.error(
       `❌ Erreur lors de la création du dossier .bemedev:`,
@@ -83,7 +68,7 @@ export const init = (options?: InitOptions) => {
   let files: string[] = [];
   // 1.5. Créer la structure des fichiers types
   try {
-    files = createTypesStructure(bemedevPath, CODEBASE_ANALYSIS);
+    files = createTypesStructure(folderPath, CODEBASE_ANALYSIS);
   } catch {
     console.error(
       `❌ Erreur lors de la création de la structure de types:`,
@@ -103,18 +88,22 @@ export const init = (options?: InitOptions) => {
       if (!tsconfig.compilerOptions) {
         tsconfig.compilerOptions = {};
       }
+
       if (!tsconfig.compilerOptions.paths) {
         tsconfig.compilerOptions.paths = {};
       }
 
       // Ajouter le path #bemedev/*
-      let relativePath = path;
+      let relativePath = root;
       const baseUrl = tsconfig.compilerOptions.baseUrl;
 
       if (typeof baseUrl === 'string') {
         // Si baseUrl est défini, calculer le chemin relatif par rapport à baseUrl
 
         relativePath = join(baseUrl, relativePath);
+      } else {
+        // Si baseUrl n'est pas défini, utiliser le chemin absolu
+        tsconfig.compilerOptions.baseUrl = '.';
       }
 
       tsconfig.compilerOptions.paths[PATH_KEY] = [`${relativePath}/*`];
@@ -140,8 +129,8 @@ export const init = (options?: InitOptions) => {
 
   const config = {
     version: '1.0.0',
-    [PATH_PROPERTY]: path,
-    [FILES_PROPERTY]: files,
+    [PROPERTIES.PATH]: root,
+    [PROPERTIES.FILES]: files,
   };
 
   try {

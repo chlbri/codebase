@@ -1,4 +1,5 @@
 import * as v from 'valibot';
+import { PROPERTIES } from './constants';
 
 // Schema pour DeclarationKind
 export const DeclarationKindSchema = v.picklist([
@@ -53,8 +54,8 @@ export const AnalysisStatsSchema = v.object({
 
 // Schema complet pour un fichier .code contenant l'analyse complète
 export const CodeAnalysisFileSchema = v.object({
-  CODEBASE_ANALYSIS: CodebaseAnalysisSchema,
-  STATS: v.optional(AnalysisStatsSchema),
+  [PROPERTIES.CODEBASE_ANALYSIS]: CodebaseAnalysisSchema,
+  [PROPERTIES.STATS]: v.optional(AnalysisStatsSchema),
 });
 
 // Types inférés des schémas

@@ -1,8 +1,7 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
-import { parse } from 'valibot';
-import { OUTPUT_FILE, REPLACERS } from './constants';
-import { CodeAnalysisFileSchema, FileAnalysis } from './schemas';
+import { REPLACERS } from './constants';
+import { FileAnalysis } from './schemas';
 
 export type TransformModuleArgs = {
   cwd?: string;
@@ -25,12 +24,12 @@ export const transformModule = ({
 
 export const writeFileAnalysis = (
   fileAnalysis: FileAnalysis,
-  bemedevPath: string,
+  folderPath: string,
 ) => {
   const relativePath = fileAnalysis.relativePath;
 
   // Créer le chemin de destination dans .bemedev en maintenant la structure
-  const destPath = join(bemedevPath, relativePath);
+  const destPath = join(folderPath, relativePath);
   const destDir = dirname(destPath);
 
   try {
@@ -58,18 +57,6 @@ export const consoleStars = () => {
   console.log();
   console.log('*'.repeat(30));
   console.log();
-};
-
-export const getAnalysis = () => {
-  const _read = readFileSync(OUTPUT_FILE, 'utf8');
-  const _CODEBASE_ANALYSIS = JSON.parse(_read);
-
-  const { CODEBASE_ANALYSIS } = parse(
-    CodeAnalysisFileSchema,
-    _CODEBASE_ANALYSIS,
-  );
-
-  return CODEBASE_ANALYSIS;
 };
 
 export const toArray = <T>(value?: T | T[]): T[] => {

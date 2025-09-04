@@ -6,7 +6,7 @@ import {
   JSON_FILE_NAME,
   PATH_PROPERTY,
 } from '../constants';
-import { consoleStars, getAnalysis, transformModule } from '../helpers';
+import { consoleStars, transformModule } from '../helpers';
 import { CodebaseAnalysis, FileAnalysis } from '../schemas';
 
 const transformModules = (
@@ -38,16 +38,10 @@ const transformModules = (
   return out;
 };
 
-export const remove = (...paths: string[]) => {
-  let CODEBASE_ANALYSIS: CodebaseAnalysis;
-  try {
-    CODEBASE_ANALYSIS = getAnalysis();
-  } catch {
-    console.error(
-      "❌ Erreur lors de la récupération de l'analyse du codebase.",
-    );
-    return false;
-  }
+export const remove = (
+  CODEBASE_ANALYSIS: CodebaseAnalysis,
+  ...paths: string[]
+) => {
   const isEmpty = paths.length === 0;
   if (isEmpty) return console.warn('No files specified for removal.');
   try {

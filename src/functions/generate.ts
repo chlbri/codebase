@@ -1,8 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { relative } from 'node:path';
+import { CODEBASE_FILE, SRC_DIR } from 'src/constants';
 import { analyze } from '../analyse';
-import { OUTPUT_FILE } from '../constants';
-import { toArray } from '../helpers';
 import { CodebaseAnalysis } from '../types';
 
 export const transformJSON = (data: CodebaseAnalysis) => {
@@ -28,7 +27,7 @@ export const transformJSON = (data: CodebaseAnalysis) => {
     },
   );
 
-  const CODE_ANALYSIS = Object.fromEntries(entries);
+  const CODEBASE_ANALYSIS = Object.fromEntries(entries);
 
   const STATS = {
     files,
@@ -38,26 +37,30 @@ export const transformJSON = (data: CodebaseAnalysis) => {
 
   return {
     STATS,
-    CODE_ANALYSIS,
+    CODEBASE_ANALYSIS,
   };
 };
 
 export type GenerateOptions = {
   output?: string;
   excludes?: string[] | string;
+  src?: string;
 };
 
 /**
  * Fonction principale d'exécution
  */
 export const generate = ({
-  output = OUTPUT_FILE,
+  output = CODEBASE_FILE,
   excludes,
+  src = SRC_DIR,
 }: GenerateOptions = {}) => {
-  const _output = output.endsWith('.json') ? output : `${output}.json`;
+  const _output = output.endsWith('codebase.json')
+    ? output
+    : `${output}.codebase.json`;
 
   try {
-    const analysis = analyze(...toArray(excludes));
+    const analysis = analyze({ src, excludes });
     const transformed = transformJSON(analysis);
 
     const json = JSON.stringify(transformed, null, 2);

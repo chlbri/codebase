@@ -3,15 +3,25 @@ import { Project } from 'ts-morph';
 import { addJSDocToSourceText } from './analyse.utils';
 import { SRC_DIR } from './constants';
 import { analyzeExports } from './exports';
+import { toArray } from './helpers';
 import { analyzeImports, buildImportStrings } from './imports';
 import type { CodebaseAnalysis } from './types';
 import { pathToDotNotation } from './utils';
 
+export type AnalyzeOptions = {
+  src?: string;
+  excludes?: string | string[];
+};
+
 /**
  * Analyse tous les fichiers TypeScript dans src/ (sauf src/scripts/)
  */
-export const analyze = (...excludes: string[]): CodebaseAnalysis => {
+export const analyze = ({
+  src = SRC_DIR,
+  excludes: _excludes,
+}: AnalyzeOptions = {}): CodebaseAnalysis => {
   console.log('🔍 Analyse du codebase en cours...');
+  const excludes = toArray(_excludes);
 
   // Initialiser le projet ts-morph
   const project = new Project({
@@ -33,7 +43,7 @@ export const analyze = (...excludes: string[]): CodebaseAnalysis => {
 
   for (const sourceFile of sourceFiles) {
     const filePath = sourceFile.getFilePath();
-    const relativePath = relative(SRC_DIR, filePath);
+    const relativePath = relative(src, filePath);
 
     // Générer le texte modifié avec JSDoc pour les exports
 

@@ -7,7 +7,6 @@ import {
 } from '../constants';
 import {
   consoleStars,
-  getAnalysis,
   transformModule,
   writeFileAnalysis,
 } from '../helpers';
@@ -74,17 +73,10 @@ const processFileAnalysis = (
   });
 };
 
-export const add = (...files: string[]) => {
-  let CODEBASE_ANALYSIS: CodebaseAnalysis;
-  try {
-    CODEBASE_ANALYSIS = getAnalysis();
-  } catch {
-    console.error(
-      "❌ Erreur lors de la récupération de l'analyse du codebase.",
-    );
-    return false;
-  }
-
+export const add = (
+  CODEBASE_ANALYSIS: CodebaseAnalysis,
+  ...files: string[]
+) => {
   const isEmpty = files.length === 0;
   if (isEmpty) return console.warn('No files specified for addition.');
   try {
