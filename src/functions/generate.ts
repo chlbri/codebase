@@ -2,7 +2,7 @@ import { writeFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { CODEBASE_FILE, SRC_DIR } from 'src/constants';
 import { analyze } from '../analyse';
-import { CodebaseAnalysis } from '../types';
+import { CodebaseAnalysis } from '../schemas';
 
 export const transformJSON = (data: CodebaseAnalysis) => {
   let imports = 0;
@@ -15,7 +15,7 @@ export const transformJSON = (data: CodebaseAnalysis) => {
       { imports: _imports, relativePath, text, exports: _exports },
     ]) => {
       imports += _imports.length;
-      exports += _exports.length;
+      exports += _exports?.length ?? 0;
       files++;
 
       const value = {

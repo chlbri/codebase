@@ -1,5 +1,5 @@
 import { SourceFile, SyntaxKind } from 'ts-morph';
-import type { ExportInfo } from './types';
+import type { ExportInfo } from './schemas';
 
 export const analyzeExports = (sourceFile: SourceFile) => {
   const exports: ExportInfo[] = [];

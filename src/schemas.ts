@@ -1,7 +1,6 @@
 import * as v from 'valibot';
 import { PROPERTIES } from './constants';
 
-// Schema pour DeclarationKind
 export const DeclarationKindSchema = v.picklist([
   'function',
   'class',
@@ -13,7 +12,6 @@ export const DeclarationKindSchema = v.picklist([
   'enum',
 ]);
 
-// Schema pour ImportInfo
 export const ImportInfoSchema = v.object({
   moduleSpecifier: v.string(),
   kind: v.picklist(['default', 'named', 'namespace', 'side-effect']),
@@ -22,7 +20,6 @@ export const ImportInfoSchema = v.object({
   isDynamic: v.optional(v.boolean()),
 });
 
-// Schema pour ExportInfo
 export const ExportInfoSchema = v.object({
   name: v.string(),
   kind: v.picklist(['default', 'named', 'namespace']),
@@ -31,7 +28,6 @@ export const ExportInfoSchema = v.object({
   declarationKind: v.optional(DeclarationKindSchema),
 });
 
-// Schema pour FileAnalysis
 export const FileAnalysisSchema = v.object({
   relativePath: v.string(),
   imports: v.array(ImportInfoSchema),

@@ -5,7 +5,7 @@ import { SRC_DIR } from './constants';
 import { analyzeExports } from './exports';
 import { toArray } from './helpers';
 import { analyzeImports, buildImportStrings } from './imports';
-import type { CodebaseAnalysis } from './types';
+import type { CodebaseAnalysis } from './schemas';
 import { pathToDotNotation } from './utils';
 
 export type AnalyzeOptions = {

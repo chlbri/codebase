@@ -1,6 +1,6 @@
 import { join, relative } from 'node:path';
 import { SourceFile, SyntaxKind } from 'ts-morph';
-import type { ImportInfo } from './types';
+import type { ImportInfo } from './schemas';
 
 /**
  * Résout le moduleSpecifier en utilisant les paths du tsconfig si il commence par "#"
