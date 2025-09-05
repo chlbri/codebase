@@ -76,9 +76,9 @@ const processFileAnalysis = (
 
 export const add = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
-  ...files: string[]
+  ...paths: string[]
 ) => {
-  const isEmpty = files.length === 0;
+  const isEmpty = paths.length === 0;
   if (isEmpty) return console.warn('No files specified for addition.');
   try {
     const cwd = process.cwd();
@@ -95,7 +95,7 @@ export const add = (
     const additionals: [string, NOmit<FileAnalysis, 'exports'>][] = [];
 
     const pathsEntries = Object.entries(CODEBASE_ANALYSIS)
-      .filter(([key]) => files.some(p => key.startsWith(p)))
+      .filter(([key]) => paths.some(p => key.startsWith(p)))
       .filter(([key]) => !files.includes(key));
 
     pathsEntries.forEach(([, analysis]) => {
