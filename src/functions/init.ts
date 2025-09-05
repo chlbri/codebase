@@ -4,7 +4,7 @@ import {
   readFileSync,
   writeFileSync,
 } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { PATH_KEY, PROPERTIES } from '../constants';
 import { getFolderPath, writeFileAnalysis } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
@@ -93,7 +93,7 @@ export const init = (
       }
 
       // Ajouter le path #bemedev/*
-      let relativePath = root;
+      let relativePath = relative(process.cwd(), folderPath);
       const baseUrl = tsconfig.compilerOptions.baseUrl;
 
       if (typeof baseUrl === 'string') {
