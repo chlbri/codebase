@@ -54,10 +54,6 @@ export const remove = (
     const root = getFolderPath(file.get(PATH_PROPERTY) as string);
     const files = file.get(FILES_PROPERTY) as string[];
 
-    // Vérifier les dépendances avant suppression
-    const safesToRemove: string[] = [];
-    const cannotRemoves2: [string, string[]][] = [];
-
     const entries2 = Object.entries(CODEBASE_ANALYSIS).filter(([key]) =>
       files.includes(key),
     );
@@ -65,6 +61,10 @@ export const remove = (
     const entries = entries2.filter(([key]) =>
       paths.some(p => key.startsWith(p)),
     );
+
+    // Vérifier les dépendances avant suppression
+    const safesToRemove: string[] = [];
+    const cannotsRemove: [string, string[]][] = [];
 
     entries.forEach(([key]) => {
       const modules = transformModules(entries2, ...files);
@@ -77,7 +77,7 @@ export const remove = (
       console.log('modules', '=>', importedFroms);
       console.log('key', '=>', key);
 
-      if (check) return cannotRemoves2.push([key, importedFroms]);
+      if (check) return cannotsRemove.push([key, importedFroms]);
       return safesToRemove.push(key);
     });
 
@@ -87,15 +87,15 @@ export const remove = (
     );
 
     // Afficher les fichiers qui ne peuvent pas être supprimés
-    if (cannotRemoves2.length > 0) {
-      const len = cannotRemoves2.length;
+    if (cannotsRemove.length > 0) {
+      const len = cannotsRemove.length;
       const one =
         "fichier ne peut pas être supprimé (importé dans d'autres fichiers)";
       const many =
         "fichiers ne peuvent pas être supprimés (importés dans d'autres fichiers)";
 
       console.warn(`⚠️  ${len} ${len === 1 ? one : many} :`);
-      cannotRemoves2.forEach(([key, modules]) => {
+      cannotsRemove.forEach(([key, modules]) => {
         console.warn(`  - ⚠️  ${key} importé par :`);
         modules.forEach(m => console.warn(`    -> 📌 ${m}`));
       });
