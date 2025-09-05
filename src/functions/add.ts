@@ -88,8 +88,7 @@ export const add = (
     if (!file) return;
 
     const files = file.get(FILES_PROPERTY) as string[];
-    const root = file.get(PATH_PROPERTY) as string;
-    const folderPath = getFolderPath(root);
+    const root = getFolderPath(file.get(PATH_PROPERTY) as string);
 
     // Release resources
 
@@ -121,7 +120,7 @@ export const add = (
     const length = entries.size;
 
     entries.forEach(([, fileAnalysis]) => {
-      const _path = writeFileAnalysis(fileAnalysis, folderPath);
+      const _path = writeFileAnalysis(fileAnalysis, root);
       if (_path) {
         files.push(_path);
         file?.set(FILES_PROPERTY, files);
