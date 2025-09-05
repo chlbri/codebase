@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { REPLACERS } from './constants';
 import { FileAnalysis } from './schemas';
@@ -61,4 +61,12 @@ export const consoleStars = () => {
 
 export const toArray = <T>(value?: T | T[]): T[] => {
   return Array.isArray(value) ? value : !value ? [] : [value];
+};
+
+export const getFolderPath = (root: string) => {
+  const cwd = process.cwd();
+  const srcExists = existsSync(join(cwd, 'src'));
+  const folderPath = srcExists ? join(cwd, 'src', root) : join(cwd, root);
+
+  return folderPath;
 };
