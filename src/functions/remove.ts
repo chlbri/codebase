@@ -108,7 +108,7 @@ export const remove = (
 
     const formatteds = safesToRemove.map(key => {
       const _path = `${key.replaceAll('.', '/')}.ts`;
-      const absolute = join(cwd, root, _path);
+      const absolute = join(root, _path);
       return [key, absolute] as const;
     });
 

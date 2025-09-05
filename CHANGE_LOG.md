@@ -6,6 +6,20 @@
 
 <summary>
 
+### Version [0.1.1] --> _2025/09/04 19:40_
+
+</summary>
+
+- Fix remove function with the correct absolute path
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
 ### Version [0.1.0] --> _2025/09/04 19:00_
 
 </summary>
