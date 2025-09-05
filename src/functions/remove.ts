@@ -128,8 +128,8 @@ export const remove = (
           files.filter(key1 => key1 !== key),
         );
         success++;
-      } catch (error) {
-        console.error(`  - ❌ Erreur, ${key} :`, error);
+      } catch {
+        console.error(`  - ❌ Erreur, ${key} :`);
       }
     });
 
