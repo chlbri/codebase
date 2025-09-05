@@ -6,7 +6,7 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { PATH_KEY, PROPERTIES } from '../constants';
-import { writeFileAnalysis } from '../helpers';
+import { getFolderPath, writeFileAnalysis } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
 export interface InitOptions {
@@ -50,8 +50,7 @@ export const init = (
   const configExists = existsSync(configFile);
 
   if (configExists) return true;
-  const srcExists = existsSync(join(cwd, 'src'));
-  const folderPath = srcExists ? join(cwd, 'src', root) : join(cwd, root);
+  const folderPath = getFolderPath(root);
 
   // 1. Créer le dossier
   try {

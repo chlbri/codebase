@@ -6,6 +6,18 @@
 
 <summary>
 
+### Version [0.0.5] --> _2025/09/04 23:10_
+
+</summary>
+
+- Fix folder path in add function
+- Fix folder path in init function
+- Fix folder path in remove function
+
+</details>
+
+<br/>
+
 ### Version [0.0.4] --> _2025/09/04 23:10_
 
 </summary>

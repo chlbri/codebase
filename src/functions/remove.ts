@@ -6,7 +6,7 @@ import {
   JSON_FILE_NAME,
   PATH_PROPERTY,
 } from '../constants';
-import { consoleStars, transformModule } from '../helpers';
+import { consoleStars, getFolderPath, transformModule } from '../helpers';
 import { CodebaseAnalysis, FileAnalysis } from '../schemas';
 
 const transformModules = (
@@ -51,7 +51,7 @@ export const remove = (
 
     if (!file) return;
 
-    const bemedevPath = file.get(PATH_PROPERTY) as string;
+    const root = getFolderPath(file.get(PATH_PROPERTY) as string);
     const files = file.get(FILES_PROPERTY) as string[];
 
     // Vérifier les dépendances avant suppression
@@ -108,7 +108,7 @@ export const remove = (
 
     const formatteds = safesToRemove.map(key => {
       const _path = `${key.replaceAll('.', '/')}.ts`;
-      const absolute = join(cwd, bemedevPath, _path);
+      const absolute = join(cwd, root, _path);
       return [key, absolute] as const;
     });
 
