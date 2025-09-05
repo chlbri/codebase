@@ -6,6 +6,20 @@
 
 <summary>
 
+### Version [0.0.8] --> _2025/09/04 17:00_
+
+</summary>
+
+- Fix writing paths inside tsconfig.json
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
 ### Version [0.0.7] --> _2025/09/04 16:45_
 
 </summary>

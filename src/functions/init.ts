@@ -99,7 +99,7 @@ export const init = (
       if (typeof baseUrl === 'string') {
         // Si baseUrl est défini, calculer le chemin relatif par rapport à baseUrl
 
-        relativePath = join(baseUrl, relativePath);
+        relativePath = relative(baseUrl, relativePath);
       } else {
         // Si baseUrl n'est pas défini, utiliser le chemin absolu
         tsconfig.compilerOptions.baseUrl = '.';
