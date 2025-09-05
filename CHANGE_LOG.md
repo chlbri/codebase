@@ -6,6 +6,20 @@
 
 <summary>
 
+### Version [0.1.0] --> _2025/09/04 19:00_
+
+</summary>
+
+- Fix duplicate inside config json
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
 ### Version [0.0.8] --> _2025/09/04 17:00_
 
 </summary>

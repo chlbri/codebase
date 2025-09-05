@@ -31,16 +31,20 @@ const processFileAnalysis = (
       resolve(dirname(relativePath), moduleSpecifier),
     ).replaceAll('/', '.');
 
+    const all = additionals
+      .concat(pathsEntries)
+      .map(([key]) => key)
+      .concat(files);
+
+    const canAdd = all.every(p => p !== _path);
+    if (!canAdd) return;
+
     const toAdd =
       CODEBASE_ANALYSIS[_path] ?? CODEBASE_ANALYSIS[`${_path}.index`];
     if (!toAdd) return;
 
     additionals.push([_path, toAdd]);
-
-    const all = additionals
-      .concat(pathsEntries)
-      .map(([key]) => key)
-      .concat(files);
+    all.push(_path);
 
     const imports = toAdd.imports.filter(({ moduleSpecifier }) => {
       const _path = transformModule({

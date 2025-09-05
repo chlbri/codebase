@@ -37,11 +37,9 @@ export const writeFileAnalysis = (
     mkdirSync(destDir, { recursive: true });
 
     let fileContent = fileAnalysis.text;
-    REPLACERS.init
-      // .filter(() => false)
-      .forEach(([search, replace]) => {
-        fileContent = fileContent.replaceAll(search, replace);
-      });
+    REPLACERS.init.forEach(([search, replace]) => {
+      fileContent = fileContent.replaceAll(search, replace);
+    });
 
     // Écrire le contenu du fichier types
     writeFileSync(destPath, fileContent, 'utf8');
