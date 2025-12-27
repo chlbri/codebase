@@ -18,6 +18,7 @@ export const ImportInfoSchema = v.object({
   namedImports: v.optional(v.array(v.string())),
   default: v.optional(v.string()),
   isDynamic: v.optional(v.boolean()),
+  isTypeOnly: v.optional(v.boolean()),
 });
 
 export const ExportInfoSchema = v.object({

@@ -6,6 +6,24 @@
 
 <summary>
 
+### Version [0.1.3] --> _2025/12/27 16:37_
+
+</summary>
+
+- Filter out undefined module specifiers from exports in transformJSON
+- Update CI workflows for improved version and dependency management
+- Adding type imports support
+- Update dependencies (glob 11.0.3 → 11.1.0)
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
 ### Version [0.1.2] --> _2025/09/05 19:42_
 
 </summary>

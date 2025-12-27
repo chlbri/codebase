@@ -59,6 +59,9 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
 
   // Import declarations (import ... from '...')
   sourceFile.getImportDeclarations().forEach(importDecl => {
+    // Determine if this is a type-only import
+    const isTypeOnly = importDecl.isTypeOnly();
+
     const rawModuleSpecifier = importDecl.getModuleSpecifierValue();
     const moduleSpecifier = resolveModuleSpecifier(
       sourceFile,
@@ -72,6 +75,7 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
         moduleSpecifier,
         kind: 'default',
         default: defaultImport.getText(),
+        isTypeOnly,
       });
     }
 
@@ -82,6 +86,7 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
         moduleSpecifier,
         kind: 'namespace',
         default: namespaceImport.getText(),
+        isTypeOnly,
       });
     }
 
@@ -92,6 +97,7 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
         moduleSpecifier,
         kind: 'named',
         namedImports: namedImports.map(ni => ni.getName()),
+        isTypeOnly,
       });
     }
 
@@ -100,6 +106,7 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
       imports.push({
         moduleSpecifier,
         kind: 'side-effect',
+        isTypeOnly,
       });
     }
   });
@@ -135,10 +142,10 @@ export const buildImportStrings = (imports: ImportInfo[]) => {
     switch (imp.kind) {
       case 'named': {
         const namedImports = imp.namedImports?.join(', ') || '';
-        return `import { ${namedImports} } from '${imp.moduleSpecifier}';`;
+        return `import ${imp.isTypeOnly ? 'type ' : ''}{ ${namedImports} } from '${imp.moduleSpecifier}';`;
       }
       case 'namespace':
-        return `import * as ${imp.default} from '${imp.moduleSpecifier}';`;
+        return `import ${imp.isTypeOnly ? 'type ' : ''}* as ${imp.default} from '${imp.moduleSpecifier}';`;
       case 'side-effect': {
         if (imp.isDynamic) {
           return `// Dynamic import: import('${imp.moduleSpecifier}')`;
@@ -147,7 +154,7 @@ export const buildImportStrings = (imports: ImportInfo[]) => {
       }
 
       case 'default':
-        return `import ${imp.default} from '${imp.moduleSpecifier}';`;
+        return `import ${imp.isTypeOnly ? 'type ' : ''}${imp.default} from '${imp.moduleSpecifier}';`;
       default:
         return '';
     }
