@@ -1,4 +1,4 @@
-name: Publish-Canary
+name: Publish-canary
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish:
-    name: Publish-Canary
+    name: Publish-canary
     runs-on: ubuntu-latest
 
     steps:
@@ -57,11 +57,13 @@ jobs:
           access: public
           strategy: all
           tag: canary
-
       - name: Check - updated
         if: ${{ steps.publish.outputs.type }}
-        run: echo "Version changed!"
+        run:
+          echo "${{ steps.publish.outputs.name }} Version changed from ${{
+          steps.publish.outputs.old-version }} to ${{
+          steps.publish.outputs.version }}"
 
       - name: Check - not updated
         if: ${{ ! steps.publish.outputs.type }}
-        run: echo "Remain the same!"
+        run: echo "Remain the same! - ${{ steps.publish.outputs.version }}"
