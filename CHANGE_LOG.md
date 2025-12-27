@@ -6,6 +6,21 @@
 
 <summary>
 
+### Version [0.1.2] --> _2025/09/05 19:42_
+
+</summary>
+
+- Fix absolute path handling in remove function
+- Add filter to exports to exclude undefined moduleSpecifier
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
 ### Version [0.1.1] --> _2025/09/04 19:40_
 
 </summary>
