@@ -18,11 +18,15 @@ export const transformJSON = (data: CodebaseAnalysis) => {
       exports += _exports?.length ?? 0;
       files++;
 
-      const value = {
+      const value: any = {
         imports: _imports,
         relativePath,
         text,
+        exports: _exports?.filter(
+          ({ moduleSpecifier }) => moduleSpecifier !== undefined,
+        ),
       };
+
       return [key, value] as const;
     },
   );

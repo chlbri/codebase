@@ -29,5 +29,14 @@ jobs:
       - name: lint
         run: pnpm run lint
 
+      - name: Build
+        run: pnpm run build
+
       - name: Test
-        run: pnpm run test
+        run: pnpm run test:only
+
+      - name: Codegen
+        run: pnpm run codegen
+
+      - name: Cleanup
+        run: pnpm run posttest && pnpm run prettier && pnpm run p-q
