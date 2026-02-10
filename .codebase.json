@@ -10,75 +10,55 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ],
+          "namedImports": ["join", "relative"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "Project"
-          ],
+          "namedImports": ["Project"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./analyse.utils",
           "kind": "named",
-          "namedImports": [
-            "addJSDocToSourceText"
-          ],
+          "namedImports": ["addJSDocToSourceText"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "SRC_DIR"
-          ],
+          "namedImports": ["SRC_DIR"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./exports",
           "kind": "named",
-          "namedImports": [
-            "analyzeExports"
-          ],
+          "namedImports": ["analyzeExports"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./helpers",
           "kind": "named",
-          "namedImports": [
-            "toArray"
-          ],
+          "namedImports": ["toArray"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./imports",
           "kind": "named",
-          "namedImports": [
-            "analyzeImports",
-            "buildImportStrings"
-          ],
+          "namedImports": ["analyzeImports", "buildImportStrings"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": true
         },
         {
           "moduleSpecifier": "./utils",
           "kind": "named",
-          "namedImports": [
-            "pathToDotNotation"
-          ],
+          "namedImports": ["pathToDotNotation"],
           "isTypeOnly": false
         }
       ],
@@ -91,9 +71,7 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile"
-          ],
+          "namedImports": ["SourceFile"],
           "isTypeOnly": true
         }
       ],
@@ -118,17 +96,13 @@
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "CODEBASE_FILE"
-          ],
+          "namedImports": ["CODEBASE_FILE"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../functions/generate",
           "kind": "named",
-          "namedImports": [
-            "generate"
-          ],
+          "namedImports": ["generate"],
           "isTypeOnly": false
         }
       ],
@@ -147,17 +121,13 @@
         {
           "moduleSpecifier": "cmd-ts",
           "kind": "named",
-          "namedImports": [
-            "run"
-          ],
+          "namedImports": ["run"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./cli",
           "kind": "named",
-          "namedImports": [
-            "cli"
-          ],
+          "namedImports": ["cli"],
           "isTypeOnly": false
         }
       ],
@@ -170,9 +140,7 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ],
+          "namedImports": ["join"],
           "isTypeOnly": false
         }
       ],
@@ -185,18 +153,13 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ],
+          "namedImports": ["SourceFile", "SyntaxKind"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "ExportInfo"
-          ],
+          "namedImports": ["ExportInfo"],
           "isTypeOnly": true
         }
       ],
@@ -215,20 +178,13 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ],
+          "namedImports": ["JsonEditor"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ],
+          "namedImports": ["dirname", "join", "relative", "resolve"],
           "isTypeOnly": false
         },
         {
@@ -255,18 +211,13 @@
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis",
-            "FileAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../types",
           "kind": "named",
-          "namedImports": [
-            "NOmit"
-          ],
+          "namedImports": ["NOmit"],
           "isTypeOnly": true
         }
       ],
@@ -279,42 +230,31 @@
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "writeFileSync"
-          ],
+          "namedImports": ["writeFileSync"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "relative"
-          ],
+          "namedImports": ["relative"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "src/constants",
           "kind": "named",
-          "namedImports": [
-            "CODEBASE_FILE",
-            "SRC_DIR"
-          ],
+          "namedImports": ["CODEBASE_FILE", "SRC_DIR"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../analyse",
           "kind": "named",
-          "namedImports": [
-            "analyze"
-          ],
+          "namedImports": ["analyze"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -369,41 +309,30 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ],
+          "namedImports": ["join", "relative"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "PATH_KEY",
-            "PROPERTIES"
-          ],
+          "namedImports": ["PATH_KEY", "PROPERTIES"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "getFolderPath",
-            "writeFileAnalysis"
-          ],
+          "namedImports": ["getFolderPath", "writeFileAnalysis"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
         }
       ],
       "relativePath": "functions/init.ts",
-      "text": "import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';\nimport { join, relative } from 'node:path';\nimport { PATH_KEY, PROPERTIES } from '../constants';\nimport { getFolderPath, writeFileAnalysis } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\n\n/**\n * InitOptions interface - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport interface InitOptions {\n  /**\n   * Emplacement personnalisé pour le dossier .bemedev\n   * Par défaut: 'src/.bemedev' si src existe, sinon '.bemedev' à la racine\n   */\n  root: string;\n  json: string;\n}\n\n/**\n * createTypesStructure variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const createTypesStructure = (\n  folderPath: string,\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n) => {\n  const entries = Object.entries(CODEBASE_ANALYSIS).filter(([key]) => {\n    return key.endsWith('types') || key.endsWith('constants');\n  });\n\n  const PATHS: string[] = [];\n\n  console.log(\n    `🔧 Création de la structure de types (${entries.length} fichiers)...`,\n  );\n\n  for (const [, fileAnalysis] of entries) {\n    const file = writeFileAnalysis(fileAnalysis, folderPath);\n    if (file) PATHS.push(file);\n  }\n\n  console.log(`✅ Structure de types créée avec succès!`);\n  return PATHS;\n};\n\n/**\n * init variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const init = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  { root, json }: InitOptions,\n) => {\n  const cwd = process.cwd();\n  const configFile = join(cwd, json);\n  const configExists = existsSync(configFile);\n\n  if (configExists) return true;\n  const folderPath = getFolderPath(root);\n\n  // 1. Créer le dossier\n  try {\n    mkdirSync(folderPath, { recursive: true });\n    console.log(`✅ Dossier .bemedev créé dans: ${root}`);\n  } catch (error) {\n    console.error(\n      `❌ Erreur lors de la création du dossier .bemedev:`,\n      error,\n    );\n    return false;\n  }\n\n  let files: string[] = [];\n  // 1.5. Créer la structure des fichiers types\n  try {\n    files = createTypesStructure(folderPath, CODEBASE_ANALYSIS);\n  } catch {\n    console.error(\n      `❌ Erreur lors de la création de la structure de types:`,\n    );\n    return false;\n  }\n\n  // 2. Mettre à jour le tsconfig.json\n  const tsconfigPath = join(cwd, 'tsconfig.json');\n\n  if (existsSync(tsconfigPath)) {\n    try {\n      const tsconfigContent = readFileSync(tsconfigPath, 'utf8');\n      const tsconfig = JSON.parse(tsconfigContent);\n\n      // Initialiser compilerOptions et paths si ils n'existent pas\n      if (!tsconfig.compilerOptions) {\n        tsconfig.compilerOptions = {};\n      }\n\n      if (!tsconfig.compilerOptions.paths) {\n        tsconfig.compilerOptions.paths = {};\n      }\n\n      // Ajouter le path #bemedev/*\n      let relativePath = relative(process.cwd(), folderPath);\n      const baseUrl = tsconfig.compilerOptions.baseUrl;\n\n      if (typeof baseUrl === 'string') {\n        // Si baseUrl est défini, calculer le chemin relatif par rapport à baseUrl\n\n        relativePath = relative(baseUrl, relativePath);\n      } else {\n        // Si baseUrl n'est pas défini, utiliser le chemin absolu\n        tsconfig.compilerOptions.baseUrl = '.';\n      }\n\n      tsconfig.compilerOptions.paths[PATH_KEY] = [`${relativePath}/*`];\n\n      writeFileSync(\n        tsconfigPath,\n        JSON.stringify(tsconfig, null, 2),\n        'utf8',\n      );\n      console.log(`✅ Path #bemedev/* ajouté au tsconfig.json`);\n    } catch (error) {\n      console.error(\n        `❌ Erreur lors de la mise à jour du tsconfig.json:`,\n        error,\n      );\n      return false;\n    }\n  } else {\n    console.warn(`⚠️ Fichier tsconfig.json introuvable, path non ajouté`);\n  }\n\n  // 3. Créer le fichier .bemedev.json à la racine\n\n  const config = {\n    version: '1.0.0',\n    [PROPERTIES.PATH]: root,\n    [PROPERTIES.FILES]: files,\n  };\n\n  try {\n    writeFileSync(configFile, JSON.stringify(config, null, 2), 'utf8');\n    console.log(`✅ Fichier .bemedev.json créé à la racine du projet`);\n  } catch (error) {\n    console.error(\n      `❌ Erreur lors de la création du fichier .bemedev.json:`,\n      error,\n    );\n    return false;\n  }\n\n  console.log(`🎉 Initialisation de bemedev terminée avec succès!`);\n  return true;\n};\n\n    ",
+      "text": "import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';\nimport { join, relative } from 'node:path';\nimport { PATH_KEY, PROPERTIES } from '../constants';\nimport { getFolderPath, writeFileAnalysis } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\n\n/**\n * InitOptions interface - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport interface InitOptions {\n  /**\n   * Emplacement personnalisé pour le dossier .bemedev\n   * Par défaut: 'src/.bemedev' si src existe, sinon '.bemedev' à la racine\n   */\n  root: string;\n  json: string;\n}\n\n/**\n * createTypesStructure variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const createTypesStructure = (\n  folderPath: string,\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n) => {\n  const entries = Object.entries(CODEBASE_ANALYSIS).filter(([key]) => {\n    return key.endsWith('types') || key.endsWith('constants');\n  });\n\n  const PATHS: string[] = [];\n\n  console.log(\n    `🔧 Création de la structure de types (${entries.length} fichiers)...`,\n  );\n\n  for (const [, fileAnalysis] of entries) {\n    const file = writeFileAnalysis(fileAnalysis, folderPath);\n    if (file) PATHS.push(file);\n  }\n\n  console.log(`✅ Structure de types créée avec succès!`);\n  return PATHS;\n};\n\n/**\n * init variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const init = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  { root, json }: InitOptions,\n) => {\n  const cwd = process.cwd();\n  const configFile = join(cwd, json);\n  const configExists = existsSync(configFile);\n\n  if (configExists) return true;\n  const folderPath = getFolderPath(root);\n\n  // 1. Créer le dossier\n  try {\n    mkdirSync(folderPath, { recursive: true });\n    console.log(`✅ Dossier .bemedev créé dans: ${root}`);\n  } catch (error) {\n    console.error(\n      `❌ Erreur lors de la création du dossier .bemedev:`,\n      error,\n    );\n    return false;\n  }\n\n  // eslint-disable-next-line no-useless-assignment\n  let files: string[] = [];\n  // 1.5. Créer la structure des fichiers types\n  try {\n    files = createTypesStructure(folderPath, CODEBASE_ANALYSIS);\n  } catch {\n    console.error(\n      `❌ Erreur lors de la création de la structure de types:`,\n    );\n    return false;\n  }\n\n  // 2. Mettre à jour le tsconfig.json\n  const tsconfigPath = join(cwd, 'tsconfig.json');\n\n  if (existsSync(tsconfigPath)) {\n    try {\n      const tsconfigContent = readFileSync(tsconfigPath, 'utf8');\n      const tsconfig = JSON.parse(tsconfigContent);\n\n      // Initialiser compilerOptions et paths si ils n'existent pas\n      if (!tsconfig.compilerOptions) {\n        tsconfig.compilerOptions = {};\n      }\n\n      if (!tsconfig.compilerOptions.paths) {\n        tsconfig.compilerOptions.paths = {};\n      }\n\n      // Ajouter le path #bemedev/*\n      let relativePath = relative(process.cwd(), folderPath);\n      const baseUrl = tsconfig.compilerOptions.baseUrl;\n\n      if (typeof baseUrl === 'string') {\n        // Si baseUrl est défini, calculer le chemin relatif par rapport à baseUrl\n\n        relativePath = relative(baseUrl, relativePath);\n      } else {\n        // Si baseUrl n'est pas défini, utiliser le chemin absolu\n        tsconfig.compilerOptions.baseUrl = '.';\n      }\n\n      tsconfig.compilerOptions.paths[PATH_KEY] = [`${relativePath}/*`];\n\n      writeFileSync(\n        tsconfigPath,\n        JSON.stringify(tsconfig, null, 2),\n        'utf8',\n      );\n      console.log(`✅ Path #bemedev/* ajouté au tsconfig.json`);\n    } catch (error) {\n      console.error(\n        `❌ Erreur lors de la mise à jour du tsconfig.json:`,\n        error,\n      );\n      return false;\n    }\n  } else {\n    console.warn(`⚠️ Fichier tsconfig.json introuvable, path non ajouté`);\n  }\n\n  // 3. Créer le fichier .bemedev.json à la racine\n\n  const config = {\n    version: '1.0.0',\n    [PROPERTIES.PATH]: root,\n    [PROPERTIES.FILES]: files,\n  };\n\n  try {\n    writeFileSync(configFile, JSON.stringify(config, null, 2), 'utf8');\n    console.log(`✅ Fichier .bemedev.json créé à la racine du projet`);\n  } catch (error) {\n    console.error(\n      `❌ Erreur lors de la création du fichier .bemedev.json:`,\n      error,\n    );\n    return false;\n  }\n\n  console.log(`🎉 Initialisation de bemedev terminée avec succès!`);\n  return true;\n};\n\n    ",
       "exports": []
     },
     "functions.remove": {
@@ -417,25 +346,19 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ],
+          "namedImports": ["JsonEditor"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "unlinkSync"
-          ],
+          "namedImports": ["unlinkSync"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ],
+          "namedImports": ["join"],
           "isTypeOnly": false
         },
         {
@@ -461,10 +384,7 @@
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis",
-            "FileAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -477,38 +397,25 @@
         {
           "moduleSpecifier": "node:fs",
           "kind": "named",
-          "namedImports": [
-            "existsSync",
-            "mkdirSync",
-            "writeFileSync"
-          ],
+          "namedImports": ["existsSync", "mkdirSync", "writeFileSync"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ],
+          "namedImports": ["dirname", "join", "relative", "resolve"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "REPLACERS"
-          ],
+          "namedImports": ["REPLACERS"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "FileAnalysis"
-          ],
+          "namedImports": ["FileAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -521,27 +428,19 @@
         {
           "moduleSpecifier": "node:path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ],
+          "namedImports": ["join", "relative"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ],
+          "namedImports": ["SourceFile", "SyntaxKind"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "ImportInfo"
-          ],
+          "namedImports": ["ImportInfo"],
           "isTypeOnly": true
         }
       ],
@@ -585,9 +484,7 @@
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "PROPERTIES"
-          ],
+          "namedImports": ["PROPERTIES"],
           "isTypeOnly": false
         }
       ],

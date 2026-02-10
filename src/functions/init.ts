@@ -64,6 +64,7 @@ export const init = (
     return false;
   }
 
+  // eslint-disable-next-line no-useless-assignment
   let files: string[] = [];
   // 1.5. Créer la structure des fichiers types
   try {
