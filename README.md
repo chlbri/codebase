@@ -4,9 +4,9 @@
 ![Node.js](https://img.shields.io/badge/node-%3E%3D22-green.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
 
-A powerful CLI to generate and analyze your TypeScript/JavaScript codebase.
-This tool allows partial importing of libraries and generates comprehensive
-analyses of your source code.
+A powerful CLI to generate and analyze your TypeScript/JavaScript
+codebase. This tool allows partial importing of libraries and generates
+comprehensive analyses of your source code.
 
 ## 🚀 Main Features
 
@@ -71,15 +71,15 @@ pnpm add -D @bemedev/codebase
 ### Programmatic API
 
 ```typescript
-import { generate, analyze } from '@bemedev/codebase';
+import { generate, analyze } from "@bemedev/codebase";
 
 // Analyze the codebase
-const analysis = analyze('src');
+const analysis = analyze("src");
 
 // Generate an analysis file
 await generate({
-  output: 'my-codebase.json',
-  excludes: ['node_modules', 'dist'],
+  output: "my-codebase.json",
+  excludes: ["node_modules", "dist"],
 });
 ```
 
@@ -192,7 +192,7 @@ If you find a bug, please
 
 <br/>
 
-## [CHANGE_LOG](CHANGE_LOG.md)
+## [CHANGELOG](CHANGE_LOG.md)
 
 <br/>
 

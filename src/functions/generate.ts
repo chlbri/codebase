@@ -1,8 +1,8 @@
-import { writeFileSync } from 'node:fs';
-import { relative } from 'node:path';
-import { CODEBASE_FILE, SRC_DIR } from 'src/constants';
-import { analyze } from '../analyse';
-import { CodebaseAnalysis } from '../schemas';
+import { writeFileSync } from "node:fs";
+import { relative } from "node:path";
+import { CODEBASE_FILE, SRC_DIR } from "../constants";
+import { analyze } from "../analyse";
+import { CodebaseAnalysis } from "../schemas";
 
 export const transformJSON = (data: CodebaseAnalysis) => {
   let imports = 0;
@@ -10,10 +10,7 @@ export const transformJSON = (data: CodebaseAnalysis) => {
   let files = 0;
 
   const entries = Object.entries(data).map(
-    ([
-      key,
-      { imports: _imports, relativePath, text, exports: _exports },
-    ]) => {
+    ([key, { imports: _imports, relativePath, text, exports: _exports }]) => {
       imports += _imports.length;
       exports += _exports?.length ?? 0;
       files++;
@@ -59,7 +56,7 @@ export const generate = ({
   excludes,
   src = SRC_DIR,
 }: GenerateOptions = {}) => {
-  const _output = output.endsWith('codebase.json')
+  const _output = output.endsWith("codebase.json")
     ? output
     : `${output}.codebase.json`;
 

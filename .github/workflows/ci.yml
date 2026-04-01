@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       branch:
-        description: 'Branch to test'
+        description: "Branch to test"
         required: false
         type: string
 
@@ -15,10 +15,6 @@ on:
       - canary
       - beta
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   test:
     name: Test
@@ -26,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout pnpm repo
-        uses: 'chlbri/pnpmi-action@main'
+        uses: "chlbri/pnpmi-action@main"
         with:
           branch: ${{ inputs.branch }}
 
@@ -34,13 +30,10 @@ jobs:
         run: pnpm run lint
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run pretest
 
       - name: Test
         run: pnpm run test:only
 
-      - name: Codegen
-        run: pnpm run codegen
-
       - name: Cleanup
-        run: pnpm run posttest && pnpm run prettier && pnpm run p-q
+        run: pnpm run posttest

@@ -6,6 +6,26 @@
 
 <summary>
 
+## **[0.2.0] - 10/02/2026** => _11:25_
+
+</summary>
+
+- Refactor code structure for improved readability and maintainability
+- Update dependencies (glob, typescript, rollup, vitest, and others)
+- Enhance CI/CD workflows with improved version management
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+
+<br/>
+
+<details>
+
+<summary>
+
 ### Version [0.1.3] --> _2025/12/27 16:37_
 
 </summary>

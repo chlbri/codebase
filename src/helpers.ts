@@ -1,7 +1,7 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
-import { REPLACERS } from './constants';
-import { FileAnalysis } from './schemas';
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
+import { REPLACERS } from "./constants";
+import { FileAnalysis } from "./schemas";
 
 export type TransformModuleArgs = {
   cwd?: string;
@@ -17,7 +17,7 @@ export const transformModule = ({
   const out = relative(
     cwd,
     resolve(dirname(relativePath), moduleSpecifier),
-  ).replaceAll('/', '.');
+  ).replaceAll("/", ".");
 
   return out;
 };
@@ -42,10 +42,10 @@ export const writeFileAnalysis = (
     });
 
     // Écrire le contenu du fichier types
-    writeFileSync(destPath, fileContent, 'utf8');
+    writeFileSync(destPath, fileContent, "utf8");
 
     console.log(`  ✅ ${relativePath}`);
-    return relativePath.slice(0, -3).replaceAll('/', '.');
+    return relativePath.slice(0, -3).replaceAll("/", ".");
   } catch (error) {
     return console.error(`  ❌ Erreur pour ${relativePath}:`, error);
   }
@@ -53,7 +53,7 @@ export const writeFileAnalysis = (
 
 export const consoleStars = () => {
   console.log();
-  console.log('*'.repeat(30));
+  console.log("*".repeat(30));
   console.log();
 };
 
@@ -63,8 +63,8 @@ export const toArray = <T>(value?: T | T[]): T[] => {
 
 export const getFolderPath = (root: string) => {
   const cwd = process.cwd();
-  const srcExists = existsSync(join(cwd, 'src'));
-  const folderPath = srcExists ? join(cwd, 'src', root) : join(cwd, root);
+  const srcExists = existsSync(join(cwd, "src"));
+  const folderPath = srcExists ? join(cwd, "src", root) : join(cwd, root);
 
   return folderPath;
 };

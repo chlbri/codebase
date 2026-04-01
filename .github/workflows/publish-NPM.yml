@@ -5,10 +5,6 @@ on:
       - master
       - main
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   publish:
     name: Publish
@@ -16,17 +12,17 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup node for publication
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@bemedev'
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@bemedev"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v4.3.0
         id: pnpm-install
         with:
           version: 10
@@ -41,8 +37,7 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key:
-            ${{ runner.os }}-pnpm-store-${{
+          key: ${{ runner.os }}-pnpm-store-${{
             hashFiles('**/pnpm-lock.yaml')}}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -63,9 +58,8 @@ jobs:
 
       - name: Check - updated
         if: ${{ steps.publish.outputs.type }}
-        run:
-          echo "${{ steps.publish.outputs.name }} Version changed from ${{
-          steps.publish.outputs.old-version }} to ${{
+        run: echo "${{ steps.publish.outputs.name }} Version changed from
+          ${{ steps.publish.outputs.old-version }} to ${{
           steps.publish.outputs.version }}"
 
       - name: Check - not updated

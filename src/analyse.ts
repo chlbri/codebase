@@ -1,12 +1,13 @@
-import { join, relative } from 'path';
-import { Project } from 'ts-morph';
-import { addJSDocToSourceText } from './analyse.utils';
-import { SRC_DIR } from './constants';
-import { analyzeExports } from './exports';
-import { toArray } from './helpers';
-import { analyzeImports, buildImportStrings } from './imports';
-import type { CodebaseAnalysis } from './schemas';
-import { pathToDotNotation } from './utils';
+import { join, relative } from "path";
+import { Project } from "ts-morph";
+import * as v from "valibot";
+import { addJSDocToSourceText } from "./analyse.utils";
+import { SRC_DIR } from "./constants";
+import { analyzeExports } from "./exports";
+import { toArray } from "./helpers";
+import { analyzeImports, buildImportStrings } from "./imports";
+import { CodebaseAnalysisSchema } from "./schemas";
+import { pathToDotNotation } from "./utils";
 
 export type AnalyzeOptions = {
   src?: string;
@@ -19,26 +20,25 @@ export type AnalyzeOptions = {
 export const analyze = ({
   src = SRC_DIR,
   excludes: _excludes,
-}: AnalyzeOptions = {}): CodebaseAnalysis => {
-  console.log('🔍 Analyse du codebase en cours...');
+}: AnalyzeOptions = {}) => {
+  console.log("🔍 Analyse du codebase en cours...");
   const excludes = toArray(_excludes);
 
   // Initialiser le projet ts-morph
   const project = new Project({
-    tsConfigFilePath: join(process.cwd(), 'tsconfig.json'),
+    tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
   });
 
   // Ajouter tous les fichiers TypeScript du dossier src
   const sourceFiles = project.addSourceFilesAtPaths(
     [
-      'src/**/*.ts',
-      '!src/scripts/**/*', // Exclure le dossier scripts
-      '!src/**/*.test.ts', // Exclure les fichiers de test
-      '!src/**/*.spec.ts', // Exclure les fichiers de spec
-    ].concat(excludes.map(exclude => `!${exclude}`)),
+      `${src}/**/*.ts`,
+      `!${src}/**/*.test.ts`, // Exclude test files
+      `!${src}/**/*.spec.ts`, // Exclude spec files
+    ].concat(excludes.map((exclude) => `!${exclude}`)),
   );
 
-  const analysis: CodebaseAnalysis = {};
+  const analysis: v.InferInput<typeof CodebaseAnalysisSchema> = {};
   let processedCount = 0;
 
   for (const sourceFile of sourceFiles) {
@@ -59,10 +59,10 @@ export const analyze = ({
 
     // Combiner imports et contenu
     const importsSection =
-      importsStrings.length > 0 ? importsStrings.join('\n') : '';
+      importsStrings.length > 0 ? importsStrings.join("\n") : "";
 
     const text =
-      importsSection === ''
+      importsSection === ""
         ? _text
         : `${importsSection}
 
@@ -88,5 +88,5 @@ ${_text}
   }
 
   console.log(`✅ Analyse terminée: ${processedCount} fichiers analysés`);
-  return analysis;
+  return v.parse(CodebaseAnalysisSchema, analysis);
 };
