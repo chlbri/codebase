@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   # Cron chaque premier du mois à 4h UTC
   schedule:
-    - cron: "0 4 1 * *"
+    - cron: '0 4 1 * *'
 
 jobs:
   ci-admin:
@@ -73,14 +73,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version-type: "patch"
-          patch-wording: "chore :,docs :,refactor :,perf :,test :,revert :,fix :"
-          rc-wording: "hotfix :,rc :,ci :,style :"
-          minor-wording: "feat :"
-          major-wording: "BREAKING CHANGE,MAJOR"
-          skip-commit: "true"
-          skip-tag: "true"
-          skip-push: "true"
+          version-type: 'patch'
+          patch-wording:
+            'chore :,docs :,refactor :,perf :,test :,revert :,fix :'
+          rc-wording: 'hotfix :,rc :,ci :,style :'
+          minor-wording: 'feat :'
+          major-wording: 'BREAKING CHANGE,MAJOR'
+          skip-commit: 'true'
+          skip-tag: 'true'
+          skip-push: 'true'
 
       - name: Upload updated workspace with version
         uses: actions/upload-artifact@v7
@@ -120,11 +121,11 @@ jobs:
             Exécute automatiquement les scripts de maintenance administrative mensuels et met à jour la version du package. Cette maintenance inclut la mise à jour des configurations, le nettoyage des fichiers et l'optimisation des performances.
 
             chlbri: bri_lvi@icloud.com
-          author_name: "@chlbri"
+          author_name: '@chlbri'
           author_email: bri_lvi@icloud.com
           commit: --signoff
-          add: "."
-          tag: "v${{ needs.bump-version.outputs.newTag }}"
+          add: '.'
+          tag: 'v${{ needs.bump-version.outputs.newTag }}'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload workspace

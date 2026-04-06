@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/codebase",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
   "author": {
     "email": "bri_lvi@icloud.com",
@@ -105,11 +105,11 @@
   ],
   "devDependencies": {
     "@bemedev/decompose": "^2.2.0",
-    "@bemedev/dev-utils": "^0.3.2",
+    "@bemedev/dev-utils": "^0.5.2",
     "@bemedev/fsf": "^1.0.1",
     "@size-limit/file": "^12.0.1",
     "@types/edit-json-file": "^1.7.4",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
     "glob": "^13.0.6",
@@ -120,7 +120,7 @@
     "oxlint": "^1.58.0",
     "prettier": "^3.8.1",
     "pretty-quick": "^4.2.2",
-    "rolldown": "1.0.0-rc.12",
+    "rolldown": "1.0.0-rc.13",
     "size-limit": "^12.0.1",
     "this": "file:",
     "tslib": "^2.8.1",

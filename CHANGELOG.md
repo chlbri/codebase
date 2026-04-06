@@ -6,6 +6,27 @@
 
 <summary>
 
+## **[0.3.0] - 06/04/2026** => _17:27_
+
+</summary>
+
+- Fix: préfixe `./` ajouté aux chemins de paths dans `tsconfig.json`
+  lors de l'initialisation
+- Refactor: style de code modernisé (guillemets simples, formatage
+  uniforme)
+- Update: workflows CI/CD mis à jour (publish, upgrade)
+- Remove: skills obsolètes supprimés de `.github/skills/`
+- Update: documentation `.github/` réorganisée
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+
+<summary>
+
 ## **[0.2.0] - 10/02/2026** => _11:25_
 
 </summary>
@@ -18,7 +39,6 @@
 </details>
 
 <br/>
-
 
 <br/>
 

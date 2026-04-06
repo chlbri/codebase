@@ -1,8 +1,13 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, relative } from "node:path";
-import { PATH_KEY, PROPERTIES } from "../constants";
-import { getFolderPath, writeFileAnalysis } from "../helpers";
-import { CodebaseAnalysis } from "../schemas";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
+import { join, relative } from 'node:path';
+import { PATH_KEY, PROPERTIES } from '../constants';
+import { getFolderPath, writeFileAnalysis } from '../helpers';
+import { CodebaseAnalysis } from '../schemas';
 
 export interface InitOptions {
   /**
@@ -18,7 +23,7 @@ export const createTypesStructure = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
 ) => {
   const entries = Object.entries(CODEBASE_ANALYSIS).filter(([key]) => {
-    return key.endsWith("types") || key.endsWith("constants");
+    return key.endsWith('types') || key.endsWith('constants');
   });
 
   const PATHS: string[] = [];
@@ -52,7 +57,10 @@ export const init = (
     mkdirSync(folderPath, { recursive: true });
     console.log(`✅ Dossier .bemedev créé dans: ${root}`);
   } catch (error) {
-    console.error(`❌ Erreur lors de la création du dossier .bemedev:`, error);
+    console.error(
+      `❌ Erreur lors de la création du dossier .bemedev:`,
+      error,
+    );
     return false;
   }
 
@@ -62,16 +70,18 @@ export const init = (
   try {
     files = createTypesStructure(folderPath, CODEBASE_ANALYSIS);
   } catch {
-    console.error(`❌ Erreur lors de la création de la structure de types:`);
+    console.error(
+      `❌ Erreur lors de la création de la structure de types:`,
+    );
     return false;
   }
 
   // 2. Mettre à jour le tsconfig.json
-  const tsconfigPath = join(cwd, "tsconfig.json");
+  const tsconfigPath = join(cwd, 'tsconfig.json');
 
   if (existsSync(tsconfigPath)) {
     try {
-      const tsconfigContent = readFileSync(tsconfigPath, "utf8");
+      const tsconfigContent = readFileSync(tsconfigPath, 'utf8');
       const tsconfig = JSON.parse(tsconfigContent);
 
       // Initialiser compilerOptions et paths si ils n'existent pas
@@ -98,9 +108,15 @@ export const init = (
         // }
       }
 
-      tsconfig.compilerOptions.paths[PATH_KEY] = [`${relativePath}/*`];
+      tsconfig.compilerOptions.paths[PATH_KEY] = [
+        `./${relativePath}/*`,
+      ];
 
-      writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2), "utf8");
+      writeFileSync(
+        tsconfigPath,
+        JSON.stringify(tsconfig, null, 2),
+        'utf8',
+      );
       console.log(`✅ Path #bemedev/* ajouté au tsconfig.json`);
     } catch (error) {
       console.error(
@@ -110,19 +126,21 @@ export const init = (
       return false;
     }
   } else {
-    console.warn(`⚠️ Fichier tsconfig.json introuvable, path non ajouté`);
+    console.warn(
+      `⚠️ Fichier tsconfig.json introuvable, path non ajouté`,
+    );
   }
 
   // 3. Créer le fichier .bemedev.json à la racine
 
   const config = {
-    version: "1.0.0",
+    version: '1.0.0',
     [PROPERTIES.PATH]: root,
     [PROPERTIES.FILES]: files,
   };
 
   try {
-    writeFileSync(configFile, JSON.stringify(config, null, 2), "utf8");
+    writeFileSync(configFile, JSON.stringify(config, null, 2), 'utf8');
     console.log(`✅ Fichier .bemedev.json créé à la racine du projet`);
   } catch (error) {
     console.error(

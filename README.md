@@ -192,7 +192,7 @@ If you find a bug, please
 
 <br/>
 
-## [CHANGELOG](CHANGE_LOG.md)
+## [CHANGELOG](CHANGELOG.md)
 
 <br/>
 

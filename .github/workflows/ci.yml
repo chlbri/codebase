@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       branch:
-        description: "Branch to test"
+        description: 'Branch to test'
         required: false
         type: string
 
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout pnpm repo
-        uses: "chlbri/pnpmi-action@main"
+        uses: 'chlbri/pnpmi-action@main'
         with:
           branch: ${{ inputs.branch }}
 
