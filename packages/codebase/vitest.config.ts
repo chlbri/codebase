@@ -1,11 +1,10 @@
 import { aliasTs } from '@bemedev/dev-utils/vitest-alias';
 import { exclude } from '@bemedev/dev-utils/vitest-exclude';
 import { defineConfig } from 'vitest/config';
-import tsconfig from './tsconfig.json';
 
 export default defineConfig({
   plugins: [
-    aliasTs(tsconfig as any),
+    aliasTs(),
     exclude({
       ignoreCoverageFiles: ['**/index.ts'],
     }),
