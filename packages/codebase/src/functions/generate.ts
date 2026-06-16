@@ -1,6 +1,6 @@
-import { writeFileSync } from 'node:fs';
-import { relative } from 'node:path';
-import { CODEBASE_FILE, SRC_DIR } from '../constants';
+import { writeFileSync } from 'fs';
+import { relative } from 'path';
+import { DEFAULT_CODEBASE_FILE, SRC_DIR } from '../constants';
 import { analyze } from '../analyse';
 import { CodebaseAnalysis } from '../schemas';
 
@@ -55,7 +55,7 @@ export type GenerateOptions = {
  * Main execution function
  */
 export const generate = ({
-  output = CODEBASE_FILE,
+  output = DEFAULT_CODEBASE_FILE,
   excludes,
   src = SRC_DIR,
 }: GenerateOptions = {}) => {

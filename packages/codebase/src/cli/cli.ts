@@ -1,5 +1,5 @@
 import { array, command, multioption, option, string } from 'cmd-ts';
-import { CODEBASE_FILE } from '../constants';
+import { DEFAULT_CODEBASE_FILE } from '../constants';
 import { generate as handler } from '../functions/generate';
 import { BIN } from './constants';
 
@@ -10,7 +10,7 @@ export const cli = command({
       short: 'o',
       type: string,
       description: 'Output file path',
-      defaultValue: () => CODEBASE_FILE,
+      defaultValue: () => DEFAULT_CODEBASE_FILE,
     }),
 
     excludes: multioption({

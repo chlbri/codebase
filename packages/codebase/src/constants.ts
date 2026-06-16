@@ -1,7 +1,10 @@
-import { join } from 'node:path';
+import { join } from 'path';
 
 export const SRC_DIR = join(process.cwd(), 'src');
-export const CODEBASE_FILE = join(process.cwd(), '.codebase.json');
+export const DEFAULT_CODEBASE_FILE = join(
+  process.cwd(),
+  '.codebase.json',
+);
 
 const _REPLACER = '-|||-';
 

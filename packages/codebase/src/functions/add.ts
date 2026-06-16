@@ -1,5 +1,5 @@
 import edit, { JsonEditor } from 'edit-json-file';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve } from 'path';
 import { config } from '../config';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import {
@@ -124,11 +124,11 @@ export const add = (
       const _path = writeFileAnalysis(fileAnalysis, root);
       if (_path) {
         files.push(_path);
-        file?.set(FILES_PROPERTY, files);
         success++;
       }
     });
 
+    file.set(FILES_PROPERTY, files);
     file.save();
     console.log(`✅ Files created! (${success}/${length})`);
     file = undefined;

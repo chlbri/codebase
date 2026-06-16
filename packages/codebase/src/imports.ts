@@ -1,4 +1,4 @@
-import { join, relative } from 'node:path';
+import { join, relative } from 'path';
 import { SourceFile, SyntaxKind } from 'ts-morph';
 import type { ImportInfo } from './schemas';
 

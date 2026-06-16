@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { dirname, join, relative, resolve, parse } from 'path';
 import { REPLACERS } from './constants';
 import { FileAnalysis } from './schemas';
 
@@ -30,11 +30,11 @@ export const writeFileAnalysis = (
 
   // Create the destination path in .bemedev maintaining the structure
   const destPath = join(folderPath, relativePath);
-  const destDir = dirname(destPath);
+  const parsed = parse(destPath);
 
   try {
     // Create the destination folder if necessary
-    mkdirSync(destDir, { recursive: true });
+    mkdirSync(parsed.dir, { recursive: true });
 
     let fileContent = fileAnalysis.text;
     REPLACERS.init.forEach(([search, replace]) => {
@@ -45,7 +45,9 @@ export const writeFileAnalysis = (
     writeFileSync(destPath, fileContent, 'utf8');
 
     console.log(`  ✅ ${relativePath}`);
-    return relativePath.slice(0, -3).replaceAll('/', '.');
+
+    const out = parsed.name.replaceAll('/', '.');
+    return out;
   } catch (error) {
     return console.error(`  ❌ Error for ${relativePath}:`, error);
   }

@@ -3,7 +3,7 @@ import { run } from 'cmd-ts';
 import editJson from 'edit-json-file';
 import { safeParse } from 'valibot';
 import { cli } from './cli';
-import { CODEBASE_FILE } from '../constants';
+import { DEFAULT_CODEBASE_FILE } from '../constants';
 import { CodebaseAnalysisSchema } from '../schemas';
 
 describe('Test the .codebase analysis module', () => {
@@ -13,7 +13,7 @@ describe('Test the .codebase analysis module', () => {
 
   test('#01 => Read the .json file', () => {
     console.warn('Reading JSON file...');
-    json = editJson(CODEBASE_FILE).read();
+    json = editJson(DEFAULT_CODEBASE_FILE).read();
     console.warn('File read successfully!');
   });
 

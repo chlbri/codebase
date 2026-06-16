@@ -1,6 +1,6 @@
 import edit, { JsonEditor } from 'edit-json-file';
-import { unlinkSync } from 'node:fs';
-import { join } from 'node:path';
+import { unlinkSync } from 'fs';
+import { join } from 'path';
 import { config } from '../config';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import {
@@ -104,7 +104,8 @@ export const remove = (
     }
 
     const formatteds = safesToRemove.map(key => {
-      const _path = `${key.replaceAll('.', '/')}.ts`;
+      const _path =
+        CODEBASE_ANALYSIS[`${key.replaceAll('.', '/')}`].relativePath;
       const absolute = join(root, _path);
       return [key, absolute] as const;
     });

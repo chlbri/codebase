@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
@@ -14,7 +16,14 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "types": ["node", "vitest/globals"],
-    "paths": {}
+    "types": [
+      "node",
+      "vitest/globals"
+    ],
+    "paths": {
+      "#bemedev/*": [
+        "./src/.code/*"
+      ]
+    }
   }
 }

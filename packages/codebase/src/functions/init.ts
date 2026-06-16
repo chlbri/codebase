@@ -1,10 +1,5 @@
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-} from 'node:fs';
-import { join, relative } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { join, relative } from 'path';
 import {
   DEFAULT_CLI_NAME,
   DEFAULT_PATH_KEY,
@@ -58,6 +53,7 @@ const initConfig = ({
   config.json = json;
   config.tsConfigPath = path;
   config.root = root;
+
   return { root, json, path, bin };
 };
 
