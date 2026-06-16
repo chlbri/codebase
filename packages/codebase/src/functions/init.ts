@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join, relative } from 'path';
+import { config } from '../config';
 import {
   DEFAULT_CLI_NAME,
   DEFAULT_PATH_KEY,
@@ -7,7 +8,6 @@ import {
 } from '../constants';
 import { getFolderPath, writeFileAnalysis } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
-import { config } from '../config';
 
 export interface InitOptions {
   /**

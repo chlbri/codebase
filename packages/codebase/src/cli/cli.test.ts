@@ -2,9 +2,9 @@ import { decomposeKeys } from '@bemedev/decompose';
 import { run } from 'cmd-ts';
 import editJson from 'edit-json-file';
 import { safeParse } from 'valibot';
-import { cli } from './cli';
 import { DEFAULT_CODEBASE_FILE } from '../constants';
 import { CodebaseAnalysisSchema } from '../schemas';
+import { cli } from './cli';
 
 describe('Test the .codebase analysis module', () => {
   let json: any;

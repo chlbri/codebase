@@ -27,7 +27,6 @@ export const writeFileAnalysis = (
   folderPath: string,
 ) => {
   const relativePath = fileAnalysis.relativePath;
-
   // Create the destination path in .bemedev maintaining the structure
   const destPath = join(folderPath, relativePath);
   const parsed = parse(destPath);
@@ -35,17 +34,15 @@ export const writeFileAnalysis = (
   try {
     // Create the destination folder if necessary
     mkdirSync(parsed.dir, { recursive: true });
-
     let fileContent = fileAnalysis.text;
+
     REPLACERS.init.forEach(([search, replace]) => {
       fileContent = fileContent.replaceAll(search, replace);
     });
 
     // Write the types file content
     writeFileSync(destPath, fileContent, 'utf8');
-
     console.log(`  ✅ ${relativePath}`);
-
     const out = parsed.name.replaceAll('/', '.');
     return out;
   } catch (error) {

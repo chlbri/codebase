@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs';
 import { relative } from 'path';
-import { DEFAULT_CODEBASE_FILE, SRC_DIR } from '../constants';
 import { analyze } from '../analyse';
+import { DEFAULT_CODEBASE_FILE, SRC_DIR } from '../constants';
 import { CodebaseAnalysis } from '../schemas';
 
 export const transformJSON = (data: CodebaseAnalysis) => {
