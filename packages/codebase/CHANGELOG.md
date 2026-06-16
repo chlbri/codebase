@@ -5,6 +5,30 @@
 <details>
 <summary>
 
+## **[1.2.0] - 16/06/2026** => _23:42_
+
+</summary>
+
+- Add `codebase` property to global `config` object to customize default
+  codebase analysis output file path
+- Fix file removal path resolution in `remove` function to retrieve
+  actual file path from metadata instead of assuming `.ts` extension
+  (supports `.tsx` and other extensions)
+- Fix performance in `add` function by saving the JSON file once after
+  processing all files instead of inside the loop
+- Refactor imports by removing Node prefix `node:` from `fs` and `path`
+  module imports
+- Export `consoleStars` and `getFolderPath` helper utilities from
+  package entrypoint
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.1.0] - 16/06/2026** => _20:48_
 
 </summary>

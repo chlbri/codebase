@@ -94,6 +94,7 @@ import { config } from '@bemedev/codebase';
 // Customize the configuration
 config.json = '.my-custom-config.json';
 config.tsConfigPath = '#custom/*';
+config.codebase = '.my-custom-codebase.json';
 ```
 
 ## 📊 Output format
