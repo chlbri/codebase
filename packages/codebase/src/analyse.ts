@@ -2,7 +2,6 @@ import { join, relative } from 'path';
 import { Project } from 'ts-morph';
 import * as v from 'valibot';
 import { addJSDocToSourceText } from './analyse.utils';
-import { SRC_DIR } from './constants';
 import { analyzeExports } from './exports';
 import { toArray } from './helpers';
 import { analyzeImports, buildImportStrings } from './imports';
@@ -10,7 +9,7 @@ import { CodebaseAnalysisSchema } from './schemas';
 import { pathToDotNotation } from './utils';
 
 export type AnalyzeOptions = {
-  src?: string;
+  src: string;
   excludes?: string | string[];
 };
 
@@ -18,9 +17,9 @@ export type AnalyzeOptions = {
  * Analyzes all TypeScript files in src/ (except src/scripts/)
  */
 export const analyze = ({
-  src = SRC_DIR,
+  src,
   excludes: _excludes,
-}: AnalyzeOptions = {}) => {
+}: AnalyzeOptions) => {
   console.log('🔍 Codebase analysis in progress...');
   const excludes = toArray(_excludes);
 
@@ -33,8 +32,14 @@ export const analyze = ({
   const sourceFiles = project.addSourceFilesAtPaths(
     [
       `${src}/**/*.ts`,
-      `!${src}/**/*.test.ts`, // Exclude test files
-      `!${src}/**/*.spec.ts`, // Exclude spec files
+      `${src}/**/*.tsx`,
+
+      // #region Exclude test files
+      `!${src}/**/*.test.ts`,
+      `!${src}/**/*.test.tsx`,
+      `!${src}/**/*.spec.ts`,
+      `!${src}/**/*.spec.tsx`,
+      // #endregion
     ].concat(excludes.map(exclude => `!${exclude}`)),
   );
 

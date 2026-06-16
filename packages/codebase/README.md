@@ -51,16 +51,16 @@ pnpm add -D @bemedev/codebase
 
 ```bash
 # Basic analysis - generates a codebase.json file
-@bemedev/codebase
+codebase
 
 # Specify a custom output file
-@bemedev/codebase --output my-analysis.json
+codebase --output my-analysis.json
 
 # Exclude specific files
-@bemedev/codebase --exclude node_modules dist lib build
+codebase --exclude node_modules dist lib build
 
 # Use short options
-@bemedev/codebase -o output.json node_modules dist
+codebase -o output.json node_modules dist
 ```
 
 #### Available options
@@ -127,7 +127,7 @@ src/
 │   ├── generate.ts # Generate analysis
 │   ├── init.ts    # Initialization
 │   └── remove.ts  # Removal
-├── analyze.ts     # Analysis engine
+├── analyse.ts     # Analysis engine
 ├── types.ts       # TypeScript definitions
 └── constants.ts   # Global constants
 ```
@@ -153,13 +153,13 @@ pnpm dev
 ### Analyze a React project
 
 ```bash
-@bemedev/codebase -o react-analysis.json node_modules public build
+codebase -o react-analysis.json node_modules public build
 ```
 
 ### Analyze a Node.js project
 
 ```bash
-@bemedev/codebase -o backend-analysis.json node_modules dist coverage
+codebase -o backend-analysis.json node_modules dist coverage
 ```
 
 ### Integrate into an NPM script
@@ -167,8 +167,8 @@ pnpm dev
 ```json
 {
   "scripts": {
-    "analyze": "@bemedev/codebase -o analysis/codebase.json",
-    "analyze:clean": "@bemedev/codebase -o analysis/clean.json node_modules dist lib build"
+    "analyze": "codebase -o analysis/codebase.json",
+    "analyze:clean": "codebase -o analysis/clean.json node_modules dist lib build"
   }
 }
 ```

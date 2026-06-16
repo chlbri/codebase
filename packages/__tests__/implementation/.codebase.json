@@ -1,8 +1,21 @@
 {
   "STATS": {
-    "files": 0,
+    "files": 2,
     "imports": 0,
     "exports": 0
   },
-  "CODEBASE_ANALYSIS": {}
+  "CODEBASE_ANALYSIS": {
+    "index": {
+      "imports": [],
+      "relativePath": "index.ts",
+      "text": "export {};\n",
+      "exports": []
+    },
+    "jsx": {
+      "imports": [],
+      "relativePath": "jsx.tsx",
+      "text": "export {};\n",
+      "exports": []
+    }
+  }
 }

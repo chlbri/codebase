@@ -5,5 +5,6 @@
 export function pathToDotNotation(filePath: string): string {
   return filePath
     .replace(/\.ts$/, '') // Remove the .ts extension
+    .replace(/\.tsx$/, '') // Remove the .tsx extension
     .replace(/\//g, '.'); // Replace / with .
 }

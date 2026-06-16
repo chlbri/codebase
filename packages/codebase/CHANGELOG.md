@@ -5,6 +5,28 @@
 <details>
 <summary>
 
+## **[1.1.0] - 16/06/2026** => _20:48_
+
+</summary>
+
+- Update `AnalyzeOptions` signature to make `src` parameter mandatory
+- Add support for `.tsx` files in codebase analysis (including
+  `.test.tsx` and `.spec.tsx` exclusions)
+- Update package build process to ensure executable permissions are set
+  on the CLI binary
+- Refactor project structure to a monorepo setup with workspace-based
+  packages
+- Refactor CLI command configuration to use explicit binary name
+- Update vitest alias initialization in vitest configuration
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.0.0] - 16/06/2026** => _17:30_
 
 </summary>

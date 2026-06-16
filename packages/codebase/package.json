@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/codebase",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
   "author": {
     "email": "bri_lvi@icloud.com",
@@ -63,7 +63,7 @@
   },
   "bin": "lib/cli/index.js",
   "scripts": {
-    "build": "pnpm rm:lib && pnpm run rolldown && pnpm run codegen",
+    "build": "pnpm rm:lib && pnpm run rolldown && pnpm run codegen && chmod +x lib/cli/index.js",
     "_ci": "pnpm run config:off && pnpm run lint && pnpm run test",
     "ci": "CI_START=$(date +%s) && pnpm run _ci && pnpm run p-q  && echo \"\n✅ CI takes $(($(date +%s) - CI_START))s\n\"",
     "ci:admin": "CI_START=$(date +%s) && pnpm run rm && pnpm run upgrade && pnpm run _ci && echo \"\n✅ CI_ADMIN takes $(($(date +%s) - CI_START))s\n\"",
