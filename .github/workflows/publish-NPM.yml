@@ -17,9 +17,9 @@ jobs:
       - name: Setup node for publication
         uses: actions/setup-node@v6
         with:
-          node-version: "24"
-          registry-url: "https://registry.npmjs.org"
-          scope: "@bemedev"
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@bemedev'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4.3.0
@@ -37,7 +37,8 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{
+          key:
+            ${{ runner.os }}-pnpm-store-${{
             hashFiles('**/pnpm-lock.yaml')}}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -58,10 +59,12 @@ jobs:
 
       - name: Check - updated
         if: ${{ steps.publish.outputs.type }}
-        run: echo "${{ steps.publish.outputs.name }} Version changed from
+        run:
+          echo "${{ steps.publish.outputs.name }} Version changed from
           ${{ steps.publish.outputs.old-version }} to ${{
           steps.publish.outputs.version }}"
 
       - name: Check - not updated
         if: ${{ ! steps.publish.outputs.type }}
-        run: echo "Remain the same! - ${{ steps.publish.outputs.version }}"
+        run:
+          echo "Remain the same! - ${{ steps.publish.outputs.version }}"

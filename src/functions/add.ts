@@ -1,20 +1,21 @@
-import edit, { JsonEditor } from "edit-json-file";
-import { dirname, join, relative, resolve } from "node:path";
-import { FILES_PROPERTY, JSON_FILE_NAME, PATH_PROPERTY } from "../constants";
+import edit, { JsonEditor } from 'edit-json-file';
+import { dirname, join, relative, resolve } from 'node:path';
+import { config } from '../config';
+import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import {
   consoleStars,
   getFolderPath,
   transformModule,
   writeFileAnalysis,
-} from "../helpers";
-import { CodebaseAnalysis, type FileAnalysis } from "../schemas";
-import type { NOmit } from "../types";
+} from '../helpers';
+import { CodebaseAnalysis, type FileAnalysis } from '../schemas';
+import type { NOmit } from '../types';
 
 const processFileAnalysis = (
-  analysis: NOmit<FileAnalysis, "exports">,
+  analysis: NOmit<FileAnalysis, 'exports'>,
   cwd: string,
-  additionals: [string, NOmit<FileAnalysis, "exports">][],
-  pathsEntries: [string, NOmit<FileAnalysis, "exports">][],
+  additionals: [string, NOmit<FileAnalysis, 'exports'>][],
+  pathsEntries: [string, NOmit<FileAnalysis, 'exports'>][],
   files: string[],
   CODEBASE_ANALYSIS: CodebaseAnalysis,
 ) => {
@@ -25,14 +26,14 @@ const processFileAnalysis = (
     const _path = relative(
       cwd,
       resolve(dirname(relativePath), moduleSpecifier),
-    ).replaceAll("/", ".");
+    ).replaceAll('/', '.');
 
     const all = additionals
       .concat(pathsEntries)
       .map(([key]) => key)
       .concat(files);
 
-    const canAdd = all.every((p) => p !== _path);
+    const canAdd = all.every(p => p !== _path);
     if (!canAdd) return;
 
     const toAdd =
@@ -49,11 +50,13 @@ const processFileAnalysis = (
         moduleSpecifier,
       });
 
-      const array = [_path, `${_path}.index`].filter((p) => keys.includes(p));
+      const array = [_path, `${_path}.index`].filter(p =>
+        keys.includes(p),
+      );
 
       if (array.length < 1) return false;
 
-      return array.every((p) => !all.includes(p));
+      return array.every(p => !all.includes(p));
     });
 
     const toAdd2 = { ...toAdd, imports };
@@ -77,10 +80,10 @@ export const add = (
   ...paths: string[]
 ) => {
   const isEmpty = paths.length === 0;
-  if (isEmpty) return console.warn("No files specified for addition.");
+  if (isEmpty) return console.warn('No files specified for addition.');
   try {
     const cwd = process.cwd();
-    const json = join(cwd, JSON_FILE_NAME);
+    const json = join(cwd, config.json);
     let file: JsonEditor | undefined = edit(json);
 
     if (!file) return;
@@ -90,10 +93,10 @@ export const add = (
 
     // Release resources
 
-    const additionals: [string, NOmit<FileAnalysis, "exports">][] = [];
+    const additionals: [string, NOmit<FileAnalysis, 'exports'>][] = [];
 
     const pathsEntries = Object.entries(CODEBASE_ANALYSIS)
-      .filter(([key]) => paths.some((p) => key.startsWith(p)))
+      .filter(([key]) => paths.some(p => key.startsWith(p)))
       .filter(([key]) => !files.includes(key));
 
     pathsEntries.forEach(([, analysis]) => {
@@ -112,7 +115,7 @@ export const add = (
     );
 
     consoleStars();
-    console.log(`🔧 Création des fichiers (${entries.size} fichiers)...`);
+    console.log(`🔧 Creation of files (${entries.size} files)...`);
 
     let success = 0;
     const length = entries.size;
@@ -127,10 +130,10 @@ export const add = (
     });
 
     file.save();
-    console.log(`✅ Fichiers créés! (${success}/${length})`);
+    console.log(`✅ Files created! (${success}/${length})`);
     file = undefined;
   } catch {
-    console.error(`❌ Erreur lors de la création des fichiers`);
+    console.error(`❌ Error during file creation`);
     return false;
   }
 

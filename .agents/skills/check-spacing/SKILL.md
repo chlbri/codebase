@@ -1,6 +1,7 @@
 ---
 name: check-spacing
-description: Detect and report blank-line spacing violations between consecutive
+description:
+  Detect and report blank-line spacing violations between consecutive
   test() calls in test files. Use when checking or enforcing spacing
   conventions in *.test.ts files.
 ---

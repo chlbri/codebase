@@ -1,20 +1,20 @@
-import * as v from "valibot";
-import { PROPERTIES } from "./constants";
+import * as v from 'valibot';
+import { PROPERTIES } from './constants';
 
 export const DeclarationKindSchema = v.picklist([
-  "function",
-  "class",
-  "interface",
-  "type",
-  "variable",
-  "const",
-  "let",
-  "enum",
+  'function',
+  'class',
+  'interface',
+  'type',
+  'variable',
+  'const',
+  'let',
+  'enum',
 ]);
 
 export const ImportInfoSchema = v.object({
   moduleSpecifier: v.string(),
-  kind: v.picklist(["default", "named", "namespace", "side-effect"]),
+  kind: v.picklist(['default', 'named', 'namespace', 'side-effect']),
   namedImports: v.optional(v.array(v.string())),
   default: v.optional(v.string()),
   isDynamic: v.optional(v.boolean()),
@@ -23,7 +23,7 @@ export const ImportInfoSchema = v.object({
 
 export const ExportInfoSchema = v.object({
   name: v.string(),
-  kind: v.picklist(["default", "named", "namespace"]),
+  kind: v.picklist(['default', 'named', 'namespace']),
   text: v.optional(v.string()),
   moduleSpecifier: v.optional(v.string()),
   declarationKind: v.optional(DeclarationKindSchema),
@@ -36,27 +36,36 @@ export const FileAnalysisSchema = v.object({
   text: v.string(),
 });
 
-// Schema pour CodebaseAnalysis
-export const CodebaseAnalysisSchema = v.record(v.string(), FileAnalysisSchema);
+// Schema for CodebaseAnalysis
+export const CodebaseAnalysisSchema = v.record(
+  v.string(),
+  FileAnalysisSchema,
+);
 
-// Schema pour les statistiques d'analyse
+// Schema for analysis statistics
 export const AnalysisStatsSchema = v.object({
   files: v.number(),
   imports: v.number(),
   exports: v.number(),
 });
 
-// Schema complet pour un fichier .code contenant l'analyse complète
+// Complete schema for a codebase analysis file containing the full analysis
 export const CodeAnalysisFileSchema = v.object({
   [PROPERTIES.CODEBASE_ANALYSIS]: CodebaseAnalysisSchema,
   [PROPERTIES.STATS]: v.optional(AnalysisStatsSchema),
 });
 
-// Types inférés des schémas
-export type DeclarationKind = v.InferOutput<typeof DeclarationKindSchema>;
+// Types inferred from schemas
+export type DeclarationKind = v.InferOutput<
+  typeof DeclarationKindSchema
+>;
 export type ImportInfo = v.InferOutput<typeof ImportInfoSchema>;
 export type ExportInfo = v.InferOutput<typeof ExportInfoSchema>;
 export type FileAnalysis = v.InferOutput<typeof FileAnalysisSchema>;
-export type CodebaseAnalysis = v.InferOutput<typeof CodebaseAnalysisSchema>;
+export type CodebaseAnalysis = v.InferOutput<
+  typeof CodebaseAnalysisSchema
+>;
 export type AnalysisStats = v.InferOutput<typeof AnalysisStatsSchema>;
-export type CodeAnalysisFile = v.InferOutput<typeof CodeAnalysisFileSchema>;
+export type CodeAnalysisFile = v.InferOutput<
+  typeof CodeAnalysisFileSchema
+>;

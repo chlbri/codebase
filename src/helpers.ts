@@ -1,7 +1,7 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
-import { REPLACERS } from "./constants";
-import { FileAnalysis } from "./schemas";
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
+import { REPLACERS } from './constants';
+import { FileAnalysis } from './schemas';
 
 export type TransformModuleArgs = {
   cwd?: string;
@@ -17,7 +17,7 @@ export const transformModule = ({
   const out = relative(
     cwd,
     resolve(dirname(relativePath), moduleSpecifier),
-  ).replaceAll("/", ".");
+  ).replaceAll('/', '.');
 
   return out;
 };
@@ -28,12 +28,12 @@ export const writeFileAnalysis = (
 ) => {
   const relativePath = fileAnalysis.relativePath;
 
-  // Créer le chemin de destination dans .bemedev en maintenant la structure
+  // Create the destination path in .bemedev maintaining the structure
   const destPath = join(folderPath, relativePath);
   const destDir = dirname(destPath);
 
   try {
-    // Créer le dossier de destination si nécessaire
+    // Create the destination folder if necessary
     mkdirSync(destDir, { recursive: true });
 
     let fileContent = fileAnalysis.text;
@@ -41,19 +41,19 @@ export const writeFileAnalysis = (
       fileContent = fileContent.replaceAll(search, replace);
     });
 
-    // Écrire le contenu du fichier types
-    writeFileSync(destPath, fileContent, "utf8");
+    // Write the types file content
+    writeFileSync(destPath, fileContent, 'utf8');
 
     console.log(`  ✅ ${relativePath}`);
-    return relativePath.slice(0, -3).replaceAll("/", ".");
+    return relativePath.slice(0, -3).replaceAll('/', '.');
   } catch (error) {
-    return console.error(`  ❌ Erreur pour ${relativePath}:`, error);
+    return console.error(`  ❌ Error for ${relativePath}:`, error);
   }
 };
 
 export const consoleStars = () => {
   console.log();
-  console.log("*".repeat(30));
+  console.log('*'.repeat(30));
   console.log();
 };
 
@@ -63,8 +63,10 @@ export const toArray = <T>(value?: T | T[]): T[] => {
 
 export const getFolderPath = (root: string) => {
   const cwd = process.cwd();
-  const srcExists = existsSync(join(cwd, "src"));
-  const folderPath = srcExists ? join(cwd, "src", root) : join(cwd, root);
+  const srcExists = existsSync(join(cwd, 'src'));
+  const folderPath = srcExists
+    ? join(cwd, 'src', root)
+    : join(cwd, root);
 
   return folderPath;
 };

@@ -71,15 +71,15 @@ pnpm add -D @bemedev/codebase
 ### Programmatic API
 
 ```typescript
-import { generate, analyze } from "@bemedev/codebase";
+import { generate, analyze } from '@bemedev/codebase';
 
 // Analyze the codebase
-const analysis = analyze("src");
+const analysis = analyze('src');
 
 // Generate an analysis file
 await generate({
-  output: "my-codebase.json",
-  excludes: ["node_modules", "dist"],
+  output: 'my-codebase.json',
+  excludes: ['node_modules', 'dist'],
 });
 ```
 

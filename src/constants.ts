@@ -5,6 +5,8 @@ export const CODEBASE_FILE = join(process.cwd(), '.codebase.json');
 
 const _REPLACER = '-|||-';
 
+export const DEFAULT_CLI_NAME = 'codebase';
+
 export const REPLACERS = {
   code: [
     ['\\`', `${_REPLACER}w`],
@@ -19,8 +21,8 @@ export const REPLACERS = {
   ],
 } as const;
 
-export const PATH_KEY = '#bemedev/*';
-export const JSON_FILE_NAME = '.bemedev.json';
+export const DEFAULT_PATH_KEY = '#bemedev/*';
+export const DEFAULT_JSON_FILE_NAME = '.bemedev.json';
 
 export const PATH_PROPERTY = 'path';
 export const FILES_PROPERTY = 'files';

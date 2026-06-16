@@ -1,9 +1,9 @@
-import { join, relative } from "node:path";
-import { SourceFile, SyntaxKind } from "ts-morph";
-import type { ImportInfo } from "./schemas";
+import { join, relative } from 'node:path';
+import { SourceFile, SyntaxKind } from 'ts-morph';
+import type { ImportInfo } from './schemas';
 
 /**
- * Résout le moduleSpecifier en utilisant les paths du tsconfig si il commence par "#"
+ * Resolves the moduleSpecifier using the tsconfig paths if it starts with "#"
  */
 const resolveModuleSpecifier = (
   sourceFile: SourceFile,
@@ -16,33 +16,35 @@ const resolveModuleSpecifier = (
   const baseUrl = sourceFile.getProject().getCompilerOptions().baseUrl;
   const paths2 = Object.entries(paths);
 
-  // Chercher la correspondance dans les paths
+  // Find the match in paths
   for (const [pattern, mappings] of paths2) {
-    // Remplacer * par une regex pour matcher
-    const regexPattern = pattern.replace(/\*/g, "(.*)");
+    // Replace * with a regex to match
+    const regexPattern = pattern.replace(/\*/g, '(.*)');
     const regex = new RegExp(`^${regexPattern}$`);
     const match = moduleSpecifier.match(regex);
 
     if (match) {
-      // Prendre le premier mapping disponible
+      // Take the first available mapping
       const first = mappings[0];
 
-      // Résoudre le chemin absolu
+      // Resolve the absolute path
       let relativedPath = baseUrl ? join(baseUrl, first) : first;
 
       if (match[1]) {
-        relativedPath = relativedPath.replace("*", match[1]);
+        relativedPath = relativedPath.replace('*', match[1]);
       }
 
-      // Calculer le chemin relatif depuis le fichier source actuel
+      // Calculate the relative path from the current source file
       const sourceFileDir = relative(
         process.cwd(),
         sourceFile.getDirectoryPath(),
       );
       const relativePath = relative(sourceFileDir, relativedPath);
 
-      // S'assurer que le chemin relatif commence par ./ ou ../
-      return relativePath.startsWith(".") ? relativePath : `./${relativePath}`;
+      // Make sure the relative path starts with ./ or ../
+      return relativePath.startsWith('.')
+        ? relativePath
+        : `./${relativePath}`;
     }
   }
 
@@ -50,13 +52,15 @@ const resolveModuleSpecifier = (
 };
 
 /**
- * Analyse les imports d'un fichier
+ * Analyzes a file's imports
  */
-export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
+export const analyzeImports = (
+  sourceFile: SourceFile,
+): ImportInfo[] => {
   const imports: ImportInfo[] = [];
 
   // Import declarations (import ... from '...')
-  sourceFile.getImportDeclarations().forEach((importDecl) => {
+  sourceFile.getImportDeclarations().forEach(importDecl => {
     // Determine if this is a type-only import
     const isTypeOnly = importDecl.isTypeOnly();
 
@@ -71,7 +75,7 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
     if (defaultImport) {
       imports.push({
         moduleSpecifier,
-        kind: "default",
+        kind: 'default',
         default: defaultImport.getText(),
         isTypeOnly,
       });
@@ -82,7 +86,7 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
     if (namespaceImport) {
       imports.push({
         moduleSpecifier,
-        kind: "namespace",
+        kind: 'namespace',
         default: namespaceImport.getText(),
         isTypeOnly,
       });
@@ -93,17 +97,21 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
     if (namedImports.length > 0) {
       imports.push({
         moduleSpecifier,
-        kind: "named",
-        namedImports: namedImports.map((ni) => ni.getName()),
+        kind: 'named',
+        namedImports: namedImports.map(ni => ni.getName()),
         isTypeOnly,
       });
     }
 
     // Side-effect import (import '...')
-    if (!defaultImport && !namespaceImport && namedImports.length === 0) {
+    if (
+      !defaultImport &&
+      !namespaceImport &&
+      namedImports.length === 0
+    ) {
       imports.push({
         moduleSpecifier,
-        kind: "side-effect",
+        kind: 'side-effect',
         isTypeOnly,
       });
     }
@@ -112,18 +120,20 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
   // Dynamic imports (import('...'))
   sourceFile
     .getDescendantsOfKind(SyntaxKind.CallExpression)
-    .forEach((callExpr) => {
-      if (callExpr.getExpression().getKind() === SyntaxKind.ImportKeyword) {
+    .forEach(callExpr => {
+      if (
+        callExpr.getExpression().getKind() === SyntaxKind.ImportKeyword
+      ) {
         const arg = callExpr.getArguments()[0];
         if (arg && arg.getKind() === SyntaxKind.StringLiteral) {
-          const rawModuleSpecifier = arg.getText().replace(/['"]/g, "");
+          const rawModuleSpecifier = arg.getText().replace(/['"]/g, '');
           const moduleSpecifier = resolveModuleSpecifier(
             sourceFile,
             rawModuleSpecifier,
           );
           imports.push({
             moduleSpecifier,
-            kind: "side-effect",
+            kind: 'side-effect',
             isDynamic: true,
           });
         }
@@ -134,25 +144,25 @@ export const analyzeImports = (sourceFile: SourceFile): ImportInfo[] => {
 };
 
 export const buildImportStrings = (imports: ImportInfo[]) => {
-  return imports.map((imp) => {
+  return imports.map(imp => {
     switch (imp.kind) {
-      case "named": {
-        const namedImports = imp.namedImports?.join(", ") || "";
-        return `import ${imp.isTypeOnly ? "type " : ""}{ ${namedImports} } from '${imp.moduleSpecifier}';`;
+      case 'named': {
+        const namedImports = imp.namedImports?.join(', ') || '';
+        return `import ${imp.isTypeOnly ? 'type ' : ''}{ ${namedImports} } from '${imp.moduleSpecifier}';`;
       }
-      case "namespace":
-        return `import ${imp.isTypeOnly ? "type " : ""}* as ${imp.default} from '${imp.moduleSpecifier}';`;
-      case "side-effect": {
+      case 'namespace':
+        return `import ${imp.isTypeOnly ? 'type ' : ''}* as ${imp.default} from '${imp.moduleSpecifier}';`;
+      case 'side-effect': {
         if (imp.isDynamic) {
           return `// Dynamic import: import('${imp.moduleSpecifier}')`;
         }
         return `import '${imp.moduleSpecifier}';`;
       }
 
-      case "default":
-        return `import ${imp.isTypeOnly ? "type " : ""}${imp.default} from '${imp.moduleSpecifier}';`;
+      case 'default':
+        return `import ${imp.isTypeOnly ? 'type ' : ''}${imp.default} from '${imp.moduleSpecifier}';`;
       default:
-        return "";
+        return '';
     }
   });
 };

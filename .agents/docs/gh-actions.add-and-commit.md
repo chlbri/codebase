@@ -24,7 +24,7 @@ Add a step like this to your workflow:
   with:
     # The arguments for the `git add` command (see the paragraph below for more info)
     # Default: '.'
-    add: "src"
+    add: 'src'
 
     # The name of the user that will be displayed as the author of the commit.
     # Default: depends on the default_author input
@@ -48,7 +48,7 @@ Add a step like this to your workflow:
 
     # The local path to the directory where your repository is located. You should use actions/checkout first to set it up.
     # Default: '.'
-    cwd: "./path/to/the/repo"
+    cwd: './path/to/the/repo'
 
     # Determines the way the action fills missing author name and email. Three options are available:
     # - github_actor -> UserName <UserName@users.noreply.github.com>
@@ -64,7 +64,7 @@ Add a step like this to your workflow:
 
     # The message for the commit.
     # Default: 'Commit from GitHub Actions (name of the workflow)'
-    message: "Your commit message"
+    message: 'Your commit message'
 
     # If this input is set, the action will push the commit to a new branch with this name.
     # Default: ''
@@ -79,7 +79,7 @@ Add a step like this to your workflow:
 
     # Arguments for the git pull command. By default, the action does not pull.
     # Default: ''
-    pull: "--rebase --autostash ..."
+    pull: '--rebase --autostash ...'
 
     # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
     # Default: true
@@ -87,15 +87,15 @@ Add a step like this to your workflow:
 
     # The arguments for the `git rm` command (see the paragraph below for more info)
     # Default: ''
-    remove: "./dir/old_file.js"
+    remove: './dir/old_file.js'
 
     # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
     # Default: ''
-    tag: "v1.0.0 --force"
+    tag: 'v1.0.0 --force'
 
     # Arguments for the git push --tags command (any additional argument will be added after --tags)
     # Default: ''
-    tag_push: "--force"
+    tag_push: '--force'
 ```
 
 ### Git arguments
@@ -427,8 +427,8 @@ jobs:
         with:
           author_name: Your Name
           author_email: mail@example.com
-          message: "Your commit message"
-          add: "*.js"
+          message: 'Your commit message'
+          add: '*.js'
 ```
 
 ### Running the action in a different directory
@@ -451,7 +451,7 @@ jobs:
       # If you need to, you can check out your repo to a different location
       - uses: actions/checkout@v4
         with:
-          path: "./pathToRepo/"
+          path: './pathToRepo/'
 
       # You can make whatever type of change to the repo...
       - run: echo "123" > ./pathToRepo/file.txt
@@ -459,9 +459,9 @@ jobs:
       # ...and then use the action as you would normally do, but providing the path to the repo
       - uses: EndBug/add-and-commit@v9
         with:
-          message: "Add the very useful text file"
-          add: "*.txt --force"
-          cwd: "./pathToRepo/"
+          message: 'Add the very useful text file'
+          add: '*.txt --force'
+          cwd: './pathToRepo/'
 ```
 
 ## Articles

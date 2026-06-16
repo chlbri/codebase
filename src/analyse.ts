@@ -1,13 +1,13 @@
-import { join, relative } from "path";
-import { Project } from "ts-morph";
-import * as v from "valibot";
-import { addJSDocToSourceText } from "./analyse.utils";
-import { SRC_DIR } from "./constants";
-import { analyzeExports } from "./exports";
-import { toArray } from "./helpers";
-import { analyzeImports, buildImportStrings } from "./imports";
-import { CodebaseAnalysisSchema } from "./schemas";
-import { pathToDotNotation } from "./utils";
+import { join, relative } from 'path';
+import { Project } from 'ts-morph';
+import * as v from 'valibot';
+import { addJSDocToSourceText } from './analyse.utils';
+import { SRC_DIR } from './constants';
+import { analyzeExports } from './exports';
+import { toArray } from './helpers';
+import { analyzeImports, buildImportStrings } from './imports';
+import { CodebaseAnalysisSchema } from './schemas';
+import { pathToDotNotation } from './utils';
 
 export type AnalyzeOptions = {
   src?: string;
@@ -15,27 +15,27 @@ export type AnalyzeOptions = {
 };
 
 /**
- * Analyse tous les fichiers TypeScript dans src/ (sauf src/scripts/)
+ * Analyzes all TypeScript files in src/ (except src/scripts/)
  */
 export const analyze = ({
   src = SRC_DIR,
   excludes: _excludes,
 }: AnalyzeOptions = {}) => {
-  console.log("🔍 Analyse du codebase en cours...");
+  console.log('🔍 Codebase analysis in progress...');
   const excludes = toArray(_excludes);
 
-  // Initialiser le projet ts-morph
+  // Initialize the ts-morph project
   const project = new Project({
-    tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
+    tsConfigFilePath: join(process.cwd(), 'tsconfig.json'),
   });
 
-  // Ajouter tous les fichiers TypeScript du dossier src
+  // Add all TypeScript files from the src folder
   const sourceFiles = project.addSourceFilesAtPaths(
     [
       `${src}/**/*.ts`,
       `!${src}/**/*.test.ts`, // Exclude test files
       `!${src}/**/*.spec.ts`, // Exclude spec files
-    ].concat(excludes.map((exclude) => `!${exclude}`)),
+    ].concat(excludes.map(exclude => `!${exclude}`)),
   );
 
   const analysis: v.InferInput<typeof CodebaseAnalysisSchema> = {};
@@ -45,24 +45,24 @@ export const analyze = ({
     const filePath = sourceFile.getFilePath();
     const relativePath = relative(src, filePath);
 
-    // Générer le texte modifié avec JSDoc pour les exports
+    // Generate modified text with JSDoc for exports
 
     const _text = addJSDocToSourceText(sourceFile);
 
-    // #region Analyser les imports et exports
+    // #region Analyze imports and exports
     const imports = analyzeImports(sourceFile);
     const exports = analyzeExports(sourceFile);
     // #endregion
 
-    // Construire les imports à partir de fileAnalysis.imports
+    // Build imports from fileAnalysis.imports
     const importsStrings = buildImportStrings(imports);
 
-    // Combiner imports et contenu
+    // Combine imports and content
     const importsSection =
-      importsStrings.length > 0 ? importsStrings.join("\n") : "";
+      importsStrings.length > 0 ? importsStrings.join('\n') : '';
 
     const text =
-      importsSection === ""
+      importsSection === ''
         ? _text
         : `${importsSection}
 
@@ -78,15 +78,17 @@ ${_text}
 
     processedCount++;
 
-    // #region Afficher l'avancement de l'analyse par palliers de 50
+    // #region Display analysis progress in increments of 50
     if (processedCount % 50 === 0) {
       console.log(
-        `📊 Analysé ${processedCount}/${sourceFiles.length} fichiers...`,
+        `📊 Analyzed ${processedCount}/${sourceFiles.length} files...`,
       );
     }
     // #endregion
   }
 
-  console.log(`✅ Analyse terminée: ${processedCount} fichiers analysés`);
+  console.log(
+    `✅ Analysis completed: ${processedCount} files analyzed`,
+  );
   return v.parse(CodebaseAnalysisSchema, analysis);
 };

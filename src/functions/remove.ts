@@ -1,9 +1,14 @@
-import edit, { JsonEditor } from "edit-json-file";
-import { unlinkSync } from "node:fs";
-import { join } from "node:path";
-import { FILES_PROPERTY, JSON_FILE_NAME, PATH_PROPERTY } from "../constants";
-import { consoleStars, getFolderPath, transformModule } from "../helpers";
-import { CodebaseAnalysis, FileAnalysis } from "../schemas";
+import edit, { JsonEditor } from 'edit-json-file';
+import { unlinkSync } from 'node:fs';
+import { join } from 'node:path';
+import { config } from '../config';
+import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
+import {
+  consoleStars,
+  getFolderPath,
+  transformModule,
+} from '../helpers';
+import { CodebaseAnalysis, FileAnalysis } from '../schemas';
 
 const transformModules = (
   entries: [string, FileAnalysis][],
@@ -24,9 +29,9 @@ const transformModules = (
             moduleSpecifier,
           });
         })
-        .map((_path) => [_path, `${_path}.index`]) // Ajouter les variantes .index
+        .map(_path => [_path, `${_path}.index`]) // Add .index variants
         .flat()
-        .filter((s) => files.includes(s));
+        .filter(s => files.includes(s));
 
       return [key, Array.from(new Set(specifiers))] as const;
     });
@@ -39,10 +44,10 @@ export const remove = (
   ...paths: string[]
 ) => {
   const isEmpty = paths.length === 0;
-  if (isEmpty) return console.warn("No files specified for removal.");
+  if (isEmpty) return console.warn('No files specified for removal.');
   try {
     const cwd = process.cwd();
-    const json = join(cwd, JSON_FILE_NAME);
+    const json = join(cwd, config.json);
     let file: JsonEditor | undefined = edit(json);
 
     if (!file) return;
@@ -55,10 +60,10 @@ export const remove = (
     );
 
     const entries = entries2.filter(([key]) =>
-      paths.some((p) => key.startsWith(p)),
+      paths.some(p => key.startsWith(p)),
     );
 
-    // Vérifier les dépendances avant suppression
+    // Check dependencies before deletion
     const safesToRemove: string[] = [];
     const cannotsRemove: [string, string[]][] = [];
 
@@ -70,45 +75,41 @@ export const remove = (
 
       const check = importedFroms.length > 0;
 
-      console.log("modules", "=>", importedFroms);
-      console.log("key", "=>", key);
+      console.log('modules', '=>', importedFroms);
+      console.log('key', '=>', key);
 
       if (check) return cannotsRemove.push([key, importedFroms]);
       return safesToRemove.push(key);
     });
 
     consoleStars();
-    console.log(`🔧 Suppression des fichiers (${entries.length} fichiers)...`);
+    console.log(`🔧 Deleting of files (${entries.length} files)...`);
 
-    // Afficher les fichiers qui ne peuvent pas être supprimés
+    // Display files that cannot be deleted
     if (cannotsRemove.length > 0) {
       const len = cannotsRemove.length;
-      const one =
-        "fichier ne peut pas être supprimé (importé dans d'autres fichiers)";
-      const many =
-        "fichiers ne peuvent pas être supprimés (importés dans d'autres fichiers)";
+      const one = 'file cannot be deleted (imported in other files)';
+      const many = 'files cannot be deleted (imported in other files)';
 
       console.warn(`⚠️  ${len} ${len === 1 ? one : many} :`);
       cannotsRemove.forEach(([key, modules]) => {
-        console.warn(`  - ⚠️  ${key} importé par :`);
-        modules.forEach((m) => console.warn(`    -> 📌 ${m}`));
+        console.warn(`  - ⚠️  ${key} imported by:`);
+        modules.forEach(m => console.warn(`    -> 📌 ${m}`));
       });
     }
 
     if (safesToRemove.length === 0) {
-      console.warn("❌ Aucun fichier ne peut être supprimé.");
+      console.warn('❌ No files can be deleted.');
       return consoleStars();
     }
 
-    const formatteds = safesToRemove.map((key) => {
-      const _path = `${key.replaceAll(".", "/")}.ts`;
+    const formatteds = safesToRemove.map(key => {
+      const _path = `${key.replaceAll('.', '/')}.ts`;
       const absolute = join(root, _path);
       return [key, absolute] as const;
     });
 
-    console.log(
-      `🗑️ Suppression des fichiers (${safesToRemove.length} fichiers)...`,
-    );
+    console.log(`🗑️ Deleting files (${safesToRemove.length} files)...`);
 
     let success = 0;
     const length = formatteds.length;
@@ -119,19 +120,19 @@ export const remove = (
         console.log(`  - 🗑️ ${key}`);
         file?.set(
           FILES_PROPERTY,
-          files.filter((key1) => key1 !== key),
+          files.filter(key1 => key1 !== key),
         );
         success++;
       } catch {
-        console.error(`  - ❌ Erreur, ${key} :`);
+        console.error(`  - ❌ Error, ${key} :`);
       }
     });
 
     file.save();
-    console.log(`🗑️ Fichiers supprimés! (${success}/${length})`);
+    console.log(`🗑️ Files deleted! (${success}/${length})`);
     file = undefined;
   } catch {
-    console.error(`❌ Erreur lors de la création des fichiers`);
+    console.error(`❌ Error while deleting files`);
     consoleStars();
     return false;
   }

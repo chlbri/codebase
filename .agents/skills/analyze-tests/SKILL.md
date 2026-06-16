@@ -1,6 +1,7 @@
 ---
 name: analyze-tests
-description: Measure the inline length of `test()` candidates to decide whether
+description:
+  Measure the inline length of `test()` candidates to decide whether
   each should be formatted as a **single-line** or **multi-line** test.
   Use when determining the correct format for new or refactored `test()`
   calls in `*.test.ts` files.
