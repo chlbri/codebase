@@ -1,16 +1,17 @@
-import { aliasTs } from '@bemedev/dev-utils/vitest-alias';
-import { exclude } from '@bemedev/dev-utils/vitest-exclude';
-import { defineConfig } from 'vitest/config';
+import { aliasTs } from "@bemedev/dev-utils/vitest-alias";
+import { exclude } from "@bemedev/dev-utils/vitest-exclude";
+import { defineConfig } from "vitest/config";
+import tsconfig from "./tsconfig.json";
 
 export default defineConfig({
   plugins: [
-    aliasTs(),
+    aliasTs(tsconfig as any),
     exclude({
-      ignoreCoverageFiles: ['**/index.ts'],
+      ignoreCoverageFiles: ["**/index.ts"],
     }),
   ],
   server: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
   },
   test: {
     bail: 100,
@@ -18,9 +19,9 @@ export default defineConfig({
     allowOnly: true,
     passWithNoTests: true,
     slowTestThreshold: 3000,
-    environment: 'node',
+    environment: "node",
     env: {
-      NODE_ENV: 'test',
+      NODE_ENV: "test",
     },
     globals: true,
     logHeapUsage: false,
@@ -31,8 +32,8 @@ export default defineConfig({
     },
     coverage: {
       enabled: true,
-      reportsDirectory: '.coverage',
-      provider: 'v8',
+      reportsDirectory: ".coverage",
+      provider: "v8",
     },
   },
 });

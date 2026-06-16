@@ -1,2 +1,8 @@
+packages:
+  - "packages/codebase"
+  - "packages/__tests__/implementation"
+
 allowBuilds:
   esbuild: true
+
+nodeLinker: hoisted

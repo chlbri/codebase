@@ -1,0 +1,20 @@
+{
+  "name": "implementation",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "_ci": "pnpm run test",
+    "test": "vitest run",
+    "test:only": "vitest run --no-coverage",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@bemedev/codebase": "workspace:^",
+    "@bemedev/decompose": "^2.2.0",
+    "cmd-ts": "^0.15.0",
+    "edit-json-file": "^1.8.1",
+    "typescript": "^6.0.3",
+    "valibot": "^1.4.1",
+    "vitest": "4.1.9"
+  }
+}

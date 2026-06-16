@@ -1,7 +1,7 @@
 {
-  "name": "@bemedev/codebase",
-  "version": "1.0.0",
-  "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
+  "name": "@bemedev/codebase-monorepo",
+  "private": true,
+  "description": "The monorepo containing @bemedev/codebase CLI.",
   "author": {
     "email": "bri_lvi@icloud.com",
     "name": "chlbri",
@@ -13,96 +13,31 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "module": "lib/index.js",
-  "maintainers": [
-    {
-      "email": "bri_lvi@icloud.com",
-      "name": "chlbri",
-      "url": "https://bemedev.vercel.app"
-    }
-  ],
-  "contributors": [
-    {
-      "email": "bri_lvi@icloud.com",
-      "name": "chlbri",
-      "url": "https://bemedev.vercel.app"
-    }
-  ],
-  "keywords": [
-    "codebase",
-    "codebase analysis",
-    "codebase automation",
-    "codebase documentation",
-    "codebase generator",
-    "codebase importer",
-    "codebase management",
-    "codebase maintenance",
-    "codebase optimization",
-    "codebase refactoring",
-    "codebase visualization",
-    "cli",
-    "json",
-    "partial dependency",
-    "partial installation"
-  ],
-  "files": [
-    "CHANGE_LOG.md",
-    "CONTRIBUTING.md",
-    "LICENSE",
-    "README.md",
-    "lib",
-    "package.json",
-    "public"
+  "workspaces": [
+    "packages/codebase",
+    "packages/__tests__/implementation"
   ],
   "engines": {
     "node": ">=24"
   },
-  "bin": "lib/cli/index.js",
   "scripts": {
-    "build": "pnpm rm:lib && pnpm run rolldown && pnpm run codegen",
-    "_ci": "pnpm run config:off && pnpm run lint && pnpm run test",
-    "ci": "CI_START=$(date +%s) && pnpm run _ci && pnpm run p-q  && echo \"\n✅ CI takes $(($(date +%s) - CI_START))s\n\"",
-    "ci:admin": "CI_START=$(date +%s) && pnpm run rm && pnpm run upgrade && pnpm run _ci && echo \"\n✅ CI_ADMIN takes $(($(date +%s) - CI_START))s\n\"",
-    "codegen": "node lib/cli/index.js",
-    "config": "pnpm install",
-    "config:off": "pnpm run config --offline",
-    "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check",
-    "lint": "pnpm run fmt && pnpm run lint:fix",
-    "lint:fix": "oxlint --fix",
-    "lint:watch": "onchange --await-write-finish 1500 -d 10000 -v \"**/*.ts\" -- pnpm run lint",
-    "p-q": "pretty-quick",
-    "posttest": "pnpm run fmt",
-    "prepare": "husky",
-    "prepublishOnly": "",
-    "pretest": "pnpm run build && pnpm run size",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "rinit": "pnpm run rm && pnpm run config",
-    "rinit:off": "pnpm run rm && pnpm run config:off",
+    "pnpm:devPreinstall": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('./package.json')); const version=require('child_process').execSync('pnpm -v').toString().trim(); pkg.packageManager='pnpm@' + version; fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\\n');\"",
+    "build": "pnpm -r --sort run build",
+    "config": "pnpm i",
     "rimraf": "pnpx rimraf -rf",
-    "rm": "pnpm run rimraf -- node_modules pnpm-lock.yaml",
-    "rm:lib": "pnpm run rimraf -- lib",
-    "rolldown": "rolldown -c",
-    "size": "size-limit",
-    "test": "pnpm run test:coverage",
-    "test:coverage": "vitest run",
-    "test:only": "pnpm run test:coverage --no-coverage",
-    "test:ui": "vitest --ui",
-    "test:watch": "vitest",
-    "upgrade": "pnpm upgrade --latest"
+    "rinit": "pnpm run rm && pnpm run config",
+    "lint": "pnpm run -r lint",
+    "test": "pnpm run -r test",
+    "pretest": "pnpm run -r pretest",
+    "posttest": "pnpm run -r posttest",
+    "test:only": "pnpm run -r test:only",
+    "_ci": "pnpm install && pnpm run -r _ci",
+    "ci": "CI=$(date +%s) && pnpm run _ci && echo \"\\n✅ CI takes $(($(date +%s) - CI))s\\n\"",
+    "ci:admin": "CI_ADMIN=$(date +%s) && pnpm clean lockfile && pnpm run up && pnpm run _ci && echo \"\\n✅ Admin CI takes $(($(date +%s) - CI_ADMIN))s\\n\"",
+    "rm": "pnpm rimraf node_modules pnpm-lock.yaml && pnpm clean lockfile",
+    "up": "pnpm -r update --latest",
+    "prepare": "husky"
   },
-  "size-limit": [
-    {
-      "path": "lib/*.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "lib/*.cjs",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
     "@bemedev/decompose": "^2.2.0",
     "@bemedev/dev-utils": "^0.8.0",
@@ -122,16 +57,10 @@
     "pretty-quick": "^4.2.2",
     "rolldown": "1.1.1",
     "size-limit": "^12.1.0",
-    "this": "file:",
     "tslib": "^2.8.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vitest": "4.1.9"
   },
-  "dependencies": {
-    "cmd-ts": "^0.15.0",
-    "edit-json-file": "^1.8.1",
-    "ts-morph": "^28.0.0",
-    "valibot": "^1.4.1"
-  }
+  "packageManager": "pnpm@11.5.2"
 }

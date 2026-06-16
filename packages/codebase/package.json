@@ -1,0 +1,123 @@
+{
+  "name": "@bemedev/codebase",
+  "version": "1.0.0",
+  "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
+  "author": {
+    "email": "bri_lvi@icloud.com",
+    "name": "chlbri",
+    "url": "https://bemedev.vercel.app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chlbri/codebase"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs"
+    }
+  },
+  "maintainers": [
+    {
+      "email": "bri_lvi@icloud.com",
+      "name": "chlbri",
+      "url": "https://bemedev.vercel.app"
+    }
+  ],
+  "contributors": [
+    {
+      "email": "bri_lvi@icloud.com",
+      "name": "chlbri",
+      "url": "https://bemedev.vercel.app"
+    }
+  ],
+  "keywords": [
+    "codebase",
+    "codebase analysis",
+    "codebase automation",
+    "codebase documentation",
+    "codebase generator",
+    "codebase importer",
+    "codebase management",
+    "codebase maintenance",
+    "codebase optimization",
+    "codebase refactoring",
+    "codebase visualization",
+    "cli",
+    "json",
+    "partial dependency",
+    "partial installation"
+  ],
+  "files": [
+    "lib",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": "lib/cli/index.js",
+  "scripts": {
+    "build": "pnpm rm:lib && pnpm run rolldown && pnpm run codegen",
+    "_ci": "pnpm run config:off && pnpm run lint && pnpm run test",
+    "ci": "CI_START=$(date +%s) && pnpm run _ci && pnpm run p-q  && echo \"\n✅ CI takes $(($(date +%s) - CI_START))s\n\"",
+    "ci:admin": "CI_START=$(date +%s) && pnpm run rm && pnpm run upgrade && pnpm run _ci && echo \"\n✅ CI_ADMIN takes $(($(date +%s) - CI_START))s\n\"",
+    "codegen": "tsx ./src/cli/index.ts",
+    "config": "pnpm install",
+    "config:off": "pnpm run config --offline",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "pnpm run fmt && pnpm run lint:fix",
+    "lint:fix": "oxlint --fix",
+    "lint:watch": "onchange --await-write-finish 1500 -d 10000 -v \"**/*.ts\" -- pnpm run lint",
+    "p-q": "pretty-quick",
+    "posttest": "pnpm run fmt",
+    "prepare": "husky",
+    "prepublishOnly": "",
+    "pretest": "pnpm run build && pnpm run size",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "rinit": "pnpm run rm && pnpm run config",
+    "rinit:off": "pnpm run rm && pnpm run config:off",
+    "rimraf": "pnpx rimraf -rf",
+    "rm": "pnpm run rimraf -- node_modules pnpm-lock.yaml",
+    "rm:lib": "pnpm run rimraf -- lib",
+    "rolldown": "rolldown -c",
+    "size": "size-limit",
+    "test": "pnpm run test:coverage",
+    "test:coverage": "vitest run",
+    "test:only": "pnpm run test:coverage --no-coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest",
+    "upgrade": "pnpm upgrade --latest"
+  },
+  "size-limit": [
+    {
+      "path": "lib/*.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "lib/*.cjs",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@bemedev/dev-utils": "^0.8.0",
+    "@size-limit/file": "^12.1.0",
+    "@types/node": "^25.9.3",
+    "rolldown": "1.1.1",
+    "size-limit": "^12.1.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "cmd-ts": "^0.15.0",
+    "edit-json-file": "^1.8.1",
+    "ts-morph": "^28.0.0",
+    "valibot": "^1.4.1"
+  }
+}
