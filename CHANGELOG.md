@@ -3,6 +3,25 @@
 <br/>
 
 <details>
+<summary>
+
+## **[1.0.0] - 16/06/2026** => _17:30_
+
+</summary>
+
+- Add `config` export for dynamic customization of CLI configurations
+- Update internal agent skill structures from `.claude` to `.agents`
+- Refactor CLI log statements, warnings, and code comments to English
+- Refactor codebase formatting and imports to use single quotes
+- Refactor `init` command implementation by extracting `initConfig`
+  helper
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
 
 <summary>
 

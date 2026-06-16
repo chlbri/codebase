@@ -48,24 +48,27 @@ export const createTypesStructure = (
   return PATHS;
 };
 
-export const init = (
-  CODEBASE_ANALYSIS: CodebaseAnalysis,
-  {
-    root,
-    json,
-    path = DEFAULT_PATH_KEY,
-    bin = DEFAULT_CLI_NAME,
-  }: InitOptions,
-) => {
-  const cwd = process.cwd();
-  const configFile = join(cwd, json);
-  const configExists = existsSync(configFile);
-
+const initConfig = ({
+  root,
+  json,
+  path = DEFAULT_PATH_KEY,
+  bin = DEFAULT_CLI_NAME,
+}: InitOptions) => {
   config.bin = bin;
   config.json = json;
   config.tsConfigPath = path;
   config.root = root;
+  return { root, json, path, bin };
+};
 
+export const init = (
+  CODEBASE_ANALYSIS: CodebaseAnalysis,
+  options: InitOptions,
+) => {
+  const { root, json, path, bin } = initConfig(options);
+  const cwd = process.cwd();
+  const configFile = join(cwd, json);
+  const configExists = existsSync(configFile);
   if (configExists) return true;
   const folderPath = getFolderPath(root);
 

@@ -74,13 +74,26 @@ pnpm add -D @bemedev/codebase
 import { generate, analyze } from '@bemedev/codebase';
 
 // Analyze the codebase
-const analysis = analyze('src');
+const analysis = analyze({ src: 'src' });
 
 // Generate an analysis file
 await generate({
   output: 'my-codebase.json',
   excludes: ['node_modules', 'dist'],
 });
+```
+
+### Configuration
+
+You can also customize the global configuration used by the programmatic
+API:
+
+```typescript
+import { config } from '@bemedev/codebase';
+
+// Customize the configuration
+config.json = '.my-custom-config.json';
+config.tsConfigPath = '#custom/*';
 ```
 
 ## 📊 Output format
