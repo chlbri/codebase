@@ -1,7 +1,6 @@
 import edit, { JsonEditor } from 'edit-json-file';
 import { unlinkSync } from 'fs';
 import { join } from 'path';
-import { config } from '../config';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import {
   consoleStars,
@@ -41,13 +40,14 @@ const transformModules = (
 
 export const remove = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
+  jsonConfigPath: string,
   ...paths: string[]
 ) => {
   const isEmpty = paths.length === 0;
   if (isEmpty) return console.warn('No files specified for removal.');
   try {
     const cwd = process.cwd();
-    const json = join(cwd, config.json);
+    const json = join(cwd, jsonConfigPath);
     let file: JsonEditor | undefined = edit(json);
 
     if (!file) return;

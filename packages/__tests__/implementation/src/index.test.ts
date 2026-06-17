@@ -73,7 +73,7 @@ describe('Test add and init functions', () => {
 
   describe('#02 => add', () => {
     test('#01 => add files', () => {
-      success = add(code.CODEBASE_ANALYSIS as any, '');
+      success = add(code.CODEBASE_ANALYSIS as any, jsonFile, '');
     });
 
     test('#02 => success is true', () => expect(success).toBe(true));
@@ -89,7 +89,11 @@ describe('Test add and init functions', () => {
 
   describe('#03 => remove index', () => {
     test('#01 => remove', () => {
-      success = remove(code.CODEBASE_ANALYSIS as any, 'index');
+      success = remove(
+        code.CODEBASE_ANALYSIS as any,
+        jsonFile,
+        'index',
+      );
     });
 
     test('#02 => success is true', () => expect(success).toBe(true));
@@ -109,7 +113,11 @@ describe('Test add and init functions', () => {
 
   describe('#04 => remove nested.path', () => {
     test('#01 => remove', () => {
-      success = remove(code.CODEBASE_ANALYSIS as any, 'nested/path');
+      success = remove(
+        code.CODEBASE_ANALYSIS as any,
+        jsonFile,
+        'nested/path',
+      );
     });
 
     test('#02 => success is true', () => expect(success).toBe(true));
@@ -129,7 +137,11 @@ describe('Test add and init functions', () => {
 
   describe('#05 => remove nested.Tooltip', () => {
     test('#01 => remove', () => {
-      success = remove(code.CODEBASE_ANALYSIS as any, 'nested/Tooltip');
+      success = remove(
+        code.CODEBASE_ANALYSIS as any,
+        jsonFile,
+        'nested/Tooltip',
+      );
     });
 
     test('#02 => success is true', () => expect(success).toBe(true));
@@ -153,7 +165,11 @@ describe('Test add and init functions', () => {
 
   describe('#06 => Re-add Tooltip', () => {
     test('#01 => add', () => {
-      success = add(code.CODEBASE_ANALYSIS as any, 'nested/Tooltip');
+      success = add(
+        code.CODEBASE_ANALYSIS as any,
+        jsonFile,
+        'nested/Tooltip',
+      );
     });
 
     test('#02 => success is true', () => expect(success).toBe(true));
