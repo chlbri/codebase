@@ -102,24 +102,18 @@ init(analysis.CODEBASE_ANALYSIS, {
 });
 
 // Add files dynamically using regular slash-separated paths
-add(analysis.CODEBASE_ANALYSIS, 'nested/Tooltip');
+add(
+  analysis.CODEBASE_ANALYSIS,
+  '.project-codebase.json',
+  'nested/Tooltip',
+);
 
 // Remove files dynamically using regular slash-separated paths
-remove(analysis.CODEBASE_ANALYSIS, 'nested/Tooltip');
-```
-
-### Configuration
-
-You can also customize the global configuration used by the programmatic
-API:
-
-```typescript
-import { config } from '@bemedev/codebase';
-
-// Customize the configuration
-config.json = '.my-custom-config.json';
-config.tsConfigPath = '#custom/*';
-config.codebase = '.my-custom-codebase.json';
+remove(
+  analysis.CODEBASE_ANALYSIS,
+  '.project-codebase.json',
+  'nested/Tooltip',
+);
 ```
 
 ## 📊 Output format

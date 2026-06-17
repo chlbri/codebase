@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/codebase",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
   "author": {
     "email": "bri_lvi@icloud.com",

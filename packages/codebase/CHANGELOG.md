@@ -5,6 +5,26 @@
 <details>
 <summary>
 
+## **[1.2.2] - 17/06/2026** => _01:53_
+
+</summary>
+
+- Remove global `config` object and its export from the package
+  (Breaking Change)
+- Refactor `add` and `remove` functions to accept an explicit
+  `jsonConfigPath` string parameter as their second argument instead of
+  relying on global configuration (Breaking Change)
+- Refactor `init` function signature to destructure `InitOptions`
+  directly and remove global config assignment
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.2.1] - 17/06/2026** => _01:16_
 
 </summary>
