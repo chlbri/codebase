@@ -5,6 +5,27 @@
 <details>
 <summary>
 
+## **[1.2.1] - 17/06/2026** => _01:16_
+
+</summary>
+
+- Refactor codebase key generation to use slash-separated paths instead
+  of dot notation (Breaking Change)
+- Fix console log spelling ("Deleting of files" -> "Deletion of files")
+  in `remove` function
+- Add `pathToJsonKey` helper to support slash-separated keys for
+  generated files
+- Clean up unused commented-out code regarding `baseUrl` removal in
+  `init` function
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.2.0] - 16/06/2026** => _23:42_
 
 </summary>

@@ -70,6 +70,8 @@ codebase -o output.json node_modules dist
 
 ### Programmatic API
 
+#### Analyzing and generating the codebase JSON
+
 ```typescript
 import { generate, analyze } from '@bemedev/codebase';
 
@@ -81,6 +83,29 @@ await generate({
   output: 'my-codebase.json',
   excludes: ['node_modules', 'dist'],
 });
+```
+
+#### Managing dependencies programmatically
+
+You can also use the programmatic API to initialize workspace
+configurations and selectively add/remove files using their regular
+slash-separated paths (instead of dot-parsed notation).
+
+```typescript
+import { init, add, remove } from '@bemedev/codebase';
+import analysis from './codebase.json';
+
+// Initialize the project workspace
+init(analysis.CODEBASE_ANALYSIS, {
+  root: 'my-project-src',
+  json: '.project-codebase.json',
+});
+
+// Add files dynamically using regular slash-separated paths
+add(analysis.CODEBASE_ANALYSIS, 'nested/Tooltip');
+
+// Remove files dynamically using regular slash-separated paths
+remove(analysis.CODEBASE_ANALYSIS, 'nested/Tooltip');
 ```
 
 ### Configuration
