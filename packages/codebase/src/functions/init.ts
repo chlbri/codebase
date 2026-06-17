@@ -107,18 +107,6 @@ export const init = (
       // Add the path #bemedev/*
       const relativePath = relative(process.cwd(), folderPath);
 
-      {
-        // Remove baseUrl since typescript 6.0 will no longer use it
-        // const baseUrl = tsconfig.compilerOptions.baseUrl;
-        // if (typeof baseUrl === 'string') {
-        //   // If baseUrl is defined, calculate the relative path with respect to baseUrl
-        //   relativePath = relative(baseUrl, relativePath);
-        // } else {
-        //   // If baseUrl is not defined, use the absolute path
-        //   tsconfig.compilerOptions.baseUrl = '.';
-        // }
-      }
-
       tsconfig.compilerOptions.paths[path] = [`./${relativePath}/*`];
 
       writeFileSync(

@@ -83,7 +83,7 @@ export const remove = (
     });
 
     consoleStars();
-    console.log(`🔧 Deleting of files (${entries.length} files)...`);
+    console.log(`🔧 Deletion of files (${entries.length} files)...`);
 
     // Display files that cannot be deleted
     if (cannotsRemove.length > 0) {
@@ -104,8 +104,7 @@ export const remove = (
     }
 
     const formatteds = safesToRemove.map(key => {
-      const _path =
-        CODEBASE_ANALYSIS[`${key.replaceAll('.', '/')}`].relativePath;
+      const _path = CODEBASE_ANALYSIS[key].relativePath;
       const absolute = join(root, _path);
       return [key, absolute] as const;
     });

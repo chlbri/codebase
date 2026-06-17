@@ -26,7 +26,7 @@ const processFileAnalysis = (
     const _path = relative(
       cwd,
       resolve(dirname(relativePath), moduleSpecifier),
-    ).replaceAll('/', '.');
+    );
 
     const all = additionals
       .concat(pathsEntries)

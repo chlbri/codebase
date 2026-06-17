@@ -17,9 +17,16 @@ export const transformModule = ({
   const out = relative(
     cwd,
     resolve(dirname(relativePath), moduleSpecifier),
-  ).replaceAll('/', '.');
+  );
 
   return out;
+};
+
+export const pathToJsonKey = (relativePath: string, name: string) => {
+  const parts = relativePath.split('/');
+  parts.pop();
+  parts.push(name);
+  return parts.join('/');
 };
 
 export const writeFileAnalysis = (
@@ -27,7 +34,7 @@ export const writeFileAnalysis = (
   folderPath: string,
 ) => {
   const relativePath = fileAnalysis.relativePath;
-  // Create the destination path in .bemedev maintaining the structure
+  // Create the destination path in root maintaining the structure
   const destPath = join(folderPath, relativePath);
   const parsed = parse(destPath);
 
@@ -43,8 +50,7 @@ export const writeFileAnalysis = (
     // Write the types file content
     writeFileSync(destPath, fileContent, 'utf8');
     console.log(`  ✅ ${relativePath}`);
-    const out = parsed.name.replaceAll('/', '.');
-    return out;
+    return pathToJsonKey(relativePath, parsed.name);
   } catch (error) {
     return console.error(`  ❌ Error for ${relativePath}:`, error);
   }
