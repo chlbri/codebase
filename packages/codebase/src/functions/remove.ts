@@ -2,11 +2,7 @@ import edit, { JsonEditor } from 'edit-json-file';
 import { unlinkSync } from 'fs';
 import { join } from 'path';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
-import {
-  consoleStars,
-  getFolderPath,
-  transformModule,
-} from '../helpers';
+import { consoleStars, getFolderPath, transformModule } from '#helpers';
 import { CodebaseAnalysis, FileAnalysis } from '../schemas';
 
 const transformModules = (

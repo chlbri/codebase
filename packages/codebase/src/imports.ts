@@ -5,7 +5,7 @@ import type { ImportInfo } from './schemas';
 /**
  * Resolves the moduleSpecifier using the tsconfig paths if it starts with "#"
  */
-const resolveModuleSpecifier = (
+const _resolveModuleSpecifier = (
   sourceFile: SourceFile,
   moduleSpecifier: string,
 ): string => {
@@ -42,13 +42,25 @@ const resolveModuleSpecifier = (
       const relativePath = relative(sourceFileDir, relativedPath);
 
       // Make sure the relative path starts with ./ or ../
-      return relativePath.startsWith('.')
+      const resolved = relativePath.startsWith('.')
         ? relativePath
         : `./${relativePath}`;
+
+      return resolved;
     }
   }
 
   return moduleSpecifier;
+};
+
+const resolveModuleSpecifier = (
+  sourceFile: SourceFile,
+  moduleSpecifier: string,
+): string => {
+  return _resolveModuleSpecifier(sourceFile, moduleSpecifier).replace(
+    /\.tsx?$/,
+    '',
+  );
 };
 
 /**

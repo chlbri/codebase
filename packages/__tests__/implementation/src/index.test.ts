@@ -1,7 +1,7 @@
 import { add, init, remove } from '@bemedev/codebase';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import code from '../.codebase.json';
+import code from '#json';
 
 describe('Test add and init functions', () => {
   // #region Configuration

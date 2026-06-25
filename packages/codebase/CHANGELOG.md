@@ -5,6 +5,26 @@
 <details>
 <summary>
 
+## **[1.3.0] - 25/06/2026** => _23:10_
+
+</summary>
+
+- Fix `resolveModuleSpecifier` to strip `.ts` and `.tsx` file extensions
+  from resolved module specifiers
+- Refactor helper imports in `remove.ts` to use `#helpers` path alias
+- Add unit tests for `resolveModuleSpecifier` path mapping and extension
+  resolution
+- Configure `#helpers` path alias pointing to `./src/helpers.ts` in
+  `tsconfig.json`
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.2.2] - 17/06/2026** => _01:53_
 
 </summary>

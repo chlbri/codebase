@@ -22,7 +22,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "noEmit": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "paths": {
+      "#helpers": ["./src/helpers.ts"]
+    }
   },
   "exclude": ["./vitest.config.ts", "./rolldown.config.ts", "./lib/**"]
 }
