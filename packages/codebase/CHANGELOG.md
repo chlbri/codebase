@@ -5,6 +5,21 @@
 <details>
 <summary>
 
+## **[1.6.0] - 27/06/2026** => _22:39_
+
+</summary>
+
+- Fix `add` function to resolve codebase entries for directory index paths using slash-separated `/index` instead of `.index`
+- Fix `remove` function to map imported module specifiers using `/index` variants instead of `.index`
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.5.0] - 27/06/2026** => _20:40_
 
 </summary>

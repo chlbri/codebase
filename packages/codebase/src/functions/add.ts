@@ -36,7 +36,7 @@ const processFileAnalysis = (
     if (!canAdd) return;
 
     const toAdd =
-      CODEBASE_ANALYSIS[_path] ?? CODEBASE_ANALYSIS[`${_path}.index`];
+      CODEBASE_ANALYSIS[_path] ?? CODEBASE_ANALYSIS[`${_path}/index`];
     if (!toAdd) return;
 
     additionals.push([_path, toAdd]);
@@ -49,12 +49,11 @@ const processFileAnalysis = (
         moduleSpecifier,
       });
 
-      const array = [_path, `${_path}.index`].filter(p =>
+      const array = [_path, `${_path}/index`].filter(p =>
         keys.includes(p),
       );
 
       if (array.length < 1) return false;
-
       return array.every(p => !all.includes(p));
     });
 

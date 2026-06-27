@@ -24,7 +24,7 @@ const transformModules = (
             moduleSpecifier,
           });
         })
-        .map(_path => [_path, `${_path}.index`]) // Add .index variants
+        .map(_path => [_path, `${_path}/index`]) // Add */index variants
         .flat()
         .filter(s => files.includes(s));
 
