@@ -11,6 +11,8 @@ import { join } from 'path';
 describe('Test lift function', () => {
   const rootDirName = 'lift_temp';
   const folderPath = join(process.cwd(), 'src', rootDirName);
+  const configPath = 'lift_temp_config.json';
+  const configFullPath = join(process.cwd(), configPath);
 
   const file1Path = join(folderPath, 'file1.ts');
   const file2Path = join(folderPath, 'file2.ts');
@@ -21,6 +23,9 @@ describe('Test lift function', () => {
   const cleanUp = () => {
     if (existsSync(folderPath)) {
       rmSync(folderPath, { recursive: true, force: true });
+    }
+    if (existsSync(configFullPath)) {
+      rmSync(configFullPath, { force: true });
     }
   };
 
@@ -40,6 +45,13 @@ describe('Test lift function', () => {
 
     // Create folders
     mkdirSync(nestedFolderPath, { recursive: true });
+
+    // Create config file
+    writeFileSync(
+      configFullPath,
+      JSON.stringify({ path: rootDirName }, null, 2),
+      'utf8',
+    );
 
     // Create file1.ts
     writeFileSync(
@@ -89,7 +101,7 @@ describe('Test lift function', () => {
   afterAll(cleanUp);
 
   test('#01 => run lift', () => {
-    result = lift(rootDirName);
+    result = lift(configPath);
   });
 
   test('#02 => success is true', () => expect(result).toBe(true));

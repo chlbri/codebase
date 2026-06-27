@@ -5,6 +5,24 @@
 <details>
 <summary>
 
+## **[1.5.0] - 27/06/2026** => _20:40_
+
+</summary>
+
+- Refactor `lift` function to load the codebase configuration path,
+  extract the root directory, and prune unused declarations relative to
+  it
+- Refactor import statements in `add.ts` to use type-only import for
+  `JsonEditor`
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.4.0] - 27/06/2026** => _20:25_
 
 </summary>

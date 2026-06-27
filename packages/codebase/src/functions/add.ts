@@ -1,4 +1,4 @@
-import edit, { JsonEditor } from 'edit-json-file';
+import edit, { type JsonEditor } from 'edit-json-file';
 import { dirname, join, relative, resolve } from 'path';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import {

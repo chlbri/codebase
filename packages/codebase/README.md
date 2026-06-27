@@ -128,8 +128,8 @@ folders that become empty.
 ```typescript
 import { lift } from '@bemedev/codebase';
 
-// Prune unused code and perform tree shaking in the specified folder
-lift('my-project-src');
+// Prune unused code and perform tree shaking using the codebase configuration path
+lift('.project-codebase.json');
 ```
 
 ## 📊 Output format

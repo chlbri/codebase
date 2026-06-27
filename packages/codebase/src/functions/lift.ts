@@ -1,3 +1,4 @@
+import edit from 'edit-json-file';
 import {
   existsSync,
   readdirSync,
@@ -6,10 +7,11 @@ import {
   unlinkSync,
 } from 'fs';
 import { join } from 'path';
-import { Project, Node } from 'ts-morph';
+import { Node, Project } from 'ts-morph';
+import { PATH_PROPERTY } from '../constants';
 import { getFolderPath } from '../helpers';
 
-export const lift = (root: string) => {
+const _lift = (root: string) => {
   const folderPath = getFolderPath(root);
   if (!existsSync(folderPath)) {
     console.warn(`Folder not found: ${folderPath}`);
@@ -216,4 +218,21 @@ export const lift = (root: string) => {
   cleanEmptyDirs(folderPath);
 
   return true;
+};
+
+/**
+ *
+ * @param jsonConfigPath
+ * @returns
+ */
+export const lift = (jsonConfigPath: string) => {
+  const json = join(process.cwd(), jsonConfigPath);
+  const file = edit(json);
+  const root = file.get(PATH_PROPERTY);
+
+  if (!root || typeof root !== 'string') {
+    throw new Error('Root path not found in codebase configuration.');
+  }
+
+  return _lift(root);
 };

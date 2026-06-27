@@ -23,10 +23,11 @@ Before starting, explicitly define the target package directory.
 
 ## Flags
 
-| Flag       | Effect                                                               |
-| ---------- | -------------------------------------------------------------------- |
-| `--force`  | Continue to Step 3 even when no meaningful changes are detected      |
-| `--readme` | In Step 3, deeply analyse all diffs and consider README improvements |
+| Flag         | Effect                                                               |
+| ------------ | -------------------------------------------------------------------- |
+| `--force`    | Continue to Step 3 even when no meaningful changes are detected      |
+| `--readme`   | In Step 3, deeply analyse all diffs and consider README improvements |
+| `--no-tests` | Skip running automated tests during the verification phase           |
 
 ## Format Rules
 
