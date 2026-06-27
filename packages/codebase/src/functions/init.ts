@@ -5,7 +5,7 @@ import {
   DEFAULT_PATH_KEY,
   PROPERTIES,
 } from '../constants';
-import { getFolderPath, writeFileAnalysis } from '../helpers';
+import { createTypesStructure, getFolderPath } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
 export interface InitOptions {
@@ -18,29 +18,6 @@ export interface InitOptions {
   path?: string;
   bin?: string;
 }
-
-export const createTypesStructure = (
-  folderPath: string,
-  CODEBASE_ANALYSIS: CodebaseAnalysis,
-) => {
-  const entries = Object.entries(CODEBASE_ANALYSIS).filter(([key]) => {
-    return key.endsWith('types') || key.endsWith('constants');
-  });
-
-  const PATHS: string[] = [];
-
-  console.log(
-    `🔧 Creating types structure (${entries.length} files)...`,
-  );
-
-  for (const [, fileAnalysis] of entries) {
-    const file = writeFileAnalysis(fileAnalysis, folderPath);
-    if (file) PATHS.push(file);
-  }
-
-  console.log(`✅ Types structure successfully created!`);
-  return PATHS;
-};
 
 export const init = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
@@ -132,6 +109,6 @@ export const init = (
     return false;
   }
 
-  console.log(`🎉 Bemedev initialization completed successfully!`);
+  console.log(`🎉 ${bin} initialization completed successfully!`);
   return true;
 };

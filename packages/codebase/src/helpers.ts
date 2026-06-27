@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { dirname, join, relative, resolve, parse } from 'path';
 import { REPLACERS } from './constants';
-import { FileAnalysis } from './schemas';
+import { FileAnalysis, type CodebaseAnalysis } from './schemas';
 
 export type TransformModuleArgs = {
   cwd?: string;
@@ -74,4 +74,33 @@ export const getFolderPath = (root: string) => {
     : join(cwd, root);
 
   return folderPath;
+};
+
+export const createTypesStructure = (
+  folderPath: string,
+  CODEBASE_ANALYSIS: CodebaseAnalysis,
+) => {
+  const entries = Object.entries(CODEBASE_ANALYSIS).filter(([key]) => {
+    return key.endsWith('types') || key.endsWith('constants');
+  });
+
+  const PATHS: string[] = [];
+
+  console.log(
+    `🔧 Creating types structure (${entries.length} files)...`,
+  );
+
+  for (const [, fileAnalysis] of entries) {
+    try {
+      const file = writeFileAnalysis(fileAnalysis, folderPath);
+      if (file) PATHS.push(file);
+    } catch {
+      console.error(
+        `❌ Error creating the file ${fileAnalysis.relativePath}:`,
+      );
+    }
+  }
+
+  console.log(`✅ Types structure successfully created!`);
+  return PATHS;
 };
