@@ -5,6 +5,28 @@
 <details>
 <summary>
 
+## **[1.4.0] - 27/06/2026** => _20:25_
+
+</summary>
+
+- Add `lift` function to prune unused declarations (references, types,
+  variables, classes, functions, enums) and standardize imports within a
+  target folder, deleting resulting empty source files and folders
+- Add `softInit` function to rebuild types and imports structure from a
+  codebase analysis when configuration and paths are already defined
+- Refactor `init` function to return early if the configuration file
+  already exists
+- Refactor type structure creation helper logic into a separate
+  `createTypesStructure` utility in `helpers.ts`
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.3.0] - 25/06/2026** => _23:10_
 
 </summary>

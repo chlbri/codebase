@@ -1,7 +1,7 @@
 # @bemedev/codebase
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Node.js](https://img.shields.io/badge/node-%3E%3D22-green.svg)
+![Node.js](https://img.shields.io/badge/node-%3E%3D24-green.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
 
 A powerful CLI to generate and analyze your TypeScript/JavaScript
@@ -17,6 +17,8 @@ comprehensive analyses of your source code.
 - **📦 Partial import**: Selective import of library parts
 - **🎯 Flexible exclusion**: Ability to exclude specific files
 - **📈 Statistics**: Detailed reports about your codebase
+- **🧹 Code pruning**: Automatic removal of unused declarations, empty
+  files, and empty folders in target directories
 
 ## 📋 Prerequisites
 
@@ -116,6 +118,20 @@ remove(
 );
 ```
 
+#### Pruning unused code programmatically
+
+You can use the `lift` function to prune unused declarations
+(references, types, variables, classes, functions, or enums) and clean
+up imports within a target folder, automatically deleting files and
+folders that become empty.
+
+```typescript
+import { lift } from '@bemedev/codebase';
+
+// Prune unused code and perform tree shaking in the specified folder
+lift('my-project-src');
+```
+
 ## 📊 Output format
 
 The generated JSON file contains:
@@ -146,7 +162,9 @@ src/
 │   ├── add.ts     # Add dependencies
 │   ├── generate.ts # Generate analysis
 │   ├── init.ts    # Initialization
-│   └── remove.ts  # Removal
+│   ├── lift.ts    # Code pruning/tree shaking
+│   ├── remove.ts  # Removal
+│   └── softInit.ts # Soft initialization helper
 ├── analyse.ts     # Analysis engine
 ├── types.ts       # TypeScript definitions
 └── constants.ts   # Global constants
