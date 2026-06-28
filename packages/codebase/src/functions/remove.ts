@@ -5,6 +5,14 @@ import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import { consoleStars, getFolderPath, transformModule } from '#helpers';
 import { CodebaseAnalysis, FileAnalysis } from '../schemas';
 
+/**
+ * Resolves the module specifiers for a list of file analysis entries,
+ * mapping which files import which other files within the codebase.
+ *
+ * @param entries - List of all entries to analyze imports from.
+ * @param files - List of codebase file keys to track and resolve modules against.
+ * @returns An array of tuples mapping each entry key to the list of resolved codebase file keys it imports.
+ */
 const transformModules = (
   entries: [string, FileAnalysis][],
   ...files: string[]
@@ -34,6 +42,16 @@ const transformModules = (
   return out;
 };
 
+/**
+ * Safely removes files from the project configuration and deletes them from disk.
+ * Before deletion, it performs dependency checks to ensure that no file slated for removal
+ * is imported by other files remaining in the codebase.
+ *
+ * @param CODEBASE_ANALYSIS - The full codebase analysis object.
+ * @param jsonConfigPath - The relative path to the codebase JSON configuration file.
+ * @param paths - The target file paths or directory prefixes to remove.
+ * @returns True if files were successfully deleted and config updated; false if deletion errors occur.
+ */
 export const remove = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   jsonConfigPath: string,

@@ -8,17 +8,41 @@ import {
 import { createTypesStructure, getFolderPath } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
+/**
+ * Options for initializing the codebase workspace configuration.
+ */
 export interface InitOptions {
   /**
-   * Custom location for the .bemedev folder
-   * Default: 'src/.bemedev' if src exists, otherwise '.bemedev' at the root
+   * Custom location for the codebase folder (e.g. 'src/.bemedev' if src exists,
+   * otherwise '.bemedev' at the root of the project).
    */
   root: string;
+  /**
+   * The relative path to the JSON configuration file to be created.
+   */
   json: string;
+  /**
+   * The path mapping key to add to tsconfig.json (e.g. '#bemedev/*').
+   */
   path?: string;
+  /**
+   * The binary command or CLI name (used in CLI feedback).
+   */
   bin?: string;
 }
 
+/**
+ * Initializes the codebase workspace by creating the target types folder structure,
+ * updating the local tsconfig.json with path aliases, and writing a JSON config file.
+ *
+ * @param CODEBASE_ANALYSIS - The full codebase analysis object.
+ * @param options - The initialization options.
+ * @param options.root - Target directory for generated type files.
+ * @param options.json - Target filepath for the codebase JSON config file.
+ * @param options.path - The tsconfig compiler path alias key. Defaults to '#bemedev/*'.
+ * @param options.bin - The CLI command binary name used in logging. Defaults to 'bemedev'.
+ * @returns True if initialization completes successfully; false if folder creation, typescript structures, or config generation fails.
+ */
 export const init = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   {

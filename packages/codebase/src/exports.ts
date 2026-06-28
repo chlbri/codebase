@@ -1,4 +1,5 @@
 import { SourceFile, SyntaxKind } from 'ts-morph';
+import { resolveModuleSpecifier } from './helpers';
 import type { ExportInfo } from './schemas';
 
 export const analyzeExports = (sourceFile: SourceFile) => {
@@ -6,24 +7,32 @@ export const analyzeExports = (sourceFile: SourceFile) => {
 
   // Export declarations (export ...)
   sourceFile.getExportDeclarations().forEach(exportDecl => {
-    const moduleSpecifier = exportDecl.getModuleSpecifierValue();
+    const rawModuleSpecifier = exportDecl.getModuleSpecifierValue();
+    const moduleSpecifier = rawModuleSpecifier
+      ? resolveModuleSpecifier(sourceFile, rawModuleSpecifier)
+      : undefined;
     const exportText = exportDecl.getText();
 
     // Named exports
     const namedExports = exportDecl.getNamedExports();
     namedExports.forEach(namedExport => {
+      const aliasNode = namedExport.getAliasNode();
+      const name = aliasNode
+        ? aliasNode.getText()
+        : namedExport.getName();
       exports.push({
-        name: namedExport.getName(),
+        name,
         kind: 'named',
         text: exportText,
         moduleSpecifier,
       });
     });
 
-    // Namespace export (export * from '...')
+    // Namespace export (export * from '...' or export * as ns from '...')
     if (exportDecl.isNamespaceExport()) {
+      const namespaceExport = exportDecl.getNamespaceExport();
       exports.push({
-        name: '*',
+        name: namespaceExport ? namespaceExport.getName() : '*',
         kind: 'namespace',
         text: exportText,
         moduleSpecifier,

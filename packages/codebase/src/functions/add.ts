@@ -10,6 +10,17 @@ import {
 import { CodebaseAnalysis, type FileAnalysis } from '../schemas';
 import type { NOmit } from '../types';
 
+/**
+ * Recursively processes the file analysis of a target file, scanning its imports
+ * and determining which imported files also need to be added to the codebase list.
+ *
+ * @param analysis - The file analysis details of the file being processed (omitting exports).
+ * @param cwd - The current working directory.
+ * @param additionals - A mutable list tracking additional file analyses that need to be added.
+ * @param pathsEntries - The initial list of file entries specified to be added.
+ * @param files - The current list of files already tracked in the codebase configuration.
+ * @param CODEBASE_ANALYSIS - The full codebase analysis object containing all file structures.
+ */
 const processFileAnalysis = (
   analysis: NOmit<FileAnalysis, 'exports'>,
   cwd: string,
@@ -73,6 +84,15 @@ const processFileAnalysis = (
   });
 };
 
+/**
+ * Adds files and their required internal dependencies to the codebase configuration
+ * file, creating the files on disk inside the root folder using their analyses.
+ *
+ * @param CODEBASE_ANALYSIS - The full codebase analysis object.
+ * @param jsonConfigPath - The relative path to the codebase JSON configuration file.
+ * @param paths - The file paths (module specifiers or directories) to add.
+ * @returns True if the files were successfully added and the configuration was updated; false otherwise.
+ */
 export const add = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   jsonConfigPath: string,

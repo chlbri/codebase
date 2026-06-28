@@ -1,67 +1,6 @@
-import { join, relative } from 'path';
 import { SourceFile, SyntaxKind } from 'ts-morph';
+import { resolveModuleSpecifier } from './helpers';
 import type { ImportInfo } from './schemas';
-
-/**
- * Resolves the moduleSpecifier using the tsconfig paths if it starts with "#"
- */
-const _resolveModuleSpecifier = (
-  sourceFile: SourceFile,
-  moduleSpecifier: string,
-): string => {
-  const paths = sourceFile.getProject().getCompilerOptions().paths;
-
-  if (!paths) return moduleSpecifier;
-
-  const baseUrl = sourceFile.getProject().getCompilerOptions().baseUrl;
-  const paths2 = Object.entries(paths);
-
-  // Find the match in paths
-  for (const [pattern, mappings] of paths2) {
-    // Replace * with a regex to match
-    const regexPattern = pattern.replace(/\*/g, '(.*)');
-    const regex = new RegExp(`^${regexPattern}$`);
-    const match = moduleSpecifier.match(regex);
-
-    if (match) {
-      // Take the first available mapping
-      const first = mappings[0];
-
-      // Resolve the absolute path
-      let relativedPath = baseUrl ? join(baseUrl, first) : first;
-
-      if (match[1]) {
-        relativedPath = relativedPath.replace('*', match[1]);
-      }
-
-      // Calculate the relative path from the current source file
-      const sourceFileDir = relative(
-        process.cwd(),
-        sourceFile.getDirectoryPath(),
-      );
-      const relativePath = relative(sourceFileDir, relativedPath);
-
-      // Make sure the relative path starts with ./ or ../
-      const resolved = relativePath.startsWith('.')
-        ? relativePath
-        : `./${relativePath}`;
-
-      return resolved;
-    }
-  }
-
-  return moduleSpecifier;
-};
-
-const resolveModuleSpecifier = (
-  sourceFile: SourceFile,
-  moduleSpecifier: string,
-): string => {
-  return _resolveModuleSpecifier(sourceFile, moduleSpecifier).replace(
-    /\.tsx?$/,
-    '',
-  );
-};
 
 /**
  * Analyzes a file's imports

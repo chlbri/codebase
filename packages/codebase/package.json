@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/codebase",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
   "author": {
     "email": "bri_lvi@icloud.com",
@@ -77,10 +77,8 @@
     "lint:watch": "onchange --await-write-finish 1500 -d 10000 -v \"**/*.ts\" -- pnpm run lint",
     "p-q": "pretty-quick",
     "posttest": "pnpm run fmt",
-    "prepare": "husky",
     "prepublishOnly": "",
     "pretest": "pnpm run build && pnpm run size",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "rinit": "pnpm run rm && pnpm run config",
     "rinit:off": "pnpm run rm && pnpm run config:off",
     "rimraf": "pnpx rimraf -rf",

@@ -5,6 +5,24 @@
 <details>
 <summary>
 
+## **[1.8.0] - 28/06/2026** => _14:03_
+
+</summary>
+
+- Change signature of `lift` function to accept `CODEBASE_ANALYSIS` and exceptions (Breaking Change)
+- Add support for named alias exports and namespace alias exports in codebase export analysis
+- Enhance `lift` function to recursively clean up export declarations targeting deleted empty files
+- Refactor helper imports and extract `resolveModuleSpecifier` to unify import and export resolution
+- Add JSDoc comments to public API functions (`add`, `generate`, `init`, `lift`, `remove`, `softInit`)
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.7.0] - 28/06/2026** => _00:09_
 
 </summary>
