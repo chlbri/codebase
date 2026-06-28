@@ -1,6 +1,11 @@
+import editJsonFile from 'edit-json-file';
 import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { join, relative } from 'path';
-import { DEFAULT_CLI_NAME, DEFAULT_PATH_KEY } from '../constants';
+import {
+  DEFAULT_CLI_NAME,
+  DEFAULT_PATH_KEY,
+  PROPERTIES,
+} from '../constants';
 import { createTypesStructure, getFolderPath } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 import type { InitOptions } from './init';
@@ -53,14 +58,31 @@ export const softInit = (
 
   if (!checkPaths) return false;
 
+  const files = new Set<string>();
+  const jsonFile = editJsonFile(configFile);
+  (jsonFile.get(PROPERTIES.FILES) as string[])?.forEach(file =>
+    files.add(file),
+  );
+
   try {
-    createTypesStructure(folderPath, CODEBASE_ANALYSIS);
+    createTypesStructure(folderPath, CODEBASE_ANALYSIS).forEach(file =>
+      files.add(file),
+    );
   } catch {
     console.error(`❌ Error creating the types structure:`);
     return false;
   }
 
-  // 3. Create the .bemedev.json file at the root
+  // Create the .bemedev.json file at the root
+
+  try {
+    jsonFile.set(PROPERTIES.FILES, Array.from(files));
+    jsonFile.save();
+    console.log(`✅ File ${json} rewrited at the root of the project`);
+  } catch (error) {
+    console.error(`❌ Error rewriting the file ${json}:`, error);
+    return false;
+  }
 
   console.log(`🎉 ${bin} soft initialization completed successfully!`);
   return true;

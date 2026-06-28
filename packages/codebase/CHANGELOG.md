@@ -5,6 +5,20 @@
 <details>
 <summary>
 
+## **[2.1.0] - 28/06/2026** => _22:14_
+
+</summary>
+
+- Update `softInit` function to save the generated type files list into the codebase JSON config file
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[2.0.0] - 28/06/2026** => _21:52_
 
 </summary>
