@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { join, relative } from 'path';
 import { DEFAULT_CLI_NAME, DEFAULT_PATH_KEY } from '../constants';
 import { createTypesStructure, getFolderPath } from '../helpers';
@@ -35,7 +35,9 @@ export const softInit = (
   if (!configExists) return false;
 
   const folderPath = getFolderPath(root);
-  if (!existsSync(folderPath)) return false;
+  if (!existsSync(folderPath)) {
+    mkdirSync(folderPath, { recursive: true });
+  }
 
   const tsconfigPath = join(cwd, 'tsconfig.json');
   const tsConfigExists = existsSync(tsconfigPath);

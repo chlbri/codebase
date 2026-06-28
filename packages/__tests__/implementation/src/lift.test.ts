@@ -67,10 +67,12 @@ describe('Lift function', () => {
       writeFileSync(
         file1Path,
         `
+        import * as file2 from './file2';
         export const usedAcrossFiles = 42;
         export const unusedAcrossFiles = 100;
         export type UnusedType = string;
         export type UsedAcrossFilesType = number;
+        console.log(file2.myVar);
         `,
         'utf8',
       );
@@ -79,9 +81,9 @@ describe('Lift function', () => {
       writeFileSync(
         file2Path,
         `
-        import { usedAcrossFiles, UsedAcrossFilesType } from './file1';
+        import * as file1 from './file1';
         import { unusedImport } from './file3';
-        export const myVar: UsedAcrossFilesType = usedAcrossFiles;
+        export const myVar: file1.UsedAcrossFilesType = file1.usedAcrossFiles;
         export const unusedVar = 200;
         console.log(myVar);
         `,
@@ -120,7 +122,7 @@ describe('Lift function', () => {
     afterAll(cleanUp);
 
     test('#01 => run lift', () => {
-      const analysis = analyze({ src: 'src' });
+      const analysis = analyze({ src: folderPath });
       result = lift(analysis, configPath);
     });
 
@@ -210,10 +212,12 @@ describe('Lift function', () => {
       writeFileSync(
         file1Path,
         `
+        import * as file2 from './file2';
         export const usedAcrossFiles = 42;
         export const unusedAcrossFiles = 100;
         export type UnusedType = string;
         export type UsedAcrossFilesType = number;
+        console.log(file2.myVar);
         `,
         'utf8',
       );
@@ -222,8 +226,8 @@ describe('Lift function', () => {
       writeFileSync(
         file2Path,
         `
-        import { usedAcrossFiles } from './file1';
-        export const myVar = usedAcrossFiles;
+        import * as file1 from './file1';
+        export const myVar = file1.usedAcrossFiles;
         console.log(myVar);
         `,
         'utf8',
@@ -233,7 +237,7 @@ describe('Lift function', () => {
     afterAll(cleanUp);
 
     test('#01 => run lift with exceptions', () => {
-      const analysis = analyze({ src: 'src' });
+      const analysis = analyze({ src: folderPath });
       // Protect unusedAcrossFiles and UnusedType
       result = lift(
         analysis,
@@ -309,19 +313,20 @@ describe('Lift function', () => {
         `
         export * from './nested';
         export { someVar } from './nested/empty';
+        export const keepMe = 1;
         `,
         'utf8',
       );
 
       // Create nested/empty.ts which is empty
-      writeFileSync(emptyFilePath, '', 'utf8');
+      writeFileSync(emptyFilePath, '', 'utf8'); 
     });
 
     afterAll(cleanUp);
 
     test('#01 => run lift', () => {
-      const analysis = analyze({ src: 'src' });
-      result = lift(analysis, configPath);
+      const analysis = analyze({ src: folderPath });
+      result = lift(analysis, configPath, 'keepMe');
     });
 
     test('#02 => success is true', () => expect(result).toBe(true));

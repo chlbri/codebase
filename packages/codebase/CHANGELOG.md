@@ -5,6 +5,23 @@
 <details>
 <summary>
 
+## **[2.0.0] - 28/06/2026** => _21:52_
+
+</summary>
+
+- Add `hasNoDeclarations` helper function to determine if a TypeScript file has no declarations, and export it in the public API
+- Update empty file pruning in `lift` function to check for the absence of declarations using `hasNoDeclarations` rather than checking for whitespace-only text
+- Enhance `softInit` function to recursively create the target directory if it does not exist
+- Enhance codebase lifting to resolve exporting file paths using the correct target folder path
+- Fix reference-searching logic in unused imports and declarations pruning to prevent self-reference checks and ensure correct node comparison
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+<details>
+<summary>
+
 ## **[1.9.0] - 28/06/2026** => _14:47_
 
 </summary>

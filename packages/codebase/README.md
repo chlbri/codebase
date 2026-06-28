@@ -144,6 +144,21 @@ lift(
 );
 ```
 
+#### Helper utilities
+
+You can also use helper utilities exported from the library:
+
+```typescript
+import { hasNoDeclarations } from '@bemedev/codebase';
+import { Project } from 'ts-morph';
+
+const project = new Project();
+const sf = project.createSourceFile('test.ts', 'export const a = 1;');
+
+// Check if a source file contains no declarations (types, variables, classes, functions, enums, interfaces, namespaces)
+console.log(hasNoDeclarations(sf)); // false
+```
+
 ## 📊 Output format
 
 The generated JSON file contains:

@@ -168,3 +168,21 @@ export const createTypesStructure = (
   console.log(`✅ Types structure successfully created!`);
   return PATHS;
 };
+
+/**
+ * Checks if a SourceFile does not contain any declarations (types, variables, classes, functions, enums, interfaces, namespaces).
+ *
+ * @param sourceFile - The ts-morph SourceFile instance.
+ * @returns `true` if the file has no declarations; `false` otherwise.
+ */
+export const hasNoDeclarations = (sourceFile: SourceFile): boolean => {
+  return (
+    sourceFile.getClasses().length === 0 &&
+    sourceFile.getFunctions().length === 0 &&
+    sourceFile.getVariableDeclarations().length === 0 &&
+    sourceFile.getTypeAliases().length === 0 &&
+    sourceFile.getInterfaces().length === 0 &&
+    sourceFile.getEnums().length === 0 &&
+    sourceFile.getModules().length === 0
+  );
+};

@@ -9,7 +9,7 @@ import {
 import { join, relative, resolve } from 'path';
 import { Node, Project } from 'ts-morph';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
-import { getFolderPath, getSrcDir } from '../helpers';
+import { getFolderPath, hasNoDeclarations } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
 /**
@@ -31,14 +31,16 @@ const removeUnusedDeclarations = (
   const declarations = project
     .getSourceFiles()
     .filter(sf => isInsideFolder(sf.getFilePath()))
-    .flatMap(sf => [
-      ...sf.getTypeAliases(),
-      ...sf.getInterfaces(),
-      ...sf.getVariableDeclarations(),
-      ...sf.getFunctions(),
-      ...sf.getClasses(),
-      ...sf.getEnums(),
-    ]);
+    .flatMap(sf => {
+      return [
+        ...sf.getTypeAliases(),
+        ...sf.getInterfaces(),
+        ...sf.getVariableDeclarations(),
+        ...sf.getFunctions(),
+        ...sf.getClasses(),
+        ...sf.getEnums(),
+      ];
+    });
 
   for (const decl of declarations) {
     if (decl.wasForgotten()) continue;
@@ -49,14 +51,16 @@ const removeUnusedDeclarations = (
     const name = nameNode.getText();
     if (exceptions.includes(name)) continue;
 
+    const declPath = decl.getSourceFile().getFilePath();
     const referencedSymbols = nameNode.findReferences();
     let refCount = 0;
 
     for (const refSymbol of referencedSymbols) {
       for (const ref of refSymbol.getReferences()) {
-        if (ref.getNode() !== nameNode) {
-          refCount++;
-        }
+        const refPath = ref.getSourceFile().getFilePath();
+        const check1 = refPath !== declPath;
+        const check2 = ref.getNode() !== nameNode;
+        if (check1 && check2) refCount++;
       }
     }
 
@@ -105,16 +109,17 @@ const removeUnusedImports = (
       const name = nameNode.getText();
       if (exceptions.includes(name)) continue;
 
+      const declPath = spec.getSourceFile().getFilePath();
       const referencedSymbols = nameNode.findReferences();
       let refCount = 0;
       for (const refSymbol of referencedSymbols) {
         for (const ref of refSymbol.getReferences()) {
-          if (
-            ref.getSourceFile() === sf &&
-            ref.getNode() !== nameNode
-          ) {
-            refCount++;
-          }
+          const refSource = ref.getSourceFile();
+          const refPath = refSource.getFilePath();
+          const check1 = refPath !== declPath;
+          const check2 = ref.getNode() !== nameNode;
+          const check3 = refSource === sf;
+          if (check1 && check2 && check3) refCount++;
         }
       }
       if (refCount === 0) {
@@ -132,16 +137,17 @@ const removeUnusedImports = (
     ) {
       const name = defaultImport.getText();
       if (!exceptions.includes(name)) {
+        const declPath = defaultImport.getSourceFile().getFilePath();
         const referencedSymbols = defaultImport.findReferences();
         let refCount = 0;
         for (const refSymbol of referencedSymbols) {
           for (const ref of refSymbol.getReferences()) {
-            if (
-              ref.getSourceFile() === sf &&
-              ref.getNode() !== defaultImport
-            ) {
-              refCount++;
-            }
+            const refSource = ref.getSourceFile();
+            const refPath = refSource.getFilePath();
+            const check1 = refPath !== declPath;
+            const check2 = ref.getNode() !== defaultImport;
+            const check3 = refSource === sf;
+            if (check1 && check2 && check3) refCount++;
           }
         }
         if (refCount === 0) {
@@ -215,7 +221,6 @@ const cleanEmptySourceFiles = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
   entriesWithExports: [string, any][],
-  srcDir: string,
   folderPath: string,
   jsonConfigPath: string,
 ): boolean => {
@@ -225,22 +230,25 @@ const cleanEmptySourceFiles = (
 
   for (const sf of sourceFiles) {
     const filePath = sf.getFilePath();
+    const check = isInsideFolder(filePath) && hasNoDeclarations(sf);
 
-    if (isInsideFolder(filePath) && sf.getFullText().trim() === '') {
+    if (check) {
       const deletedPathWithoutExt = filePath.replace(/\.tsx?$/, '');
 
       for (const [, fileAnalysis] of entriesWithExports) {
         const exportingFilePath = join(
-          srcDir,
+          folderPath,
           fileAnalysis.relativePath,
         );
 
         const exportingSf = project.getSourceFile(exportingFilePath);
+
         if (exportingSf) {
           const exportDecls = exportingSf.getExportDeclarations();
 
           for (const decl of exportDecls) {
             const moduleSpecifier = decl.getModuleSpecifierValue();
+
             if (moduleSpecifier) {
               const resolvedSpec = resolve(
                 exportingSf.getDirectoryPath(),
@@ -312,6 +320,7 @@ const cleanEmptyDirectories = (
   }
 
   const remaining = readdirSync(dir);
+
   if (remaining.length === 0) {
     for (const [, fileAnalysis] of entriesWithExports) {
       const exportingFilePath = join(srcDir, fileAnalysis.relativePath);
@@ -356,14 +365,15 @@ const _lift = (
   exceptions: string[],
 ): boolean => {
   const folderPath = getFolderPath(root);
+
   if (!existsSync(folderPath)) {
     console.warn(`Folder not found: ${folderPath}`);
     return false;
   }
 
-  const tsconfigPath = join(process.cwd(), 'tsconfig.json');
-  const project = existsSync(tsconfigPath)
-    ? new Project({ tsConfigFilePath: tsconfigPath })
+  const tsConfigFilePath = join(process.cwd(), 'tsconfig.json');
+  const project = existsSync(tsConfigFilePath)
+    ? new Project({ tsConfigFilePath })
     : new Project();
 
   // Add all source files recursively
@@ -390,8 +400,6 @@ const _lift = (
     changed = removeUnusedImports(project, isInsideFolder, exceptions);
   }
 
-  const srcDir = getSrcDir();
-
   const entriesWithExports = Object.entries(CODEBASE_ANALYSIS).filter(
     ([, val]) => val.exports && val.exports.length > 0,
   );
@@ -403,7 +411,6 @@ const _lift = (
       project,
       isInsideFolder,
       entriesWithExports,
-      srcDir,
       folderPath,
       jsonConfigPath,
     );
@@ -414,7 +421,7 @@ const _lift = (
     folderPath,
     project,
     entriesWithExports,
-    srcDir,
+    folderPath,
   );
 
   // Save changes
