@@ -136,7 +136,12 @@ import { lift } from '@bemedev/codebase';
 import analysis from './codebase.json';
 
 // Prune unused code and perform tree shaking using the codebase configuration path and optional exceptions
-lift(analysis.CODEBASE_ANALYSIS, '.project-codebase.json', 'exceptionVar1', 'exceptionVar2');
+lift(
+  analysis.CODEBASE_ANALYSIS,
+  '.project-codebase.json',
+  'exceptionVar1',
+  'exceptionVar2',
+);
 ```
 
 ## 📊 Output format

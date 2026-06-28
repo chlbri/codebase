@@ -6,9 +6,9 @@ import {
   statSync,
   unlinkSync,
 } from 'fs';
-import { join, resolve } from 'path';
+import { join, relative, resolve } from 'path';
 import { Node, Project } from 'ts-morph';
-import { PATH_PROPERTY } from '../constants';
+import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
 import { getFolderPath, getSrcDir } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
@@ -207,17 +207,25 @@ const removeUnusedImports = (
  * @param isInsideFolder - A function that returns true if a file path is inside the target folder.
  * @param entriesWithExports - Codebase analysis entries containing exported files.
  * @param srcDir - The absolute codebase source directory path.
- * @returns True if at least one file was deleted; false otherwise.
+ * @param folderPath - The absolute codebase target folder path.
+ * @param jsonConfigPath - The codebase JSON config filepath.
+ * @returns `true` if at least one file was deleted; false otherwise.
  */
 const cleanEmptySourceFiles = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
   entriesWithExports: [string, any][],
   srcDir: string,
+  folderPath: string,
+  jsonConfigPath: string,
 ): boolean => {
   const sourceFiles = project.getSourceFiles();
+  const json = join(process.cwd(), jsonConfigPath);
+  const file = edit(json);
+
   for (const sf of sourceFiles) {
     const filePath = sf.getFilePath();
+
     if (isInsideFolder(filePath) && sf.getFullText().trim() === '') {
       const deletedPathWithoutExt = filePath.replace(/\.tsx?$/, '');
 
@@ -226,9 +234,11 @@ const cleanEmptySourceFiles = (
           srcDir,
           fileAnalysis.relativePath,
         );
+
         const exportingSf = project.getSourceFile(exportingFilePath);
         if (exportingSf) {
           const exportDecls = exportingSf.getExportDeclarations();
+
           for (const decl of exportDecls) {
             const moduleSpecifier = decl.getModuleSpecifierValue();
             if (moduleSpecifier) {
@@ -236,18 +246,34 @@ const cleanEmptySourceFiles = (
                 exportingSf.getDirectoryPath(),
                 moduleSpecifier,
               ).replace(/\.tsx?$/, '');
-              if (resolvedSpec === deletedPathWithoutExt) {
-                decl.remove();
-              }
+
+              if (resolvedSpec === deletedPathWithoutExt) decl.remove();
             }
           }
         }
       }
 
       project.removeSourceFile(sf);
-      if (existsSync(filePath)) {
-        unlinkSync(filePath);
+      if (existsSync(filePath)) unlinkSync(filePath);
+
+      // Remove the file from jsonConfigPath
+      const relPath = relative(folderPath, filePath).replace(
+        /\\/g,
+        '/',
+      );
+      const key = relPath.replace(/\.tsx?$/, '');
+
+      if (existsSync(json)) {
+        const files = file.get(FILES_PROPERTY) as string[] | undefined;
+        if (files) {
+          file.set(
+            FILES_PROPERTY,
+            files.filter(f => f !== key),
+          );
+          file.save();
+        }
       }
+
       return true;
     }
   }
@@ -256,23 +282,58 @@ const cleanEmptySourceFiles = (
 };
 
 /**
- * Recursively scans and cleans up empty subdirectories within the specified directory.
+ * Recursively scans and cleans up empty subdirectories within the specified directory,
+ * and removes any export declarations targeting files inside those empty subdirectories.
  *
  * @param dir - The directory path to inspect and clean.
+ * @param project - The ts-morph project instance.
+ * @param entriesWithExports - Codebase analysis entries containing exported files.
+ * @param srcDir - The absolute codebase source directory path.
  */
-const cleanEmptyDirectories = (dir: string): void => {
+const cleanEmptyDirectories = (
+  dir: string,
+  project: Project,
+  entriesWithExports: [string, any][],
+  srcDir: string,
+): void => {
   if (!existsSync(dir) || !statSync(dir).isDirectory()) return;
 
   const files = readdirSync(dir);
   for (const file of files) {
     const fullPath = join(dir, file);
     if (statSync(fullPath).isDirectory()) {
-      cleanEmptyDirectories(fullPath);
+      cleanEmptyDirectories(
+        fullPath,
+        project,
+        entriesWithExports,
+        srcDir,
+      );
     }
   }
 
   const remaining = readdirSync(dir);
   if (remaining.length === 0) {
+    for (const [, fileAnalysis] of entriesWithExports) {
+      const exportingFilePath = join(srcDir, fileAnalysis.relativePath);
+      const exportingSf = project.getSourceFile(exportingFilePath);
+
+      if (exportingSf) {
+        const exportDecls = exportingSf.getExportDeclarations();
+
+        for (const decl of exportDecls) {
+          const moduleSpecifier = decl.getModuleSpecifierValue();
+
+          if (moduleSpecifier) {
+            const resolvedSpec = resolve(
+              exportingSf.getDirectoryPath(),
+              moduleSpecifier,
+            ).replace(/\.tsx?$/, '');
+
+            if (resolvedSpec.startsWith(dir)) decl.remove();
+          }
+        }
+      }
+    }
     rmdirSync(dir);
   }
 };
@@ -283,12 +344,14 @@ const cleanEmptyDirectories = (dir: string): void => {
  * purges empty files and empty folders, and saves changes back to disk.
  *
  * @param root - The codebase target folder path.
+ * @param jsonConfigPath - The codebase JSON config filepath.
  * @param CODEBASE_ANALYSIS - The full codebase analysis configuration object.
  * @param exceptions - An array of identifiers to preserve during pruning.
  * @returns True if successful, false otherwise.
  */
 const _lift = (
   root: string,
+  jsonConfigPath: string,
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   exceptions: string[],
 ): boolean => {
@@ -341,13 +404,21 @@ const _lift = (
       isInsideFolder,
       entriesWithExports,
       srcDir,
+      folderPath,
+      jsonConfigPath,
     );
   }
 
+  // Phase D: Clean empty directories
+  cleanEmptyDirectories(
+    folderPath,
+    project,
+    entriesWithExports,
+    srcDir,
+  );
+
   // Save changes
   project.saveSync();
-  // Phase D: Clean empty directories
-  cleanEmptyDirectories(folderPath);
   return true;
 };
 
@@ -358,8 +429,9 @@ const _lift = (
  * @param CODEBASE_ANALYSIS - The full codebase analysis config.
  * @param jsonConfigPath - The codebase JSON config filepath.
  * @param exceptions - A parameter array of variable, function, class, or type names to preserve.
- * @returns True if the codebase lifting was successfully completed.
- * @throws Error if the root folder configuration is not found.
+ * @returns `true` if the codebase lifting was successfully completed.
+ *
+ * throws {@linkcode Error} if the root folder configuration is not found.
  */
 export const lift = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
@@ -374,5 +446,5 @@ export const lift = (
     throw new Error('Root path not found in codebase configuration.');
   }
 
-  return _lift(root, CODEBASE_ANALYSIS, exceptions);
+  return _lift(root, jsonConfigPath, CODEBASE_ANALYSIS, exceptions);
 };

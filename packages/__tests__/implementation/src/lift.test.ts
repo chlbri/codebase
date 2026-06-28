@@ -52,7 +52,14 @@ describe('Lift function', () => {
       // Create config file
       writeFileSync(
         configFullPath,
-        JSON.stringify({ path: rootDirName }, null, 2),
+        JSON.stringify(
+          {
+            path: rootDirName,
+            files: ['file1', 'file2', 'file3', 'nested/empty', 'file4'],
+          },
+          null,
+          2,
+        ),
         'utf8',
       );
 
@@ -151,6 +158,10 @@ describe('Lift function', () => {
     test('#15 => nested gone', () =>
       expect(nestedExists()).toBe(false));
     test('#16 => file4 gone', () => expect(file4Exists()).toBe(false));
+    test('#17 => config files array updated', () => {
+      const config = JSON.parse(readFileSync(configFullPath, 'utf8'));
+      expect(config.files).toEqual(['file1', 'file2']);
+    });
   });
 
   describe('#02 => With exceptions', () => {
@@ -184,7 +195,14 @@ describe('Lift function', () => {
       // Create config file
       writeFileSync(
         configFullPath,
-        JSON.stringify({ path: rootDirName }, null, 2),
+        JSON.stringify(
+          {
+            path: rootDirName,
+            files: ['file1', 'file2'],
+          },
+          null,
+          2,
+        ),
         'utf8',
       );
 
@@ -235,5 +253,88 @@ describe('Lift function', () => {
 
     test('#05 => file1 contains usedAcrossFiles', () =>
       expect(file1Content()).toContain('usedAcrossFiles'));
+
+    test('#06 => config files array remains unchanged', () => {
+      const config = JSON.parse(readFileSync(configFullPath, 'utf8'));
+      expect(config.files).toEqual(['file1', 'file2']);
+    });
+  });
+
+  describe('#03 => Delete empty directory exports', () => {
+    const rootDirName = 'lift_temp_dir_exports';
+    const folderPath = join(process.cwd(), 'src', rootDirName);
+    const configPath = 'lift_temp_dir_exports_config.json';
+    const configFullPath = join(process.cwd(), configPath);
+
+    const indexPath = join(folderPath, 'index.ts');
+    const nestedFolderPath = join(folderPath, 'nested');
+    const emptyFilePath = join(nestedFolderPath, 'empty.ts');
+
+    const cleanUp = () => {
+      if (existsSync(folderPath)) {
+        rmSync(folderPath, { recursive: true, force: true });
+      }
+      if (existsSync(configFullPath)) {
+        rmSync(configFullPath, { force: true });
+      }
+    };
+
+    const indexContent = () => readFileSync(indexPath, 'utf8');
+
+    let result: boolean | undefined;
+
+    beforeAll(() => {
+      cleanUp();
+
+      // Create folders
+      mkdirSync(nestedFolderPath, { recursive: true });
+
+      // Create config file
+      writeFileSync(
+        configFullPath,
+        JSON.stringify(
+          {
+            path: rootDirName,
+            files: ['index', 'nested/empty'],
+          },
+          null,
+          2,
+        ),
+        'utf8',
+      );
+
+      // Create index.ts with exports to the nested folder
+      writeFileSync(
+        indexPath,
+        `
+        export * from './nested';
+        export { someVar } from './nested/empty';
+        `,
+        'utf8',
+      );
+
+      // Create nested/empty.ts which is empty
+      writeFileSync(emptyFilePath, '', 'utf8');
+    });
+
+    afterAll(cleanUp);
+
+    test('#01 => run lift', () => {
+      const analysis = analyze({ src: 'src' });
+      result = lift(analysis, configPath);
+    });
+
+    test('#02 => success is true', () => expect(result).toBe(true));
+    test('#03 => nested folder is deleted', () =>
+      expect(existsSync(nestedFolderPath)).toBe(false));
+    test('#04 => index.ts does not contain exports to nested', () => {
+      const content = indexContent().trim();
+      expect(content).not.toContain('./nested');
+      expect(content).not.toContain('someVar');
+    });
+    test('#05 => config files array updated', () => {
+      const config = JSON.parse(readFileSync(configFullPath, 'utf8'));
+      expect(config.files).toEqual(['index']);
+    });
   });
 });

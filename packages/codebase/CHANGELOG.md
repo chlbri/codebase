@@ -5,15 +5,45 @@
 <details>
 <summary>
 
+## **[1.9.0] - 28/06/2026** => _14:47_
+
+</summary>
+
+- Enhance `lift` function to remove export declarations targeting files
+  inside deleted empty directories during the recursive directory
+  cleaning phase
+- Remove deleted empty files from the codebase JSON configuration files
+  array during the codebase lifting process
+- Add JSDoc comments and update function signatures in `lift.ts` to
+  accept `jsonConfigPath`
+- Add implementation test cases to verify the deletion of exports
+  targeting files in deleted empty directories
+- Add implementation test cases to verify that the codebase
+  configuration files list is correctly updated when empty files are
+  deleted
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.8.0] - 28/06/2026** => _14:03_
 
 </summary>
 
-- Change signature of `lift` function to accept `CODEBASE_ANALYSIS` and exceptions (Breaking Change)
-- Add support for named alias exports and namespace alias exports in codebase export analysis
-- Enhance `lift` function to recursively clean up export declarations targeting deleted empty files
-- Refactor helper imports and extract `resolveModuleSpecifier` to unify import and export resolution
-- Add JSDoc comments to public API functions (`add`, `generate`, `init`, `lift`, `remove`, `softInit`)
+- Change signature of `lift` function to accept `CODEBASE_ANALYSIS` and
+  exceptions (Breaking Change)
+- Add support for named alias exports and namespace alias exports in
+  codebase export analysis
+- Enhance `lift` function to recursively clean up export declarations
+  targeting deleted empty files
+- Refactor helper imports and extract `resolveModuleSpecifier` to unify
+  import and export resolution
+- Add JSDoc comments to public API functions (`add`, `generate`, `init`,
+  `lift`, `remove`, `softInit`)
 - <u>Test coverage **_100%_**</u>
 
 </details>
