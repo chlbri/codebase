@@ -5,12 +5,31 @@
 <details>
 <summary>
 
+## **[1.7.0] - 28/06/2026** => _00:09_
+
+</summary>
+
+- Add export for `softInit` in the programmatic API to expose the soft
+  initialization functionality
+- Refactor `InitOptions` in `softInit.ts` to import from `./init` to
+  prevent duplication
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[1.6.0] - 27/06/2026** => _22:39_
 
 </summary>
 
-- Fix `add` function to resolve codebase entries for directory index paths using slash-separated `/index` instead of `.index`
-- Fix `remove` function to map imported module specifiers using `/index` variants instead of `.index`
+- Fix `add` function to resolve codebase entries for directory index
+  paths using slash-separated `/index` instead of `.index`
+- Fix `remove` function to map imported module specifiers using `/index`
+  variants instead of `.index`
 - <u>Test coverage **_100%_**</u>
 
 </details>

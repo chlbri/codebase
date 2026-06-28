@@ -1,8 +1,8 @@
 {
   "STATS": {
     "files": 20,
-    "imports": 63,
-    "exports": 103
+    "imports": 64,
+    "exports": 105
   },
   "CODEBASE_ANALYSIS": {
     "analyse": {
@@ -267,7 +267,7 @@
     "functions/index": {
       "imports": [],
       "relativePath": "functions/index.ts",
-      "text": "export * from './add';\nexport * from './generate';\nexport * from './init';\nexport * from './lift';\nexport * from './remove';\n",
+      "text": "export * from './add';\nexport * from './generate';\nexport * from './init';\nexport * from './lift';\nexport * from './softInit';\nexport * from './remove';\n",
       "exports": [
         {
           "name": "*",
@@ -292,6 +292,12 @@
           "kind": "namespace",
           "text": "export * from './lift';",
           "moduleSpecifier": "./lift"
+        },
+        {
+          "name": "*",
+          "kind": "namespace",
+          "text": "export * from './softInit';",
+          "moduleSpecifier": "./softInit"
         },
         {
           "name": "*",
@@ -480,10 +486,16 @@
           "kind": "named",
           "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
+        },
+        {
+          "moduleSpecifier": "./init",
+          "kind": "named",
+          "namedImports": ["InitOptions"],
+          "isTypeOnly": true
         }
       ],
       "relativePath": "functions/softInit.ts",
-      "text": "import { existsSync, readFileSync } from 'fs';\nimport { join, relative } from 'path';\nimport { DEFAULT_CLI_NAME, DEFAULT_PATH_KEY } from '../constants';\nimport { createTypesStructure, getFolderPath } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\n\n/**\n * InitOptions interface - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport interface InitOptions {\n  /**\n   * Custom location for the .bemedev folder\n   * Default: 'src/.bemedev' if src exists, otherwise '.bemedev' at the root\n   */\n  root: string;\n  json: string;\n  path?: string;\n  bin?: string;\n}\n\n/**\n * softInit variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const softInit = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  {\n    root,\n    json,\n    path = DEFAULT_PATH_KEY,\n    bin = DEFAULT_CLI_NAME,\n  }: InitOptions,\n) => {\n  const cwd = process.cwd();\n  const configFile = join(cwd, json);\n  const configExists = existsSync(configFile);\n  if (!configExists) return false;\n\n  const folderPath = getFolderPath(root);\n  if (!existsSync(folderPath)) return false;\n\n  const tsconfigPath = join(cwd, 'tsconfig.json');\n  const tsConfigExists = existsSync(tsconfigPath);\n  if (!tsConfigExists) return false;\n\n  const tsconfigContent = readFileSync(tsconfigPath, 'utf8');\n  const tsconfig = JSON.parse(tsconfigContent);\n  const relativePath = relative(process.cwd(), folderPath);\n\n  const checkPaths =\n    tsconfig?.compilerOptions?.paths?.[path]?.[0] ===\n    `./${relativePath}/*`;\n\n  if (!checkPaths) return false;\n\n  try {\n    createTypesStructure(folderPath, CODEBASE_ANALYSIS);\n  } catch {\n    console.error(`❌ Error creating the types structure:`);\n    return false;\n  }\n\n  // 3. Create the .bemedev.json file at the root\n\n  console.log(`🎉 ${bin} soft initialization completed successfully!`);\n  return true;\n};\n\n    ",
+      "text": "import { existsSync, readFileSync } from 'fs';\nimport { join, relative } from 'path';\nimport { DEFAULT_CLI_NAME, DEFAULT_PATH_KEY } from '../constants';\nimport { createTypesStructure, getFolderPath } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\nimport type { InitOptions } from './init';\n\n/**\n * softInit variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const softInit = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  {\n    root,\n    json,\n    path = DEFAULT_PATH_KEY,\n    bin = DEFAULT_CLI_NAME,\n  }: InitOptions,\n) => {\n  const cwd = process.cwd();\n  const configFile = join(cwd, json);\n  const configExists = existsSync(configFile);\n  if (!configExists) return false;\n\n  const folderPath = getFolderPath(root);\n  if (!existsSync(folderPath)) return false;\n\n  const tsconfigPath = join(cwd, 'tsconfig.json');\n  const tsConfigExists = existsSync(tsconfigPath);\n  if (!tsConfigExists) return false;\n\n  const tsconfigContent = readFileSync(tsconfigPath, 'utf8');\n  const tsconfig = JSON.parse(tsconfigContent);\n  const relativePath = relative(process.cwd(), folderPath);\n\n  const checkPaths =\n    tsconfig?.compilerOptions?.paths?.[path]?.[0] ===\n    `./${relativePath}/*`;\n\n  if (!checkPaths) return false;\n\n  try {\n    createTypesStructure(folderPath, CODEBASE_ANALYSIS);\n  } catch {\n    console.error(`❌ Error creating the types structure:`);\n    return false;\n  }\n\n  // 3. Create the .bemedev.json file at the root\n\n  console.log(`🎉 ${bin} soft initialization completed successfully!`);\n  return true;\n};\n\n    ",
       "exports": []
     },
     "helpers": {

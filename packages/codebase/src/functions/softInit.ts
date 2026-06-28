@@ -3,17 +3,7 @@ import { join, relative } from 'path';
 import { DEFAULT_CLI_NAME, DEFAULT_PATH_KEY } from '../constants';
 import { createTypesStructure, getFolderPath } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
-
-export interface InitOptions {
-  /**
-   * Custom location for the .bemedev folder
-   * Default: 'src/.bemedev' if src exists, otherwise '.bemedev' at the root
-   */
-  root: string;
-  json: string;
-  path?: string;
-  bin?: string;
-}
+import type { InitOptions } from './init';
 
 export const softInit = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,

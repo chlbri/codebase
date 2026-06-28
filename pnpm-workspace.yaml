@@ -1,8 +1,11 @@
 packages:
-  - "packages/codebase"
-  - "packages/__tests__/implementation"
+  - 'packages/codebase'
+  - 'packages/__tests__/implementation'
 
 allowBuilds:
   esbuild: true
 
 nodeLinker: hoisted
+
+minimumReleaseAgeExclude:
+  - '@bemedev/*'

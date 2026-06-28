@@ -94,11 +94,17 @@ configurations and selectively add/remove files using their regular
 slash-separated paths (instead of dot-parsed notation).
 
 ```typescript
-import { init, add, remove } from '@bemedev/codebase';
+import { init, softInit, add, remove } from '@bemedev/codebase';
 import analysis from './codebase.json';
 
 // Initialize the project workspace
 init(analysis.CODEBASE_ANALYSIS, {
+  root: 'my-project-src',
+  json: '.project-codebase.json',
+});
+
+// Rebuild types and imports structure if configuration already exists
+softInit(analysis.CODEBASE_ANALYSIS, {
   root: 'my-project-src',
   json: '.project-codebase.json',
 });
