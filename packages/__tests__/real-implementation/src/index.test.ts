@@ -9,51 +9,52 @@ import {
 } from 'fs';
 import { join, relative } from 'path';
 
+const pkgDir = process.cwd();
+const codebaseDir = join(pkgDir, 'src/.bemedev');
+const codebaseBackup = join(pkgDir, 'src/.bemedev_backup');
+const configPath = join(pkgDir, '.bemedev.json');
+const configBackup = join(pkgDir, '.bemedev_backup.json');
+
+const getFilesRecursively = (dir: string): string[] => {
+  let results: string[] = [];
+  if (!existsSync(dir)) return results;
+  const list = readdirSync(dir);
+  for (const file of list) {
+    const filePath = join(dir, file);
+    const stat = statSync(filePath);
+    if (stat.isDirectory()) {
+      results = results.concat(getFilesRecursively(filePath));
+    } else {
+      results.push(filePath);
+    }
+  }
+  return results;
+};
+
+const cleanUp = () => {
+  if (existsSync(codebaseBackup)) {
+    rmSync(codebaseBackup, { recursive: true, force: true });
+  }
+  if (existsSync(configBackup)) {
+    rmSync(configBackup, { force: true });
+  }
+};
+
+const restore = () => {
+  if (existsSync(codebaseBackup)) {
+    rmSync(codebaseDir, { recursive: true, force: true });
+    cpSync(codebaseBackup, codebaseDir, { recursive: true });
+    rmSync(codebaseBackup, { recursive: true, force: true });
+  }
+  if (existsSync(configBackup)) {
+    rmSync(configPath, { force: true });
+    cpSync(configBackup, configPath);
+    rmSync(configBackup, { force: true });
+  }
+};
+
+test('## => restore', restore);
 describe('Lift function', () => {
-  const pkgDir = process.cwd();
-  const codebaseDir = join(pkgDir, 'src/.bemedev');
-  const codebaseBackup = join(pkgDir, 'src/.bemedev_backup');
-  const configPath = join(pkgDir, '.bemedev.json');
-  const configBackup = join(pkgDir, '.bemedev_backup.json');
-
-  const getFilesRecursively = (dir: string): string[] => {
-    let results: string[] = [];
-    if (!existsSync(dir)) return results;
-    const list = readdirSync(dir);
-    for (const file of list) {
-      const filePath = join(dir, file);
-      const stat = statSync(filePath);
-      if (stat.isDirectory()) {
-        results = results.concat(getFilesRecursively(filePath));
-      } else {
-        results.push(filePath);
-      }
-    }
-    return results;
-  };
-
-  const cleanUp = () => {
-    if (existsSync(codebaseBackup)) {
-      rmSync(codebaseBackup, { recursive: true, force: true });
-    }
-    if (existsSync(configBackup)) {
-      rmSync(configBackup, { force: true });
-    }
-  };
-
-  const restore = () => {
-    if (existsSync(codebaseBackup)) {
-      rmSync(codebaseDir, { recursive: true, force: true });
-      cpSync(codebaseBackup, codebaseDir, { recursive: true });
-      rmSync(codebaseBackup, { recursive: true, force: true });
-    }
-    if (existsSync(configBackup)) {
-      rmSync(configPath, { force: true });
-      cpSync(configBackup, configPath);
-      rmSync(configBackup, { force: true });
-    }
-  };
-
   let result: any;
   let remaining: string[] = [];
 
@@ -77,8 +78,8 @@ describe('Lift function', () => {
   // afterAll(restore);
   test('#01 => lift result is true', () =>
     expect(result).toBeDefined());
-  test('#02 => file count is 29', () =>
-    expect(remaining.length).toBe(29));
+  test('#02 => file count is 27', () =>
+    expect(remaining.length).toBe(27));
 
   test('#03 => matches the expected files list', () => {
     expect(remaining).toEqual([
@@ -88,8 +89,6 @@ describe('Lift function', () => {
       'features/common/castings/any.ts',
       'features/common/castings/is/defined.ts',
       'features/common/types.ts',
-      'features/common/typings/extract/all.ts',
-      'features/common/typings/extract/const.ts',
       'features/common/typings/extract/index.ts',
       'features/common/typings/index.ts',
       'features/functions/functions/identify.ts',
@@ -118,6 +117,8 @@ describe('Lift function', () => {
     const config = JSON.parse(readFileSync(configPath, 'utf8'));
     const files = config.files as string[];
 
+    console.log();
+    console.log('files', files);
     expect(files.map(f => `${f}.ts`).sort()).toStrictEqual(remaining);
   });
 });

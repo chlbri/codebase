@@ -1,7 +1,7 @@
-import type { RecursiveArrayOf } from '../../globals/types';
+import type { UnionOmit, UnionToTuple } from '../../globals/types';
 
 /**
- * SingleOrRecursiveArrayOf type - Auto-generated expression
+ * IndexesOfArray type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -10,10 +10,35 @@ import type { RecursiveArrayOf } from '../../globals/types';
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type SingleOrRecursiveArrayOf<T> = T | RecursiveArrayOf<T>;
+export type IndexesOfArray<
+  T extends readonly unknown[],
+  S extends number[] = [],
+> = T['length'] extends S['length']
+  ? S[number]
+  : IndexesOfArray<T, [S['length'], ...S]>;
+
+// type _DivideBy<
+//   N extends number,
+//   T extends readonly any[],
+// > = T['length'] extends N
+//   ? [true]
+//   : T extends readonly [...TupleOf<T[number], N>, ...infer U]
+//     ? [true, ..._DivideBy<N, U>]
+//     : never;
+
+// export type DivideTupleLengthBy<
+//   N extends number,
+//   T extends readonly any[],
+// > = _DivideBy<N, T>['length'];
+
+type _TupleOf<
+  T,
+  N extends number,
+  R extends unknown[] = [],
+> = R['length'] extends N ? R : _TupleOf<T, N, [...R, T]>;
 
 /**
- * SoRa type - Auto-generated expression
+ * TupleOf type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -22,160 +47,14 @@ export type SingleOrRecursiveArrayOf<T> = T | RecursiveArrayOf<T>;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type SoRa<T> = SingleOrRecursiveArrayOf<T>;
-
-/**
- * Primitive2 type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Primitive2 = string | number | boolean;
-/**
- * Primitive type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Primitive = Primitive2 | undefined | null;
-
-/**
- * SingleOrArray type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type SingleOrArray<T> = T | T[] | ReadonlyArray<T>;
-
-/**
- * SoA type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type SoA<T> = SingleOrArray<T>;
-/**
- * NotUndefined type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type NotUndefined<T> = Exclude<T, undefined>;
-/**
- * Keys type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Keys = keyof any;
-// export type Defaulted<T, U extends NonN<T>> = T extends
-//   | undefined
-//   | never
-//   | null
-//   ? U
-//   : T;
-
-/**
- * UnionKeys type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type UnionKeys<U> = U extends Record<infer K, any> ? K : never;
-
-/**
- * _UnionToIntersection1 type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type _UnionToIntersection1<U> = boolean extends U
-  ? U
-  : (U extends any ? (k: U) => void : never) extends (k: infer I) => void
-    ? I
-    : never;
-
-/**
- * _UnionToIntersection2 type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type _UnionToIntersection2<U> = {
-  [K in UnionKeys<U>]: U extends Record<K, infer T> ? T : never;
-};
-
-/**
- * UnionToIntersection type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type UnionToIntersection<U> = _UnionToIntersection2<
-  _UnionToIntersection1<U>
->;
-/**
- * LastOfUnion type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type LastOfUnion<T> = (
-  (T extends any ? (x: () => T) => void : never) extends (
-    x: infer I,
-  ) => void
-    ? I
-    : never
-) extends () => infer U
-  ? U
+export type TupleOf<T = any, N extends number = number> = N extends N
+  ? number extends N
+    ? T[]
+    : [..._TupleOf<T, N>]
   : never;
 
 /**
- * UnionToTuple type - Auto-generated expression
+ * ReverseArray type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -184,31 +63,16 @@ export type LastOfUnion<T> = (
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type UnionToTuple<T, A extends any[] = []> = [T] extends [never]
-  ? A
-  : UnionToTuple<Exclude<T, LastOfUnion<T>>, [LastOfUnion<T>, ...A]>;
-
-// #endregion
-// | ((value: unknown) => boolean);
-
-/**
- * Equals type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Equals<T, U> = T extends U
-  ? U extends T
-    ? true
-    : false
-  : false;
+export type ReverseArray<T extends RuA> = T extends any
+  ? T extends []
+    ? T
+    : T extends [infer Head, ...infer Tail]
+      ? [...ReverseArray<Tail>, Head]
+      : T
+  : never;
 
 /**
- * UndefinedHelper class - Auto-generated expression
+ * RuA type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -217,7 +81,182 @@ export type Equals<T, U> = T extends U
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export class UndefinedHelper {
-  readonly __NO_TYPE__ = '@bemedev/addons/NO_TYPE';
-  private constructor() {}
-}
+export type RuA = readonly unknown[];
+
+/**
+ * AnyArray type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type AnyArray<T = unknown> = ReadonlyArray<T> | T[];
+
+/**
+ * _NArrayOmit type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type _NArrayOmit<
+  T extends readonly object[],
+  K extends keyof T[number] = never,
+> = Extract<UnionOmit<T[number], K>, object>;
+
+/**
+ * NArrayOmit type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type NArrayOmit<
+  T extends readonly object[],
+  K extends keyof T[number] = never,
+> =
+  _NArrayOmit<T, K> extends infer N extends object
+    ? UnionToTuple<N>
+    : never;
+
+/**
+ * ExtractArray type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ExtractArray<T extends AnyArray, U> = T extends readonly [
+  infer A,
+  ...infer B,
+]
+  ? A extends U
+    ? [A, ...ExtractArray<B, U>]
+    : [...ExtractArray<B, U>]
+  : [];
+
+/**
+ * ExcludeArray type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ExcludeArray<T extends AnyArray, U> = T extends readonly [
+  infer A,
+  ...infer B,
+]
+  ? A extends U
+    ? ExcludeArray<B, U>
+    : [A, ...ExcludeArray<B, U>]
+  : [];
+
+/**
+ * ReduceArray type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ReduceArray<T> = T extends AnyArray ? T[number] : T;
+/**
+ * ReduceArrayS type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ReduceArrayS<T> = T extends AnyArray ? T[0] : T;
+
+/**
+ * ReduceDeepArray type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ReduceDeepArray<T> =
+  ReduceArray<T> extends AnyArray
+    ? ReduceDeepArray<ReduceArray<T>>
+    : ReduceArray<T>;
+
+/**
+ * ToArray type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ToArray<T> = T extends AnyArray ? T : AnyArray<T>;
+
+/**
+ * RecursiveArrayOf type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type RecursiveArrayOf<T> =
+  | Array<_SingleOrRecursiveArrayOf<T>>
+  | ReadonlyArray<_SingleOrRecursiveArrayOf<T>>;
+
+type _SingleOrRecursiveArrayOf<T> = T | RecursiveArrayOf<T>;
+
+/**
+ * Permutations type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type Permutations<
+  T extends RuA,
+  I extends IndexesOfArray<T> = IndexesOfArray<T>,
+> = T extends any
+  ? I extends I
+    ? T['length'] extends 0
+      ? []
+      : T['length'] extends 1
+        ? [T[I]]
+        : [
+            T[I],
+            ...Permutations<
+              ExcludeArray<T, T[I]>,
+              IndexesOfArray<ExcludeArray<T, T[I]>>
+            >,
+          ]
+    : never
+  : never;

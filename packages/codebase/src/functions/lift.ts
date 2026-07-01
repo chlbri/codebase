@@ -17,32 +17,6 @@ import {
 import { CodebaseAnalysis } from '../schemas';
 
 /**
- * Helper function to check if a declaration node is exported.
- */
-const isDeclarationExported = (decl: Node): boolean => {
-  if (Node.isVariableDeclaration(decl)) {
-    const statement = decl.getVariableStatement();
-    if (statement && statement.isExported()) return true;
-  } else if (
-    'isExported' in decl &&
-    typeof (decl as any).isExported === 'function'
-  ) {
-    if ((decl as any).isExported()) return true;
-  }
-
-  // Check if it is exported via export statements at the bottom of the file
-  const sf = decl.getSourceFile();
-  const exportedDeclarations = sf.getExportedDeclarations();
-  for (const exportedDecls of exportedDeclarations.values()) {
-    if (exportedDecls.includes(decl as any)) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-/**
  * Scans all declarations (type aliases, interfaces, variables, functions, classes, enums)
  * in the source files located inside the target folder. If a declaration is not referenced
  * anywhere else in the project and its name is not present in the exceptions list,
@@ -75,6 +49,20 @@ const removeUnusedDeclarations = (
       ];
     });
 
+  const isDescendantOf = (child: Node, parent: Node): boolean => {
+    return child.getAncestors().some(ancestor => ancestor === parent);
+  };
+
+  const isExportReference = (node: Node): boolean => {
+    return node
+      .getAncestors()
+      .some(
+        ancestor =>
+          Node.isExportAssignment(ancestor) ||
+          Node.isExportSpecifier(ancestor),
+      );
+  };
+
   const toDelete: typeof declarations = [];
 
   for (const decl of declarations) {
@@ -88,22 +76,39 @@ const removeUnusedDeclarations = (
 
     const sf = decl.getSourceFile();
     const declPath = sf.getFilePath();
-    const isExported = isDeclarationExported(decl);
     let refCount = 0;
+    let localRefCount = 0;
 
-    if (isExported) {
-      const referencedSymbols = nameNode.findReferences();
-      for (const refSymbol of referencedSymbols) {
-        for (const ref of refSymbol.getReferences()) {
-          const refPath = ref.getSourceFile().getFilePath();
-          const check1 = refPath !== declPath;
-          const check2 = ref.getNode() !== nameNode;
-          if (check1 && check2) refCount++;
+    const referencedSymbols = nameNode.findReferences();
+    for (const refSymbol of referencedSymbols) {
+      for (const ref of refSymbol.getReferences()) {
+        const refNode = ref.getNode();
+
+        let isSelfRef =
+          refNode === nameNode || isDescendantOf(refNode, decl);
+        if (Node.isVariableDeclaration(decl)) {
+          const stmt = decl.getVariableStatement();
+          if (stmt && isDescendantOf(refNode, stmt)) {
+            isSelfRef = true;
+          }
+        }
+
+        if (isSelfRef) continue;
+
+        const refPath = ref.getSourceFile().getFilePath();
+        const check1 = refPath !== declPath;
+
+        if (!check1 && isExportReference(refNode)) continue;
+
+        if (check1) {
+          refCount++;
+        } else {
+          localRefCount++;
         }
       }
     }
 
-    if (refCount === 0) {
+    if (refCount === 0 && localRefCount === 0) {
       toDelete.push(decl);
       counter.tokens.push(name);
     }
@@ -137,6 +142,7 @@ const removeUnusedImports = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
   exceptions: string[],
+  outsideExportDecls: Node[],
   counter: {
     imports: string[];
   },
@@ -162,7 +168,15 @@ const removeUnusedImports = (
       if (!Node.isIdentifier(nameNode)) continue;
 
       const name = nameNode.getText();
-      if (exceptions.includes(name)) continue;
+      const isTypeImport = imp.isTypeOnly() || spec.isTypeOnly();
+
+      const isProtected =
+        exceptions.includes(name) ||
+        nameNode
+          .getDefinitionNodes()
+          .some(def => outsideExportDecls.includes(def));
+
+      if (!isTypeImport && isProtected) continue;
 
       // Imports are local to the file, check occurrences in the same file.
       const localIdentifiers = sf
@@ -181,7 +195,15 @@ const removeUnusedImports = (
       Node.isIdentifier(defaultImport)
     ) {
       const name = defaultImport.getText();
-      if (!exceptions.includes(name)) {
+      const isTypeImport = imp.isTypeOnly();
+
+      const isProtected =
+        exceptions.includes(name) ||
+        defaultImport
+          .getDefinitionNodes()
+          .some(def => outsideExportDecls.includes(def));
+
+      if (isTypeImport || !isProtected) {
         const localIdentifiers = sf
           .getDescendantsOfKind(SyntaxKind.Identifier)
           .filter(id => id.getText() === name);
@@ -199,7 +221,15 @@ const removeUnusedImports = (
       Node.isIdentifier(namespaceImport)
     ) {
       const name = namespaceImport.getText();
-      if (!exceptions.includes(name)) {
+      const isTypeImport = imp.isTypeOnly();
+
+      const isProtected =
+        exceptions.includes(name) ||
+        namespaceImport
+          .getDefinitionNodes()
+          .some(def => outsideExportDecls.includes(def));
+
+      if (isTypeImport || !isProtected) {
         const localIdentifiers = sf
           .getDescendantsOfKind(SyntaxKind.Identifier)
           .filter(id => id.getText() === name);
@@ -497,6 +527,19 @@ const _lift = (
 
   const allExceptions = [...exceptions, ...outsideExports];
 
+  const outsideExportDecls = proj
+    .getSourceFiles()
+    .filter(sf => {
+      const path = sf.getFilePath();
+      return (
+        !isInsideFolder(path) &&
+        !path.includes('node_modules') &&
+        !sf.isDeclarationFile()
+      );
+    })
+    .flatMap(sf => Array.from(sf.getExportedDeclarations().values()))
+    .flat();
+
   const entriesWithExports = Object.entries(CODEBASE_ANALYSIS).filter(
     ([, val]) => val.exports && val.exports.length > 0,
   );
@@ -512,24 +555,23 @@ const _lift = (
     changed = false;
 
     // Phase A: Declarations
-    changed = removeUnusedDeclarations(
+    const declsChanged = removeUnusedDeclarations(
       proj,
       isInsideFolder,
       allExceptions,
       out,
     );
-
-    if (changed) continue;
 
     // Phase B: Imports
-    changed = removeUnusedImports(
+    const importsChanged = removeUnusedImports(
       proj,
       isInsideFolder,
-      allExceptions,
+      exceptions,
+      outsideExportDecls,
       out,
     );
 
-    if (changed) continue;
+    changed = declsChanged || importsChanged;
   }
 
   console.log();

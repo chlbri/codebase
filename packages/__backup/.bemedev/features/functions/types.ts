@@ -1,7 +1,8 @@
-import type { RecursiveArrayOf } from '../../globals/types';
+import type { AnyArray } from '../../globals/types';
+import type { UndefinedHelper } from '../common/types';
 
 /**
- * SingleOrRecursiveArrayOf type - Auto-generated expression
+ * Fn type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -10,10 +11,10 @@ import type { RecursiveArrayOf } from '../../globals/types';
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type SingleOrRecursiveArrayOf<T> = T | RecursiveArrayOf<T>;
+export type Fn<Args extends any[] = any[], R = any> = (...args: Args) => R;
 
 /**
- * SoRa type - Auto-generated expression
+ * FnBasic type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -22,10 +23,10 @@ export type SingleOrRecursiveArrayOf<T> = T | RecursiveArrayOf<T>;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type SoRa<T> = SingleOrRecursiveArrayOf<T>;
+export type FnBasic<Main extends Fn, Tr extends object> = Tr & Main;
 
 /**
- * Primitive2 type - Auto-generated expression
+ * Checker type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -34,21 +35,12 @@ export type SoRa<T> = SingleOrRecursiveArrayOf<T>;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type Primitive2 = string | number | boolean;
-/**
- * Primitive type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Primitive = Primitive2 | undefined | null;
+export type Checker<T = unknown> =
+  | ((value: unknown) => value is T)
+  | Fn<[unknown], boolean>;
 
 /**
- * SingleOrArray type - Auto-generated expression
+ * _Requirify type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -57,10 +49,23 @@ export type Primitive = Primitive2 | undefined | null;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type SingleOrArray<T> = T | T[] | ReadonlyArray<T>;
+export type _Requirify<T extends AnyArray> = Required<{
+  [K in keyof T]-?: undefined extends T[K] ? T[K] | UndefinedHelper : T[K];
+}>;
+
+type _UndefinfyTuple<T extends AnyArray> = T extends readonly [
+  infer U,
+  ...infer Rest,
+]
+  ? unknown extends U
+    ? [U, ..._UndefinfyTuple<Rest>]
+    : UndefinedHelper extends U
+      ? [Exclude<U, UndefinedHelper>?, ..._UndefinfyTuple<Rest>]
+      : [U, ..._UndefinfyTuple<Rest>]
+  : T;
 
 /**
- * SoA type - Auto-generated expression
+ * Parts type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -69,38 +74,29 @@ export type SingleOrArray<T> = T | T[] | ReadonlyArray<T>;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type SoA<T> = SingleOrArray<T>;
-/**
- * NotUndefined type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type NotUndefined<T> = Exclude<T, undefined>;
-/**
- * Keys type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Keys = keyof any;
-// export type Defaulted<T, U extends NonN<T>> = T extends
-//   | undefined
-//   | never
-//   | null
-//   ? U
-//   : T;
+export type Parts<
+  T extends AnyArray,
+  R = _Requirify<T>,
+> = R extends readonly [...infer Rest, unknown]
+  ? Parts<Rest> | Readonly<_UndefinfyTuple<R>>
+  : Readonly<T>;
 
 /**
- * UnionKeys type - Auto-generated expression
+ * Given a full readonly tuple `T1` and one of its prefixes `T2`,
+ * produces the remaining ordered suffix.
+ *
+ * @example
+ * PartDiff<readonly [1, 2, 3], readonly [1]>
+ * // => readonly [2, 3]
+ *
+ * PartDiff<readonly [1, 2, 3], readonly []>
+ * // => readonly [1, 2, 3]
+ *
+ * PartDiff<[1, 2, 3], [1, 2, 3]>
+ * // => readonly []
+ */
+/**
+ * PartDiff type - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -109,10 +105,13 @@ export type Keys = keyof any;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type UnionKeys<U> = U extends Record<infer K, any> ? K : never;
+export type PartDiff<
+  T1 extends AnyArray,
+  T2 extends Parts<T1>,
+> = T1 extends readonly [...T2, ...infer Rest] ? Readonly<Rest> : T1;
 
 /**
- * _UnionToIntersection1 type - Auto-generated expression
+ * TimeoutPromise interface - Auto-generated expression
  *
  * ⚠️ WARNING: This expression is auto-generated and should not be modified.
  * Any manual changes will be overwritten during the next generation.
@@ -121,103 +120,104 @@ export type UnionKeys<U> = U extends Record<infer K, any> ? K : never;
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-export type _UnionToIntersection1<U> = boolean extends U
-  ? U
-  : (U extends any ? (k: U) => void : never) extends (k: infer I) => void
-    ? I
-    : never;
-
-/**
- * _UnionToIntersection2 type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type _UnionToIntersection2<U> = {
-  [K in UnionKeys<U>]: U extends Record<K, infer T> ? T : never;
-};
-
-/**
- * UnionToIntersection type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type UnionToIntersection<U> = _UnionToIntersection2<
-  _UnionToIntersection1<U>
->;
-/**
- * LastOfUnion type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type LastOfUnion<T> = (
-  (T extends any ? (x: () => T) => void : never) extends (
-    x: infer I,
-  ) => void
-    ? I
-    : never
-) extends () => infer U
-  ? U
-  : never;
-
-/**
- * UnionToTuple type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type UnionToTuple<T, A extends any[] = []> = [T] extends [never]
-  ? A
-  : UnionToTuple<Exclude<T, LastOfUnion<T>>, [LastOfUnion<T>, ...A]>;
-
-// #endregion
-// | ((value: unknown) => boolean);
-
-/**
- * Equals type - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export type Equals<T, U> = T extends U
-  ? U extends T
-    ? true
-    : false
-  : false;
-
-/**
- * UndefinedHelper class - Auto-generated expression
- *
- * ⚠️ WARNING: This expression is auto-generated and should not be modified.
- * Any manual changes will be overwritten during the next generation.
- *
- * @generated
- * @readonly
- * @author chlbri (bri_lvi@icloud.com)
- */
-export class UndefinedHelper {
-  readonly __NO_TYPE__ = '@bemedev/addons/NO_TYPE';
-  private constructor() {}
+export interface TimeoutPromise<T = any> {
+  (): Promise<T>;
+  abort: () => void;
+  id: string;
 }
+
+/**
+ * TypeFromTimeout type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type TypeFromTimeout<T extends TimeoutPromise> =
+  T extends TimeoutPromise<infer U> ? U : never;
+
+/**
+ * TypeFromTimeouts type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type TypeFromTimeouts<T extends TimeoutPromise[]> = TypeFromTimeout<
+  T[number]
+>;
+
+/**
+ * CallBackError type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type CallBackError = (err: any) => void;
+
+/**
+ * CallBackResult type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type CallBackResult<T = any> = (err: any, result: T) => void;
+
+/**
+ * Callback type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type Callback = CallBackError | CallBackResult;
+
+type GetResult<Cb extends Callback> = Parameters<Cb>['length'] extends 2
+  ? Parameters<Cb>[1]
+  : void;
+
+/**
+ * CbParams type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type CbParams = [...any[], Callback];
+
+/**
+ * ResultFrom type - Auto-generated expression
+ *
+ * ⚠️ WARNING: This expression is auto-generated and should not be modified.
+ * Any manual changes will be overwritten during the next generation.
+ *
+ * @generated
+ * @readonly
+ * @author chlbri (bri_lvi@icloud.com)
+ */
+export type ResultFrom<T> = T extends [
+  ...infer Args extends any[],
+  infer Cb extends Callback,
+]
+  ? Fn<Args, Promise<GetResult<Cb>>>
+  : never;
