@@ -13,6 +13,7 @@ import {
   consoleStars,
   getFolderPath,
   hasNoDeclarations,
+  resolveModuleSpecifier,
 } from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
 
@@ -31,6 +32,7 @@ const removeUnusedDeclarations = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
   exceptions: string[],
+  outsideExportDecls: Node[],
   counter: {
     tokens: string[];
   },
@@ -63,6 +65,28 @@ const removeUnusedDeclarations = (
       );
   };
 
+  const isInsideOtherDeclaration = (
+    node: Node,
+    decl: Node,
+  ): boolean => {
+    return node.getAncestors().some(ancestor => {
+      if (ancestor === decl) return false;
+      if (Node.isVariableDeclaration(decl)) {
+        const stmt = decl.getVariableStatement();
+        if (stmt && ancestor === stmt) return false;
+      }
+      return (
+        Node.isTypeAliasDeclaration(ancestor) ||
+        Node.isInterfaceDeclaration(ancestor) ||
+        Node.isVariableDeclaration(ancestor) ||
+        Node.isFunctionDeclaration(ancestor) ||
+        Node.isClassDeclaration(ancestor) ||
+        Node.isEnumDeclaration(ancestor) ||
+        Node.isModuleDeclaration(ancestor)
+      );
+    });
+  };
+
   const toDelete: typeof declarations = [];
 
   for (const decl of declarations) {
@@ -73,6 +97,7 @@ const removeUnusedDeclarations = (
 
     const name = nameNode.getText();
     if (exceptions.includes(name)) continue;
+    if (outsideExportDecls.includes(decl)) continue;
 
     const sf = decl.getSourceFile();
     const declPath = sf.getFilePath();
@@ -91,6 +116,18 @@ const removeUnusedDeclarations = (
           if (stmt && isDescendantOf(refNode, stmt)) {
             isSelfRef = true;
           }
+        }
+        if (Node.isFunctionDeclaration(decl)) {
+          const parent = refNode.getParent();
+          if (
+            Node.isFunctionDeclaration(parent) &&
+            parent.getName() === decl.getName()
+          ) {
+            isSelfRef = true;
+          }
+        }
+        if (!isSelfRef && !isInsideOtherDeclaration(refNode, decl)) {
+          isSelfRef = true;
         }
 
         if (isSelfRef) continue;
@@ -307,7 +344,6 @@ const removeUnusedImports = (
 const cleanEmptySourceFiles = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
-  entriesWithExports: [string, any][],
   folderPath: string,
   jsonConfigPath: string,
   counter: {
@@ -328,28 +364,19 @@ const cleanEmptySourceFiles = (
     const filePath = sf.getFilePath();
     const deletedPathWithoutExt = filePath.replace(/\.tsx?$/, '');
 
-    for (const [, fileAnalysis] of entriesWithExports) {
-      const exportingFilePath = join(
-        folderPath,
-        fileAnalysis.relativePath,
-      );
+    for (const exportingSf of project.getSourceFiles()) {
+      const exportDecls = exportingSf.getExportDeclarations();
 
-      const exportingSf = project.getSourceFile(exportingFilePath);
+      for (const decl of exportDecls) {
+        const moduleSpecifier = decl.getModuleSpecifierValue();
 
-      if (exportingSf) {
-        const exportDecls = exportingSf.getExportDeclarations();
+        if (moduleSpecifier) {
+          const resolvedSpec = resolve(
+            exportingSf.getDirectoryPath(),
+            resolveModuleSpecifier(exportingSf, moduleSpecifier),
+          ).replace(/\.tsx?$/, '');
 
-        for (const decl of exportDecls) {
-          const moduleSpecifier = decl.getModuleSpecifierValue();
-
-          if (moduleSpecifier) {
-            const resolvedSpec = resolve(
-              exportingSf.getDirectoryPath(),
-              moduleSpecifier,
-            ).replace(/\.tsx?$/, '');
-
-            if (resolvedSpec === deletedPathWithoutExt) decl.remove();
-          }
+          if (resolvedSpec === deletedPathWithoutExt) decl.remove();
         }
       }
     }
@@ -522,23 +549,47 @@ const _lift = (
         !sf.isDeclarationFile()
       );
     })
-    .flatMap(sf => Array.from(sf.getExportedDeclarations().keys()))
-    .filter(name => name !== 'default');
+    .flatMap(sf => {
+      const exports = sf.getExportedDeclarations();
+      const names: string[] = [];
+
+      for (const [name, decls] of exports) {
+        if (name === 'default') continue;
+
+        // Check if this export name is explicitly declared/named in sf
+        // (rather than being re-exported via export * from '...')
+        const isExplicit = decls.some(decl => {
+          const declPath = decl.getSourceFile().getFilePath();
+          // If the declaration is defined outside the folder, we protect it
+          if (!isInsideFolder(declPath)) return true;
+
+          // If the declaration is defined inside the folder, we only protect it
+          // if it is explicitly named in the export declarations of sf.
+          const isNamedExport = sf.getExportDeclarations().some(d => {
+            if (d.isNamespaceExport()) {
+              return d.getNamespaceExport()?.getName() === name;
+            }
+            return d
+              .getNamedExports()
+              .some(
+                n =>
+                  n.getName() === name ||
+                  n.getAliasNode()?.getText() === name,
+              );
+          });
+
+          return isNamedExport;
+        });
+
+        if (isExplicit) {
+          names.push(name);
+        }
+      }
+
+      return names;
+    });
 
   const allExceptions = [...exceptions, ...outsideExports];
-
-  const outsideExportDecls = proj
-    .getSourceFiles()
-    .filter(sf => {
-      const path = sf.getFilePath();
-      return (
-        !isInsideFolder(path) &&
-        !path.includes('node_modules') &&
-        !sf.isDeclarationFile()
-      );
-    })
-    .flatMap(sf => Array.from(sf.getExportedDeclarations().values()))
-    .flat();
 
   const entriesWithExports = Object.entries(CODEBASE_ANALYSIS).filter(
     ([, val]) => val.exports && val.exports.length > 0,
@@ -554,11 +605,60 @@ const _lift = (
   while (changed) {
     changed = false;
 
+    const outsideExportDecls = proj
+      .getSourceFiles()
+      .filter(sf => {
+        const path = sf.getFilePath();
+        return (
+          !isInsideFolder(path) &&
+          !path.includes('node_modules') &&
+          !sf.isDeclarationFile()
+        );
+      })
+      .flatMap(sf => {
+        const exports = sf.getExportedDeclarations();
+        const decls: Node[] = [];
+
+        for (const [name, nameDecls] of exports) {
+          // Check if this export name is explicitly declared/named in sf
+          // (rather than being re-exported via export * from '...')
+          const isExplicit = nameDecls.some(decl => {
+            const declPath = decl.getSourceFile().getFilePath();
+            // If the declaration is defined outside the folder, we protect it
+            if (!isInsideFolder(declPath)) return true;
+
+            // If the declaration is defined inside the folder, we only protect it
+            // if it is explicitly named in the export declarations of sf.
+            const isNamedExport = sf.getExportDeclarations().some(d => {
+              if (d.isNamespaceExport()) {
+                return d.getNamespaceExport()?.getName() === name;
+              }
+              return d
+                .getNamedExports()
+                .some(
+                  n =>
+                    n.getName() === name ||
+                    n.getAliasNode()?.getText() === name,
+                );
+            });
+
+            return isNamedExport;
+          });
+
+          if (isExplicit) {
+            decls.push(...nameDecls);
+          }
+        }
+
+        return decls;
+      });
+
     // Phase A: Declarations
     const declsChanged = removeUnusedDeclarations(
       proj,
       isInsideFolder,
       allExceptions,
+      outsideExportDecls,
       out,
     );
 
@@ -596,7 +696,6 @@ const _lift = (
   const emptyFilesCount = cleanEmptySourceFiles(
     proj,
     isInsideFolder,
-    entriesWithExports,
     folderPath,
     jsonConfigPath,
     out,

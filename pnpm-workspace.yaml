@@ -1,6 +1,5 @@
 packages:
   - 'packages/codebase'
-  - 'packages/__tests__/implementation'
   - 'packages/__tests__/real-implementation'
 
 allowBuilds:

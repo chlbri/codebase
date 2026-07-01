@@ -1,4 +1,4 @@
-import type { RuA } from '../../../../globals/types';
+import type { TupleOf } from '../../../../globals/types';
 import { _unknown } from '../../../../globals/utils/_unknown';
 
 /**
@@ -11,9 +11,9 @@ import { _unknown } from '../../../../globals/utils/_unknown';
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-const fn = <const T extends RuA>(...args: T) => {
-  const out = args;
-  return _unknown<T>(out);
+const fn = <const T, N extends number>(data: T, times: N) => {
+  const out = Array.from({ length: times }, () => data);
+  return _unknown<TupleOf<T, N>>(out);
 };
 
 export default fn;

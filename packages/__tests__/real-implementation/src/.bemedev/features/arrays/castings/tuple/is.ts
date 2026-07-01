@@ -1,6 +1,5 @@
-import type { To } from '../../../globals/types';
-import { castFn } from '../../../globals/utils/castFn';
-import { isPlainObject } from '../../../globals/utils/is/object';
+import type { Checker2 } from '../../../../globals/types';
+import is from '../is';
 
 /**
  * fn const - Auto-generated expression
@@ -12,6 +11,12 @@ import { isPlainObject } from '../../../globals/utils/is/object';
  * @readonly
  * @author chlbri (bri_lvi@icloud.com)
  */
-const fn = castFn<To>()({ is: isPlainObject });
+const fn = <const T>(fn: Checker2<T>) => {
+  const _out = (value: unknown): value is Array<T> => {
+    return is(value) && value.every(fn);
+  };
+
+  return _out;
+};
 
 export default fn;

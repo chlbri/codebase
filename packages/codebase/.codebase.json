@@ -10,18 +10,13 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ],
+          "namedImports": ["join", "relative"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "Project"
-          ],
+          "namedImports": ["Project"],
           "isTypeOnly": false
         },
         {
@@ -33,50 +28,37 @@
         {
           "moduleSpecifier": "./analyse.utils",
           "kind": "named",
-          "namedImports": [
-            "addJSDocToSourceText"
-          ],
+          "namedImports": ["addJSDocToSourceText"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./exports",
           "kind": "named",
-          "namedImports": [
-            "analyzeExports"
-          ],
+          "namedImports": ["analyzeExports"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./helpers",
           "kind": "named",
-          "namedImports": [
-            "toArray"
-          ],
+          "namedImports": ["toArray"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./imports",
           "kind": "named",
-          "namedImports": [
-            "analyzeImports",
-            "buildImportStrings"
-          ],
+          "namedImports": ["analyzeImports", "buildImportStrings"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysisSchema"
-          ],
+          "namedImports": ["CodebaseAnalysisSchema"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./utils",
           "kind": "named",
-          "namedImports": [
-            "pathToDotNotation"
-          ],
+          "namedImports": ["pathToDotNotation"],
           "isTypeOnly": false
         }
       ],
@@ -89,9 +71,7 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile"
-          ],
+          "namedImports": ["SourceFile"],
           "isTypeOnly": true
         }
       ],
@@ -116,25 +96,19 @@
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "DEFAULT_CODEBASE_FILE"
-          ],
+          "namedImports": ["DEFAULT_CODEBASE_FILE"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../functions/generate",
           "kind": "named",
-          "namedImports": [
-            "generate"
-          ],
+          "namedImports": ["generate"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "BIN"
-          ],
+          "namedImports": ["BIN"],
           "isTypeOnly": false
         }
       ],
@@ -153,17 +127,13 @@
         {
           "moduleSpecifier": "cmd-ts",
           "kind": "named",
-          "namedImports": [
-            "run"
-          ],
+          "namedImports": ["run"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./cli",
           "kind": "named",
-          "namedImports": [
-            "cli"
-          ],
+          "namedImports": ["cli"],
           "isTypeOnly": false
         }
       ],
@@ -176,9 +146,7 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ],
+          "namedImports": ["join"],
           "isTypeOnly": false
         }
       ],
@@ -191,26 +159,19 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ],
+          "namedImports": ["SourceFile", "SyntaxKind"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./helpers",
           "kind": "named",
-          "namedImports": [
-            "resolveModuleSpecifier"
-          ],
+          "namedImports": ["resolveModuleSpecifier"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "ExportInfo"
-          ],
+          "namedImports": ["ExportInfo"],
           "isTypeOnly": true
         }
       ],
@@ -229,29 +190,19 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ],
+          "namedImports": ["JsonEditor"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "dirname",
-            "join",
-            "relative",
-            "resolve"
-          ],
+          "namedImports": ["dirname", "join", "relative", "resolve"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "FILES_PROPERTY",
-            "PATH_PROPERTY"
-          ],
+          "namedImports": ["FILES_PROPERTY", "PATH_PROPERTY"],
           "isTypeOnly": false
         },
         {
@@ -268,18 +219,13 @@
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis",
-            "FileAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../types",
           "kind": "named",
-          "namedImports": [
-            "NOmit"
-          ],
+          "namedImports": ["NOmit"],
           "isTypeOnly": true
         }
       ],
@@ -292,42 +238,31 @@
         {
           "moduleSpecifier": "fs",
           "kind": "named",
-          "namedImports": [
-            "writeFileSync"
-          ],
+          "namedImports": ["writeFileSync"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "relative"
-          ],
+          "namedImports": ["relative"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../analyse",
           "kind": "named",
-          "namedImports": [
-            "analyze"
-          ],
+          "namedImports": ["analyze"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "DEFAULT_CODEBASE_FILE",
-            "SRC_DIR"
-          ],
+          "namedImports": ["DEFAULT_CODEBASE_FILE", "SRC_DIR"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -394,10 +329,7 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ],
+          "namedImports": ["join", "relative"],
           "isTypeOnly": false
         },
         {
@@ -413,18 +345,13 @@
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "createTypesStructure",
-            "getFolderPath"
-          ],
+          "namedImports": ["createTypesStructure", "getFolderPath"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -454,11 +381,7 @@
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative",
-            "resolve"
-          ],
+          "namedImports": ["join", "relative", "resolve"],
           "isTypeOnly": false
         },
         {
@@ -476,10 +399,7 @@
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "FILES_PROPERTY",
-            "PATH_PROPERTY"
-          ],
+          "namedImports": ["FILES_PROPERTY", "PATH_PROPERTY"],
           "isTypeOnly": false
         },
         {
@@ -488,21 +408,20 @@
           "namedImports": [
             "consoleStars",
             "getFolderPath",
-            "hasNoDeclarations"
+            "hasNoDeclarations",
+            "resolveModuleSpecifier"
           ],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
         }
       ],
       "relativePath": "functions/lift.ts",
-      "text": "import edit from 'edit-json-file';\nimport { existsSync, readdirSync, rmdirSync, statSync } from 'fs';\nimport { join, relative, resolve } from 'path';\nimport { Node, Project, SyntaxKind, ImportDeclaration, ImportSpecifier } from 'ts-morph';\nimport { FILES_PROPERTY, PATH_PROPERTY } from '../constants';\nimport { consoleStars, getFolderPath, hasNoDeclarations } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\n\n/**\n * Scans all declarations (type aliases, interfaces, variables, functions, classes, enums)\n * in the source files located inside the target folder. If a declaration is not referenced\n * anywhere else in the project and its name is not present in the exceptions list,\n * it is removed.\n *\n * @param project - The ts-morph project instance.\n * @param isInsideFolder - A function that returns true if a file path is inside the target folder.\n * @param exceptions - An array of names/identifiers that should not be removed even if unused.\n * @returns True if at least one declaration was removed; false otherwise.\n */\nconst removeUnusedDeclarations = (\n  project: Project,\n  isInsideFolder: (filePath: string) => boolean,\n  exceptions: string[],\n  counter: {\n    tokens: string[];\n  },\n): boolean => {\n  const declarations = project\n    .getSourceFiles()\n    .filter(sf => isInsideFolder(sf.getFilePath()))\n    .flatMap(sf => {\n      return [\n        ...sf.getTypeAliases(),\n        ...sf.getInterfaces(),\n        ...sf.getVariableDeclarations(),\n        ...sf.getFunctions(),\n        ...sf.getClasses(),\n        ...sf.getEnums(),\n      ];\n    });\n\n  const isDescendantOf = (child: Node, parent: Node): boolean => {\n    return child.getAncestors().some(ancestor => ancestor === parent);\n  };\n\n  const isExportReference = (node: Node): boolean => {\n    return node.getAncestors().some(ancestor => \n      Node.isExportAssignment(ancestor) || \n      Node.isExportSpecifier(ancestor)\n    );\n  };\n\n  const toDelete: typeof declarations = [];\n\n  for (const decl of declarations) {\n    if (decl.wasForgotten()) continue;\n\n    const nameNode = decl.getNameNode();\n    if (!nameNode || !Node.isIdentifier(nameNode)) continue;\n\n    const name = nameNode.getText();\n    if (exceptions.includes(name)) continue;\n\n    const sf = decl.getSourceFile();\n    const declPath = sf.getFilePath();\n    let refCount = 0;\n    let localRefCount = 0;\n\n    const referencedSymbols = nameNode.findReferences();\n    for (const refSymbol of referencedSymbols) {\n      for (const ref of refSymbol.getReferences()) {\n        const refNode = ref.getNode();\n\n        let isSelfRef = refNode === nameNode || isDescendantOf(refNode, decl);\n        if (Node.isVariableDeclaration(decl)) {\n          const stmt = decl.getVariableStatement();\n          if (stmt && isDescendantOf(refNode, stmt)) {\n            isSelfRef = true;\n          }\n        }\n\n        if (isSelfRef) continue;\n\n        const refPath = ref.getSourceFile().getFilePath();\n        const check1 = refPath !== declPath;\n\n        if (!check1 && isExportReference(refNode)) continue;\n\n        if (check1) {\n          refCount++;\n        } else {\n          localRefCount++;\n        }\n      }\n    }\n\n    if (refCount === 0 && localRefCount === 0) {\n      toDelete.push(decl);\n      counter.tokens.push(name);\n    }\n  }\n\n  let anyRemoved = false;\n  for (const decl of toDelete) {\n    if (!decl.wasForgotten()) {\n      console.log('   🗑️  Removed token :', '`' + decl.getName() + '`');\n      decl.remove();\n      anyRemoved = true;\n    }\n  }\n\n  return anyRemoved;\n};\n\n/**\n * Scans all import declarations inside the target folder's source files.\n * It checks named imports, default imports, namespace imports, and empty import declarations.\n * If an imported symbol is not referenced in the file and its name is not present in\n * the exceptions list, it removes that specific import. If an import declaration becomes empty,\n * the entire import declaration is removed.\n *\n * @param project - The ts-morph project instance.\n * @param isInsideFolder - A function that returns true if a file path is inside the target folder.\n * @param exceptions - An array of names/identifiers that should not be removed even if unused.\n * @returns True if at least one import specifier or import declaration was removed; false otherwise.\n */\nconst removeUnusedImports = (\n  project: Project,\n  isInsideFolder: (filePath: string) => boolean,\n  exceptions: string[],\n  outsideExportDecls: Node[],\n  counter: {\n    imports: string[];\n  },\n): boolean => {\n  const importDeclarations = project\n    .getSourceFiles()\n    .filter(sf => isInsideFolder(sf.getFilePath()))\n    .flatMap(sf => sf.getImportDeclarations());\n\n  const specsToDelete: ImportSpecifier[] = [];\n  const impsToDelete: ImportDeclaration[] = [];\n  const defaultImpsToRemove: ImportDeclaration[] = [];\n\n  for (const imp of importDeclarations) {\n    if (imp.wasForgotten()) continue;\n    const sf = imp.getSourceFile();\n\n    // 1. Named imports\n    const namedImports = imp.getNamedImports();\n    for (const spec of namedImports) {\n      if (spec.wasForgotten()) continue;\n      const nameNode = spec.getNameNode();\n      if (!Node.isIdentifier(nameNode)) continue;\n\n      const name = nameNode.getText();\n      const isTypeImport = imp.isTypeOnly() || spec.isTypeOnly();\n      \n      const isProtected =\n        exceptions.includes(name) ||\n        nameNode.getDefinitionNodes().some(def => outsideExportDecls.includes(def));\n\n      if (!isTypeImport && isProtected) continue;\n\n      // Imports are local to the file, check occurrences in the same file.\n      const localIdentifiers = sf\n        .getDescendantsOfKind(SyntaxKind.Identifier)\n        .filter(id => id.getText() === name);\n      if (localIdentifiers.length <= 1) {\n        specsToDelete.push(spec);\n      }\n    }\n\n    // 2. Default import\n    const defaultImport = imp.getDefaultImport();\n    if (\n      defaultImport &&\n      !defaultImport.wasForgotten() &&\n      Node.isIdentifier(defaultImport)\n    ) {\n      const name = defaultImport.getText();\n      const isTypeImport = imp.isTypeOnly();\n      \n      const isProtected =\n        exceptions.includes(name) ||\n        defaultImport.getDefinitionNodes().some(def => outsideExportDecls.includes(def));\n\n      if (isTypeImport || !isProtected) {\n        const localIdentifiers = sf\n          .getDescendantsOfKind(SyntaxKind.Identifier)\n          .filter(id => id.getText() === name);\n        if (localIdentifiers.length <= 1) {\n          defaultImpsToRemove.push(imp);\n        }\n      }\n    }\n\n    // 3. Namespace import\n    const namespaceImport = imp.getNamespaceImport();\n    if (\n      namespaceImport &&\n      !namespaceImport.wasForgotten() &&\n      Node.isIdentifier(namespaceImport)\n    ) {\n      const name = namespaceImport.getText();\n      const isTypeImport = imp.isTypeOnly();\n      \n      const isProtected =\n        exceptions.includes(name) ||\n        namespaceImport.getDefinitionNodes().some(def => outsideExportDecls.includes(def));\n\n      if (isTypeImport || !isProtected) {\n        const localIdentifiers = sf\n          .getDescendantsOfKind(SyntaxKind.Identifier)\n          .filter(id => id.getText() === name);\n        if (localIdentifiers.length <= 1) {\n          impsToDelete.push(imp);\n        }\n      }\n    }\n  }\n\n  let anyRemoved = false;\n  const log = (value: { getText: () => string }) => {\n    console.log('   🗑️  Removed import :', '`' + value.getText() + '`');\n    counter.imports.push(value.getText());\n  };\n\n  for (const spec of specsToDelete) {\n    if (!spec.wasForgotten()) {\n      log(spec);\n      spec.remove();\n      anyRemoved = true;\n    }\n  }\n\n  for (const imp of defaultImpsToRemove) {\n    if (!imp.wasForgotten()) {\n      const hasNamed = imp.getNamedImports().length > 0;\n      const hasNamespace = !!imp.getNamespaceImport();\n      log(imp);\n      if (!hasNamed && !hasNamespace) {\n        imp.remove();\n      } else {\n        imp.removeDefaultImport();\n      }\n      anyRemoved = true;\n    }\n  }\n\n  for (const imp of impsToDelete) {\n    if (!imp.wasForgotten()) {\n      log(imp);\n      imp.remove();\n      anyRemoved = true;\n    }\n  }\n\n  // 4. Empty import declarations\n  for (const imp of importDeclarations) {\n    if (imp.wasForgotten()) continue;\n    const hasNamed = imp.getNamedImports().length > 0;\n    const hasDefault = !!imp.getDefaultImport();\n    const hasNamespace = !!imp.getNamespaceImport();\n    if (!hasNamed && !hasDefault && !hasNamespace) {\n      log(imp);\n      imp.remove();\n      anyRemoved = true;\n    }\n  }\n\n  return anyRemoved;\n};\n\n/**\n * Searches the target directory for source files that have become completely empty.\n * If an empty file is found, it deletes it from the disk, removes it from the project,\n * and recursively cleans up any export declarations in other source files that target this file.\n *\n * @param project - The ts-morph project instance.\n * @param isInsideFolder - A function that returns true if a file path is inside the target folder.\n * @param entriesWithExports - Codebase analysis entries containing exported files.\n * @param folderPath - The absolute codebase target folder path.\n * @param jsonConfigPath - The codebase JSON config filepath.\n * @returns `true` if at least one file was deleted; false otherwise.\n */\nconst cleanEmptySourceFiles = (\n  project: Project,\n  isInsideFolder: (filePath: string) => boolean,\n  entriesWithExports: [string, any][],\n  folderPath: string,\n  jsonConfigPath: string,\n  counter: {\n    files: string[];\n  },\n) => {\n  const sourceFiles = project.getSourceFiles();\n  const emptyFiles = sourceFiles.filter(\n    sf => isInsideFolder(sf.getFilePath()) && hasNoDeclarations(sf),\n  );\n\n  if (emptyFiles.length === 0) return 0;\n  const json = join(process.cwd(), jsonConfigPath);\n  const file = edit(json);\n  const deletedKeys = new Set<string>();\n\n  for (const sf of emptyFiles) {\n    const filePath = sf.getFilePath();\n    const deletedPathWithoutExt = filePath.replace(/\\.tsx?$/, '');\n\n    for (const [, fileAnalysis] of entriesWithExports) {\n      const exportingFilePath = join(\n        folderPath,\n        fileAnalysis.relativePath,\n      );\n\n      const exportingSf = project.getSourceFile(exportingFilePath);\n\n      if (exportingSf) {\n        const exportDecls = exportingSf.getExportDeclarations();\n\n        for (const decl of exportDecls) {\n          const moduleSpecifier = decl.getModuleSpecifierValue();\n\n          if (moduleSpecifier) {\n            const resolvedSpec = resolve(\n              exportingSf.getDirectoryPath(),\n              moduleSpecifier,\n            ).replace(/\\.tsx?$/, '');\n\n            if (resolvedSpec === deletedPathWithoutExt) decl.remove();\n          }\n        }\n      }\n    }\n\n    sf.delete();\n    // if (existsSync(filePath)) unlinkSync(filePath);\n    console.log('  ❌ Deleted file', filePath);\n    console.log();\n\n    // Collect the key to remove from the jsonConfigPath\n    const relPath = relative(folderPath, filePath).replace(/\\\\/g, '/');\n    const key = relPath.replace(/\\.tsx?$/, '');\n    deletedKeys.add(key);\n    counter.files.push(key);\n  }\n\n  // Batch update and save the JSON configuration\n  if (deletedKeys.size > 0 && existsSync(json)) {\n    const files = file.get(FILES_PROPERTY) as string[] | undefined;\n    if (files) {\n      file.set(\n        FILES_PROPERTY,\n        files.filter(f => !deletedKeys.has(f)),\n      );\n      file.save();\n    }\n  }\n\n  return emptyFiles.length;\n};\n\n/**\n * Recursively scans and cleans up empty subdirectories within the specified directory,\n * and removes any export declarations targeting files inside those empty subdirectories.\n *\n * @param dir - The directory path to inspect and clean.\n * @param project - The ts-morph project instance.\n * @param entriesWithExports - Codebase analysis entries containing exported files.\n * @param srcDir - The absolute codebase source directory path.\n */\nconst cleanEmptyDirectories = (\n  dir: string,\n  project: Project,\n  entriesWithExports: [string, any][],\n  srcDir: string,\n  counter: {\n    directories: string[];\n  },\n): number => {\n  let deletedDirectories = 0;\n  if (!existsSync(dir) || !statSync(dir).isDirectory())\n    return deletedDirectories;\n\n  const files = readdirSync(dir);\n  for (const file of files) {\n    const fullPath = join(dir, file);\n    if (statSync(fullPath).isDirectory()) {\n      deletedDirectories += cleanEmptyDirectories(\n        fullPath,\n        project,\n        entriesWithExports,\n        srcDir,\n        counter,\n      );\n    }\n  }\n\n  const remaining = readdirSync(dir);\n\n  if (remaining.length === 0) {\n    for (const [, fileAnalysis] of entriesWithExports) {\n      const exportingFilePath = join(srcDir, fileAnalysis.relativePath);\n      const exportingSf = project.getSourceFile(exportingFilePath);\n\n      if (exportingSf) {\n        const exportDecls = exportingSf.getExportDeclarations();\n\n        for (const decl of exportDecls) {\n          const moduleSpecifier = decl.getModuleSpecifierValue();\n\n          if (moduleSpecifier) {\n            const resolvedSpec = resolve(\n              exportingSf.getDirectoryPath(),\n              moduleSpecifier,\n            ).replace(/\\.tsx?$/, '');\n\n            if (resolvedSpec.startsWith(dir)) decl.remove();\n          }\n        }\n      }\n    }\n    console.log('  🗑️  Deleted empty folder:', dir);\n    counter.directories.push(relative(srcDir, dir).replace(/\\\\/g, '/'));\n    rmdirSync(dir);\n    deletedDirectories++;\n  }\n\n  return deletedDirectories;\n};\n\n/**\n * LiftOutput type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type LiftOutput = {\n  tokens: string[];\n  imports: string[];\n  directories: string[];\n  files: string[];\n};\n\n/**\n * Internal orchestrator for lifting codebase files. It adds the files to a ts-morph project,\n * repeatedly prunes unused declarations and imports (observing the provided exceptions),\n * purges empty files and empty folders, and saves changes back to disk.\n *\n * @param root - The codebase target folder path.\n * @param jsonConfigPath - The codebase JSON config filepath.\n * @param CODEBASE_ANALYSIS - The full codebase analysis configuration object.\n * @param exceptions - An array of identifiers to preserve during pruning.\n * @param project - An optional ts-morph project instance to reuse.\n * @returns type {@linkcode LiftOutput} if successful, false otherwise.\n */\nconst _lift = (\n  root: string,\n  jsonConfigPath: string,\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  exceptions: string[],\n  project?: Project,\n): LiftOutput => {\n  consoleStars();\n  console.log('📂 Lifting the codebase ....');\n  consoleStars();\n  const out: LiftOutput = {\n    tokens: [],\n    imports: [],\n    directories: [],\n    files: [],\n  };\n\n  const folderPath = getFolderPath(root);\n\n  if (!existsSync(folderPath)) {\n    console.log(`Folder not found: ${folderPath}`);\n    return out;\n  }\n\n  const tsConfigFilePath = join(process.cwd(), 'tsconfig.json');\n  const proj =\n    project ||\n    (existsSync(tsConfigFilePath)\n      ? new Project({ tsConfigFilePath })\n      : new Project());\n\n  if (!project) {\n    // Add all source files recursively if they weren't preloaded\n    proj.addSourceFilesAtPaths(join(folderPath, '**/*.ts'));\n    proj.addSourceFilesAtPaths(join(folderPath, '**/*.tsx'));\n    proj.resolveSourceFileDependencies();\n  }\n\n  const isInsideFolder = (filePath: string) => {\n    return filePath.startsWith(folderPath);\n  };\n\n  // Optimize outsideExports by avoiding querying declaration files & node_modules.\n  const outsideExports = proj\n    .getSourceFiles()\n    .filter(sf => {\n      const path = sf.getFilePath();\n      return (\n        !isInsideFolder(path) &&\n        !path.includes('node_modules') &&\n        !sf.isDeclarationFile()\n      );\n    })\n    .flatMap(sf => Array.from(sf.getExportedDeclarations().keys()))\n    .filter(name => name !== 'default');\n\n  const allExceptions = [...exceptions, ...outsideExports];\n\n  const outsideExportDecls = proj\n    .getSourceFiles()\n    .filter(sf => {\n      const path = sf.getFilePath();\n      return (\n        !isInsideFolder(path) &&\n        !path.includes('node_modules') &&\n        !sf.isDeclarationFile()\n      );\n    })\n    .flatMap(sf => Array.from(sf.getExportedDeclarations().values()))\n    .flat();\n\n  const entriesWithExports = Object.entries(CODEBASE_ANALYSIS).filter(\n    ([, val]) => val.exports && val.exports.length > 0,\n  );\n\n  consoleStars();\n  console.log('🧹 Removing unused tokens ....');\n  consoleStars();\n  console.log();\n\n  let changed = true;\n\n  while (changed) {\n    changed = false;\n\n    // Phase A: Declarations\n    const declsChanged = removeUnusedDeclarations(\n      proj,\n      isInsideFolder,\n      allExceptions,\n      out,\n    );\n\n    // Phase B: Imports\n    const importsChanged = removeUnusedImports(\n      proj,\n      isInsideFolder,\n      exceptions,\n      outsideExportDecls,\n      out,\n    );\n\n    changed = declsChanged || importsChanged;\n  }\n\n  console.log();\n  console.log();\n\n  if (out.tokens.length > 0) {\n    console.log(`${out.tokens.length} unused tokens deleted`);\n  } else console.log('No unused tokens found');\n\n  console.log();\n\n  if (out.imports.length > 0) {\n    console.log(`${out.imports.length} unused imports deleted`);\n  } else console.log('No unused imports found');\n\n  console.log();\n  console.log();\n  consoleStars();\n  console.log('🧹 Cleaning empty files ....');\n  consoleStars();\n\n  const emptyFilesCount = cleanEmptySourceFiles(\n    proj,\n    isInsideFolder,\n    entriesWithExports,\n    folderPath,\n    jsonConfigPath,\n    out,\n  );\n\n  if (emptyFilesCount > 0) {\n    console.log(`${emptyFilesCount} empty files deleted`);\n  } else console.log('No empty files found');\n\n  // Save changes\n  proj.saveSync();\n\n  console.log();\n  console.log();\n  consoleStars();\n  console.log('🧹 Cleaning empty directories ....');\n  consoleStars();\n\n  // Phase D: Clean empty directories\n  const emptyDirectoriesCount = cleanEmptyDirectories(\n    folderPath,\n    proj,\n    entriesWithExports,\n    folderPath,\n    out,\n  );\n\n  console.log();\n  if (emptyDirectoriesCount > 0) {\n    console.log(`${emptyDirectoriesCount} empty directories deleted`);\n  } else console.log('No empty directories found');\n\n  console.log();\n  console.log();\n  console.log();\n  console.log();\n\n  out.directories.sort();\n  out.files.sort();\n  out.imports.sort();\n  out.tokens.sort();\n\n  console.log('Lifting done !!');\n  return out;\n};\n\n/**\n * Lifts and cleans up unused code, files, and directories inside the target root codebase folder,\n * while keeping any declarations or imports specified in the exception parameters.\n *\n * @param CODEBASE_ANALYSIS - The full codebase analysis config.\n * @param jsonConfigPath - The codebase JSON config filepath.\n * @param args - A parameter list of variable, function, class, or type names to preserve, optionally ending with a ts-morph Project to reuse.\n * @returns `true` if the codebase lifting was successfully completed.\n *\n * throws {@linkcode Error} if the root folder configuration is not found.\n */\n/**\n * lift variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const lift = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  jsonConfigPath: string,\n  ...args: any[]\n) => {\n  const exceptions: string[] = [];\n  let project: Project | undefined;\n\n  for (const arg of args) {\n    if (arg instanceof Project) {\n      project = arg;\n    } else if (typeof arg === 'string') {\n      exceptions.push(arg);\n    }\n  }\n\n  const json = join(process.cwd(), jsonConfigPath);\n  const file = edit(json);\n  const root = file.get(PATH_PROPERTY);\n\n  if (!root || typeof root !== 'string') {\n    throw new Error('Root path not found in codebase configuration.');\n  }\n\n  return _lift(\n    root,\n    jsonConfigPath,\n    CODEBASE_ANALYSIS,\n    exceptions,\n    project,\n  );\n};\n\n    ",
+      "text": "import edit from 'edit-json-file';\nimport { existsSync, readdirSync, rmdirSync, statSync } from 'fs';\nimport { join, relative, resolve } from 'path';\nimport { Node, Project, SyntaxKind, ImportDeclaration, ImportSpecifier } from 'ts-morph';\nimport { FILES_PROPERTY, PATH_PROPERTY } from '../constants';\nimport { consoleStars, getFolderPath, hasNoDeclarations, resolveModuleSpecifier } from '../helpers';\nimport { CodebaseAnalysis } from '../schemas';\n\n/**\n * Scans all declarations (type aliases, interfaces, variables, functions, classes, enums)\n * in the source files located inside the target folder. If a declaration is not referenced\n * anywhere else in the project and its name is not present in the exceptions list,\n * it is removed.\n *\n * @param project - The ts-morph project instance.\n * @param isInsideFolder - A function that returns true if a file path is inside the target folder.\n * @param exceptions - An array of names/identifiers that should not be removed even if unused.\n * @returns True if at least one declaration was removed; false otherwise.\n */\nconst removeUnusedDeclarations = (\n  project: Project,\n  isInsideFolder: (filePath: string) => boolean,\n  exceptions: string[],\n  outsideExportDecls: Node[],\n  counter: {\n    tokens: string[];\n  },\n): boolean => {\n  const declarations = project\n    .getSourceFiles()\n    .filter(sf => isInsideFolder(sf.getFilePath()))\n    .flatMap(sf => {\n      return [\n        ...sf.getTypeAliases(),\n        ...sf.getInterfaces(),\n        ...sf.getVariableDeclarations(),\n        ...sf.getFunctions(),\n        ...sf.getClasses(),\n        ...sf.getEnums(),\n      ];\n    });\n\n  const isDescendantOf = (child: Node, parent: Node): boolean => {\n    return child.getAncestors().some(ancestor => ancestor === parent);\n  };\n\n  const isExportReference = (node: Node): boolean => {\n    return node\n      .getAncestors()\n      .some(\n        ancestor =>\n          Node.isExportAssignment(ancestor) ||\n          Node.isExportSpecifier(ancestor),\n      );\n  };\n\n  const isInsideOtherDeclaration = (\n    node: Node,\n    decl: Node,\n  ): boolean => {\n    return node.getAncestors().some(ancestor => {\n      if (ancestor === decl) return false;\n      if (Node.isVariableDeclaration(decl)) {\n        const stmt = decl.getVariableStatement();\n        if (stmt && ancestor === stmt) return false;\n      }\n      return (\n        Node.isTypeAliasDeclaration(ancestor) ||\n        Node.isInterfaceDeclaration(ancestor) ||\n        Node.isVariableDeclaration(ancestor) ||\n        Node.isFunctionDeclaration(ancestor) ||\n        Node.isClassDeclaration(ancestor) ||\n        Node.isEnumDeclaration(ancestor) ||\n        Node.isModuleDeclaration(ancestor)\n      );\n    });\n  };\n\n  const toDelete: typeof declarations = [];\n\n  for (const decl of declarations) {\n    if (decl.wasForgotten()) continue;\n\n    const nameNode = decl.getNameNode();\n    if (!nameNode || !Node.isIdentifier(nameNode)) continue;\n\n    const name = nameNode.getText();\n    if (exceptions.includes(name)) continue;\n    if (outsideExportDecls.includes(decl)) continue;\n\n    const sf = decl.getSourceFile();\n    const declPath = sf.getFilePath();\n    let refCount = 0;\n    let localRefCount = 0;\n\n    const referencedSymbols = nameNode.findReferences();\n    for (const refSymbol of referencedSymbols) {\n      for (const ref of refSymbol.getReferences()) {\n        const refNode = ref.getNode();\n\n        let isSelfRef =\n          refNode === nameNode || isDescendantOf(refNode, decl);\n        if (Node.isVariableDeclaration(decl)) {\n          const stmt = decl.getVariableStatement();\n          if (stmt && isDescendantOf(refNode, stmt)) {\n            isSelfRef = true;\n          }\n        }\n        if (Node.isFunctionDeclaration(decl)) {\n          const parent = refNode.getParent();\n          if (\n            Node.isFunctionDeclaration(parent) &&\n            parent.getName() === decl.getName()\n          ) {\n            isSelfRef = true;\n          }\n        }\n        if (!isSelfRef && !isInsideOtherDeclaration(refNode, decl)) {\n          isSelfRef = true;\n        }\n\n        if (isSelfRef) continue;\n\n        const refPath = ref.getSourceFile().getFilePath();\n        const check1 = refPath !== declPath;\n\n        if (!check1 && isExportReference(refNode)) continue;\n\n        if (check1) {\n          refCount++;\n        } else {\n          localRefCount++;\n        }\n      }\n    }\n\n    if (refCount === 0 && localRefCount === 0) {\n      toDelete.push(decl);\n      counter.tokens.push(name);\n    }\n  }\n\n  let anyRemoved = false;\n  for (const decl of toDelete) {\n    if (!decl.wasForgotten()) {\n      console.log('   🗑️  Removed token :', '`' + decl.getName() + '`');\n      decl.remove();\n      anyRemoved = true;\n    }\n  }\n\n  return anyRemoved;\n};\n\n/**\n * Scans all import declarations inside the target folder's source files.\n * It checks named imports, default imports, namespace imports, and empty import declarations.\n * If an imported symbol is not referenced in the file and its name is not present in\n * the exceptions list, it removes that specific import. If an import declaration becomes empty,\n * the entire import declaration is removed.\n *\n * @param project - The ts-morph project instance.\n * @param isInsideFolder - A function that returns true if a file path is inside the target folder.\n * @param exceptions - An array of names/identifiers that should not be removed even if unused.\n * @returns True if at least one import specifier or import declaration was removed; false otherwise.\n */\nconst removeUnusedImports = (\n  project: Project,\n  isInsideFolder: (filePath: string) => boolean,\n  exceptions: string[],\n  outsideExportDecls: Node[],\n  counter: {\n    imports: string[];\n  },\n): boolean => {\n  const importDeclarations = project\n    .getSourceFiles()\n    .filter(sf => isInsideFolder(sf.getFilePath()))\n    .flatMap(sf => sf.getImportDeclarations());\n\n  const specsToDelete: ImportSpecifier[] = [];\n  const impsToDelete: ImportDeclaration[] = [];\n  const defaultImpsToRemove: ImportDeclaration[] = [];\n\n  for (const imp of importDeclarations) {\n    if (imp.wasForgotten()) continue;\n    const sf = imp.getSourceFile();\n\n    // 1. Named imports\n    const namedImports = imp.getNamedImports();\n    for (const spec of namedImports) {\n      if (spec.wasForgotten()) continue;\n      const nameNode = spec.getNameNode();\n      if (!Node.isIdentifier(nameNode)) continue;\n\n      const name = nameNode.getText();\n      const isTypeImport = imp.isTypeOnly() || spec.isTypeOnly();\n\n      const isProtected =\n        exceptions.includes(name) ||\n        nameNode\n          .getDefinitionNodes()\n          .some(def => outsideExportDecls.includes(def));\n\n      if (!isTypeImport && isProtected) continue;\n\n      // Imports are local to the file, check occurrences in the same file.\n      const localIdentifiers = sf\n        .getDescendantsOfKind(SyntaxKind.Identifier)\n        .filter(id => id.getText() === name);\n      if (localIdentifiers.length <= 1) {\n        specsToDelete.push(spec);\n      }\n    }\n\n    // 2. Default import\n    const defaultImport = imp.getDefaultImport();\n    if (\n      defaultImport &&\n      !defaultImport.wasForgotten() &&\n      Node.isIdentifier(defaultImport)\n    ) {\n      const name = defaultImport.getText();\n      const isTypeImport = imp.isTypeOnly();\n\n      const isProtected =\n        exceptions.includes(name) ||\n        defaultImport\n          .getDefinitionNodes()\n          .some(def => outsideExportDecls.includes(def));\n\n      if (isTypeImport || !isProtected) {\n        const localIdentifiers = sf\n          .getDescendantsOfKind(SyntaxKind.Identifier)\n          .filter(id => id.getText() === name);\n        if (localIdentifiers.length <= 1) {\n          defaultImpsToRemove.push(imp);\n        }\n      }\n    }\n\n    // 3. Namespace import\n    const namespaceImport = imp.getNamespaceImport();\n    if (\n      namespaceImport &&\n      !namespaceImport.wasForgotten() &&\n      Node.isIdentifier(namespaceImport)\n    ) {\n      const name = namespaceImport.getText();\n      const isTypeImport = imp.isTypeOnly();\n\n      const isProtected =\n        exceptions.includes(name) ||\n        namespaceImport\n          .getDefinitionNodes()\n          .some(def => outsideExportDecls.includes(def));\n\n      if (isTypeImport || !isProtected) {\n        const localIdentifiers = sf\n          .getDescendantsOfKind(SyntaxKind.Identifier)\n          .filter(id => id.getText() === name);\n        if (localIdentifiers.length <= 1) {\n          impsToDelete.push(imp);\n        }\n      }\n    }\n  }\n\n  let anyRemoved = false;\n  const log = (value: { getText: () => string }) => {\n    console.log('   🗑️  Removed import :', '`' + value.getText() + '`');\n    counter.imports.push(value.getText());\n  };\n\n  for (const spec of specsToDelete) {\n    if (!spec.wasForgotten()) {\n      log(spec);\n      spec.remove();\n      anyRemoved = true;\n    }\n  }\n\n  for (const imp of defaultImpsToRemove) {\n    if (!imp.wasForgotten()) {\n      const hasNamed = imp.getNamedImports().length > 0;\n      const hasNamespace = !!imp.getNamespaceImport();\n      log(imp);\n      if (!hasNamed && !hasNamespace) {\n        imp.remove();\n      } else {\n        imp.removeDefaultImport();\n      }\n      anyRemoved = true;\n    }\n  }\n\n  for (const imp of impsToDelete) {\n    if (!imp.wasForgotten()) {\n      log(imp);\n      imp.remove();\n      anyRemoved = true;\n    }\n  }\n\n  // 4. Empty import declarations\n  for (const imp of importDeclarations) {\n    if (imp.wasForgotten()) continue;\n    const hasNamed = imp.getNamedImports().length > 0;\n    const hasDefault = !!imp.getDefaultImport();\n    const hasNamespace = !!imp.getNamespaceImport();\n    if (!hasNamed && !hasDefault && !hasNamespace) {\n      log(imp);\n      imp.remove();\n      anyRemoved = true;\n    }\n  }\n\n  return anyRemoved;\n};\n\n/**\n * Searches the target directory for source files that have become completely empty.\n * If an empty file is found, it deletes it from the disk, removes it from the project,\n * and recursively cleans up any export declarations in other source files that target this file.\n *\n * @param project - The ts-morph project instance.\n * @param isInsideFolder - A function that returns true if a file path is inside the target folder.\n * @param entriesWithExports - Codebase analysis entries containing exported files.\n * @param folderPath - The absolute codebase target folder path.\n * @param jsonConfigPath - The codebase JSON config filepath.\n * @returns `true` if at least one file was deleted; false otherwise.\n */\nconst cleanEmptySourceFiles = (\n  project: Project,\n  isInsideFolder: (filePath: string) => boolean,\n  folderPath: string,\n  jsonConfigPath: string,\n  counter: {\n    files: string[];\n  },\n) => {\n  const sourceFiles = project.getSourceFiles();\n  const emptyFiles = sourceFiles.filter(\n    sf => isInsideFolder(sf.getFilePath()) && hasNoDeclarations(sf),\n  );\n\n  if (emptyFiles.length === 0) return 0;\n  const json = join(process.cwd(), jsonConfigPath);\n  const file = edit(json);\n  const deletedKeys = new Set<string>();\n\n  for (const sf of emptyFiles) {\n    const filePath = sf.getFilePath();\n    const deletedPathWithoutExt = filePath.replace(/\\.tsx?$/, '');\n\n    for (const exportingSf of project.getSourceFiles()) {\n      const exportDecls = exportingSf.getExportDeclarations();\n\n      for (const decl of exportDecls) {\n        const moduleSpecifier = decl.getModuleSpecifierValue();\n\n        if (moduleSpecifier) {\n          const resolvedSpec = resolve(\n            exportingSf.getDirectoryPath(),\n            resolveModuleSpecifier(exportingSf, moduleSpecifier),\n          ).replace(/\\.tsx?$/, '');\n\n          if (resolvedSpec === deletedPathWithoutExt) decl.remove();\n        }\n      }\n    }\n\n    sf.delete();\n    // if (existsSync(filePath)) unlinkSync(filePath);\n    console.log('  ❌ Deleted file', filePath);\n    console.log();\n\n    // Collect the key to remove from the jsonConfigPath\n    const relPath = relative(folderPath, filePath).replace(/\\\\/g, '/');\n    const key = relPath.replace(/\\.tsx?$/, '');\n    deletedKeys.add(key);\n    counter.files.push(key);\n  }\n\n  // Batch update and save the JSON configuration\n  if (deletedKeys.size > 0 && existsSync(json)) {\n    const files = file.get(FILES_PROPERTY) as string[] | undefined;\n    if (files) {\n      file.set(\n        FILES_PROPERTY,\n        files.filter(f => !deletedKeys.has(f)),\n      );\n      file.save();\n    }\n  }\n\n  return emptyFiles.length;\n};\n\n/**\n * Recursively scans and cleans up empty subdirectories within the specified directory,\n * and removes any export declarations targeting files inside those empty subdirectories.\n *\n * @param dir - The directory path to inspect and clean.\n * @param project - The ts-morph project instance.\n * @param entriesWithExports - Codebase analysis entries containing exported files.\n * @param srcDir - The absolute codebase source directory path.\n */\nconst cleanEmptyDirectories = (\n  dir: string,\n  project: Project,\n  entriesWithExports: [string, any][],\n  srcDir: string,\n  counter: {\n    directories: string[];\n  },\n): number => {\n  let deletedDirectories = 0;\n  if (!existsSync(dir) || !statSync(dir).isDirectory())\n    return deletedDirectories;\n\n  const files = readdirSync(dir);\n  for (const file of files) {\n    const fullPath = join(dir, file);\n    if (statSync(fullPath).isDirectory()) {\n      deletedDirectories += cleanEmptyDirectories(\n        fullPath,\n        project,\n        entriesWithExports,\n        srcDir,\n        counter,\n      );\n    }\n  }\n\n  const remaining = readdirSync(dir);\n\n  if (remaining.length === 0) {\n    for (const [, fileAnalysis] of entriesWithExports) {\n      const exportingFilePath = join(srcDir, fileAnalysis.relativePath);\n      const exportingSf = project.getSourceFile(exportingFilePath);\n\n      if (exportingSf) {\n        const exportDecls = exportingSf.getExportDeclarations();\n\n        for (const decl of exportDecls) {\n          const moduleSpecifier = decl.getModuleSpecifierValue();\n\n          if (moduleSpecifier) {\n            const resolvedSpec = resolve(\n              exportingSf.getDirectoryPath(),\n              moduleSpecifier,\n            ).replace(/\\.tsx?$/, '');\n\n            if (resolvedSpec.startsWith(dir)) decl.remove();\n          }\n        }\n      }\n    }\n    console.log('  🗑️  Deleted empty folder:', dir);\n    counter.directories.push(relative(srcDir, dir).replace(/\\\\/g, '/'));\n    rmdirSync(dir);\n    deletedDirectories++;\n  }\n\n  return deletedDirectories;\n};\n\n/**\n * LiftOutput type - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport type LiftOutput = {\n  tokens: string[];\n  imports: string[];\n  directories: string[];\n  files: string[];\n};\n\n/**\n * Internal orchestrator for lifting codebase files. It adds the files to a ts-morph project,\n * repeatedly prunes unused declarations and imports (observing the provided exceptions),\n * purges empty files and empty folders, and saves changes back to disk.\n *\n * @param root - The codebase target folder path.\n * @param jsonConfigPath - The codebase JSON config filepath.\n * @param CODEBASE_ANALYSIS - The full codebase analysis configuration object.\n * @param exceptions - An array of identifiers to preserve during pruning.\n * @param project - An optional ts-morph project instance to reuse.\n * @returns type {@linkcode LiftOutput} if successful, false otherwise.\n */\nconst _lift = (\n  root: string,\n  jsonConfigPath: string,\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  exceptions: string[],\n  project?: Project,\n): LiftOutput => {\n  consoleStars();\n  console.log('📂 Lifting the codebase ....');\n  consoleStars();\n  const out: LiftOutput = {\n    tokens: [],\n    imports: [],\n    directories: [],\n    files: [],\n  };\n\n  const folderPath = getFolderPath(root);\n\n  if (!existsSync(folderPath)) {\n    console.log(`Folder not found: ${folderPath}`);\n    return out;\n  }\n\n  const tsConfigFilePath = join(process.cwd(), 'tsconfig.json');\n  const proj =\n    project ||\n    (existsSync(tsConfigFilePath)\n      ? new Project({ tsConfigFilePath })\n      : new Project());\n\n  if (!project) {\n    // Add all source files recursively if they weren't preloaded\n    proj.addSourceFilesAtPaths(join(folderPath, '**/*.ts'));\n    proj.addSourceFilesAtPaths(join(folderPath, '**/*.tsx'));\n    proj.resolveSourceFileDependencies();\n  }\n\n  const isInsideFolder = (filePath: string) => {\n    return filePath.startsWith(folderPath);\n  };\n\n  // Optimize outsideExports by avoiding querying declaration files & node_modules.\n  const outsideExports = proj\n    .getSourceFiles()\n    .filter(sf => {\n      const path = sf.getFilePath();\n      return (\n        !isInsideFolder(path) &&\n        !path.includes('node_modules') &&\n        !sf.isDeclarationFile()\n      );\n    })\n    .flatMap(sf => {\n      const exports = sf.getExportedDeclarations();\n      const names: string[] = [];\n\n      for (const [name, decls] of exports) {\n        if (name === 'default') continue;\n\n        // Check if this export name is explicitly declared/named in sf\n        // (rather than being re-exported via export * from '...')\n        const isExplicit = decls.some(decl => {\n          const declPath = decl.getSourceFile().getFilePath();\n          // If the declaration is defined outside the folder, we protect it\n          if (!isInsideFolder(declPath)) return true;\n\n          // If the declaration is defined inside the folder, we only protect it\n          // if it is explicitly named in the export declarations of sf.\n          const isNamedExport = sf.getExportDeclarations().some(d => {\n            if (d.isNamespaceExport()) {\n              return d.getNamespaceExport()?.getName() === name;\n            }\n            return d\n              .getNamedExports()\n              .some(\n                n =>\n                  n.getName() === name ||\n                  n.getAliasNode()?.getText() === name,\n              );\n          });\n\n          return isNamedExport;\n        });\n\n        if (isExplicit) {\n          names.push(name);\n        }\n      }\n\n      return names;\n    });\n\n  const allExceptions = [...exceptions, ...outsideExports];\n\n  const entriesWithExports = Object.entries(CODEBASE_ANALYSIS).filter(\n    ([, val]) => val.exports && val.exports.length > 0,\n  );\n\n  consoleStars();\n  console.log('🧹 Removing unused tokens ....');\n  consoleStars();\n  console.log();\n\n  let changed = true;\n\n  while (changed) {\n    changed = false;\n\n    const outsideExportDecls = proj\n      .getSourceFiles()\n      .filter(sf => {\n        const path = sf.getFilePath();\n        return (\n          !isInsideFolder(path) &&\n          !path.includes('node_modules') &&\n          !sf.isDeclarationFile()\n        );\n      })\n      .flatMap(sf => {\n        const exports = sf.getExportedDeclarations();\n        const decls: Node[] = [];\n\n        for (const [name, nameDecls] of exports) {\n          // Check if this export name is explicitly declared/named in sf\n          // (rather than being re-exported via export * from '...')\n          const isExplicit = nameDecls.some(decl => {\n            const declPath = decl.getSourceFile().getFilePath();\n            // If the declaration is defined outside the folder, we protect it\n            if (!isInsideFolder(declPath)) return true;\n\n            // If the declaration is defined inside the folder, we only protect it\n            // if it is explicitly named in the export declarations of sf.\n            const isNamedExport = sf.getExportDeclarations().some(d => {\n              if (d.isNamespaceExport()) {\n                return d.getNamespaceExport()?.getName() === name;\n              }\n              return d\n                .getNamedExports()\n                .some(\n                  n =>\n                    n.getName() === name ||\n                    n.getAliasNode()?.getText() === name,\n                );\n            });\n\n            return isNamedExport;\n          });\n\n          if (isExplicit) {\n            decls.push(...nameDecls);\n          }\n        }\n\n        return decls;\n      });\n\n    // Phase A: Declarations\n    const declsChanged = removeUnusedDeclarations(\n      proj,\n      isInsideFolder,\n      allExceptions,\n      outsideExportDecls,\n      out,\n    );\n\n    // Phase B: Imports\n    const importsChanged = removeUnusedImports(\n      proj,\n      isInsideFolder,\n      exceptions,\n      outsideExportDecls,\n      out,\n    );\n\n    changed = declsChanged || importsChanged;\n  }\n\n  console.log();\n  console.log();\n\n  if (out.tokens.length > 0) {\n    console.log(`${out.tokens.length} unused tokens deleted`);\n  } else console.log('No unused tokens found');\n\n  console.log();\n\n  if (out.imports.length > 0) {\n    console.log(`${out.imports.length} unused imports deleted`);\n  } else console.log('No unused imports found');\n\n  console.log();\n  console.log();\n  consoleStars();\n  console.log('🧹 Cleaning empty files ....');\n  consoleStars();\n\n  const emptyFilesCount = cleanEmptySourceFiles(\n    proj,\n    isInsideFolder,\n    folderPath,\n    jsonConfigPath,\n    out,\n  );\n\n  if (emptyFilesCount > 0) {\n    console.log(`${emptyFilesCount} empty files deleted`);\n  } else console.log('No empty files found');\n\n  // Save changes\n  proj.saveSync();\n\n  console.log();\n  console.log();\n  consoleStars();\n  console.log('🧹 Cleaning empty directories ....');\n  consoleStars();\n\n  // Phase D: Clean empty directories\n  const emptyDirectoriesCount = cleanEmptyDirectories(\n    folderPath,\n    proj,\n    entriesWithExports,\n    folderPath,\n    out,\n  );\n\n  console.log();\n  if (emptyDirectoriesCount > 0) {\n    console.log(`${emptyDirectoriesCount} empty directories deleted`);\n  } else console.log('No empty directories found');\n\n  console.log();\n  console.log();\n  console.log();\n  console.log();\n\n  out.directories.sort();\n  out.files.sort();\n  out.imports.sort();\n  out.tokens.sort();\n\n  console.log('Lifting done !!');\n  return out;\n};\n\n/**\n * Lifts and cleans up unused code, files, and directories inside the target root codebase folder,\n * while keeping any declarations or imports specified in the exception parameters.\n *\n * @param CODEBASE_ANALYSIS - The full codebase analysis config.\n * @param jsonConfigPath - The codebase JSON config filepath.\n * @param args - A parameter list of variable, function, class, or type names to preserve, optionally ending with a ts-morph Project to reuse.\n * @returns `true` if the codebase lifting was successfully completed.\n *\n * throws {@linkcode Error} if the root folder configuration is not found.\n */\n/**\n * lift variable - Auto-generated expression\n * \n * ⚠️ WARNING: This expression is auto-generated and should not be modified.\n * Any manual changes will be overwritten during the next generation.\n * \n * @generated\n * @readonly\n * @author chlbri (bri_lvi@icloud.com)\n */\nexport const lift = (\n  CODEBASE_ANALYSIS: CodebaseAnalysis,\n  jsonConfigPath: string,\n  ...args: any[]\n) => {\n  const exceptions: string[] = [];\n  let project: Project | undefined;\n\n  for (const arg of args) {\n    if (arg instanceof Project) {\n      project = arg;\n    } else if (typeof arg === 'string') {\n      exceptions.push(arg);\n    }\n  }\n\n  const json = join(process.cwd(), jsonConfigPath);\n  const file = edit(json);\n  const root = file.get(PATH_PROPERTY);\n\n  if (!root || typeof root !== 'string') {\n    throw new Error('Root path not found in codebase configuration.');\n  }\n\n  return _lift(\n    root,\n    jsonConfigPath,\n    CODEBASE_ANALYSIS,\n    exceptions,\n    project,\n  );\n};\n\n    ",
       "exports": []
     },
     "functions/remove": {
@@ -516,34 +435,25 @@
         {
           "moduleSpecifier": "edit-json-file",
           "kind": "named",
-          "namedImports": [
-            "JsonEditor"
-          ],
+          "namedImports": ["JsonEditor"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "fs",
           "kind": "named",
-          "namedImports": [
-            "unlinkSync"
-          ],
+          "namedImports": ["unlinkSync"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join"
-          ],
+          "namedImports": ["join"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../constants",
           "kind": "named",
-          "namedImports": [
-            "FILES_PROPERTY",
-            "PATH_PROPERTY"
-          ],
+          "namedImports": ["FILES_PROPERTY", "PATH_PROPERTY"],
           "isTypeOnly": false
         },
         {
@@ -559,10 +469,7 @@
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis",
-            "FileAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis", "FileAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -581,20 +488,13 @@
         {
           "moduleSpecifier": "fs",
           "kind": "named",
-          "namedImports": [
-            "existsSync",
-            "mkdirSync",
-            "readFileSync"
-          ],
+          "namedImports": ["existsSync", "mkdirSync", "readFileSync"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "path",
           "kind": "named",
-          "namedImports": [
-            "join",
-            "relative"
-          ],
+          "namedImports": ["join", "relative"],
           "isTypeOnly": false
         },
         {
@@ -610,26 +510,19 @@
         {
           "moduleSpecifier": "../helpers",
           "kind": "named",
-          "namedImports": [
-            "createTypesStructure",
-            "getFolderPath"
-          ],
+          "namedImports": ["createTypesStructure", "getFolderPath"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "../schemas",
           "kind": "named",
-          "namedImports": [
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["CodebaseAnalysis"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./init",
           "kind": "named",
-          "namedImports": [
-            "InitOptions"
-          ],
+          "namedImports": ["InitOptions"],
           "isTypeOnly": true
         }
       ],
@@ -642,11 +535,7 @@
         {
           "moduleSpecifier": "fs",
           "kind": "named",
-          "namedImports": [
-            "existsSync",
-            "mkdirSync",
-            "writeFileSync"
-          ],
+          "namedImports": ["existsSync", "mkdirSync", "writeFileSync"],
           "isTypeOnly": false
         },
         {
@@ -664,26 +553,19 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile"
-          ],
+          "namedImports": ["SourceFile"],
           "isTypeOnly": true
         },
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "REPLACERS"
-          ],
+          "namedImports": ["REPLACERS"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "FileAnalysis",
-            "CodebaseAnalysis"
-          ],
+          "namedImports": ["FileAnalysis", "CodebaseAnalysis"],
           "isTypeOnly": false
         }
       ],
@@ -696,26 +578,19 @@
         {
           "moduleSpecifier": "ts-morph",
           "kind": "named",
-          "namedImports": [
-            "SourceFile",
-            "SyntaxKind"
-          ],
+          "namedImports": ["SourceFile", "SyntaxKind"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./helpers",
           "kind": "named",
-          "namedImports": [
-            "resolveModuleSpecifier"
-          ],
+          "namedImports": ["resolveModuleSpecifier"],
           "isTypeOnly": false
         },
         {
           "moduleSpecifier": "./schemas",
           "kind": "named",
-          "namedImports": [
-            "ImportInfo"
-          ],
+          "namedImports": ["ImportInfo"],
           "isTypeOnly": true
         }
       ],
@@ -789,9 +664,7 @@
         {
           "moduleSpecifier": "./constants",
           "kind": "named",
-          "namedImports": [
-            "PROPERTIES"
-          ],
+          "namedImports": ["PROPERTIES"],
           "isTypeOnly": false
         }
       ],

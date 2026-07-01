@@ -53,10 +53,10 @@ const restore = () => {
   }
 };
 
-test('## => restore', restore);
 describe('Lift function', () => {
   let result: any;
   let remaining: string[] = [];
+  afterAll(restore);
 
   beforeAll(() => {
     cleanUp();
@@ -75,11 +75,10 @@ describe('Lift function', () => {
       .sort();
   }, 60000);
 
-  // afterAll(restore);
   test('#01 => lift result is true', () =>
     expect(result).toBeDefined());
-  test('#02 => file count is 27', () =>
-    expect(remaining.length).toBe(27));
+  test('#02 => file count is 23', () =>
+    expect(remaining.length).toBe(23));
 
   test('#03 => matches the expected files list', () => {
     expect(remaining).toEqual([
@@ -91,10 +90,6 @@ describe('Lift function', () => {
       'features/common/types.ts',
       'features/common/typings/extract/index.ts',
       'features/common/typings/index.ts',
-      'features/functions/functions/identify.ts',
-      'features/functions/functions/partialCall.ts',
-      'features/functions/functions/partialCallO.ts',
-      'features/functions/functions/switch.ts',
       'features/functions/types.ts',
       'features/numbers/typings/index.ts',
       'features/objects/castings/trueObject.ts',
@@ -116,9 +111,6 @@ describe('Lift function', () => {
   test('#04 => config file changes', () => {
     const config = JSON.parse(readFileSync(configPath, 'utf8'));
     const files = config.files as string[];
-
-    console.log();
-    console.log('files', files);
     expect(files.map(f => `${f}.ts`).sort()).toStrictEqual(remaining);
   });
 });
