@@ -5,6 +5,24 @@
 <details>
 <summary>
 
+## **[2.3.0] - 01/07/2026** => _15:08_
+
+</summary>
+
+- Update `lift` function signature to return detailed information of
+  pruned elements (type `LiftOutput`) instead of a simple boolean
+- Add LiftOutput type export
+- Refactor lift function to save project changes before deleting empty
+  directories
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[2.2.0] - 01/07/2026** => _12:31_
 
 </summary>

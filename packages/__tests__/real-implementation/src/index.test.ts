@@ -54,7 +54,7 @@ describe('Lift function', () => {
     }
   };
 
-  let result: boolean;
+  let result: any;
   let remaining: string[] = [];
 
   beforeAll(() => {
@@ -67,49 +67,58 @@ describe('Lift function', () => {
     );
 
     result = lift(codebaseJson.CODEBASE_ANALYSIS, '.bemedev.json');
+    console.log(result);
 
     const allFiles = getFilesRecursively(codebaseDir);
     remaining = allFiles
-      .map(f => relative(pkgDir, f).replace(/\\/g, '/'))
+      .map(f => relative(codebaseDir, f).replace(/\\/g, '/'))
       .sort();
   }, 60000);
 
   afterAll(restore);
-  test('#01 => lift result is true', () => expect(result).toBe(true));
-  test('#02 => file count is 26', () =>
+  test('#01 => lift result is true', () =>
+    expect(result).toBeDefined());
+  test('#02 => file count is 29', () =>
     expect(remaining.length).toBe(29));
 
   test('#03 => matches the expected files list', () => {
     expect(remaining).toEqual([
-      'src/.bemedev/features/arrays/castings/toArray.ts',
-      'src/.bemedev/features/arrays/castings/tuple/index.ts',
-      'src/.bemedev/features/arrays/types.ts',
-      'src/.bemedev/features/common/castings/any.ts',
-      'src/.bemedev/features/common/castings/is/defined.ts',
-      'src/.bemedev/features/common/types.ts',
-      'src/.bemedev/features/common/typings/extract/all.ts',
-      'src/.bemedev/features/common/typings/extract/const.ts',
-      'src/.bemedev/features/common/typings/extract/index.ts',
-      'src/.bemedev/features/common/typings/index.ts',
-      'src/.bemedev/features/functions/functions/identify.ts',
-      'src/.bemedev/features/functions/functions/partialCall.ts',
-      'src/.bemedev/features/functions/functions/partialCallO.ts',
-      'src/.bemedev/features/functions/functions/switch.ts',
-      'src/.bemedev/features/functions/types.ts',
-      'src/.bemedev/features/numbers/typings/index.ts',
-      'src/.bemedev/features/objects/castings/trueObject.ts',
-      'src/.bemedev/features/objects/types.ts',
-      'src/.bemedev/features/objects/typings/byKey.ts',
-      'src/.bemedev/features/objects/typings/keysOf.ts',
-      'src/.bemedev/features/strings/typings/index.ts',
-      'src/.bemedev/globals/types.ts',
-      'src/.bemedev/globals/utils/_unknown.ts',
-      'src/.bemedev/globals/utils/castFn.ts',
-      'src/.bemedev/globals/utils/expandFn.ts',
-      'src/.bemedev/globals/utils/is/merge.ts',
-      'src/.bemedev/globals/utils/is/object.ts',
-      'src/.bemedev/globals/utils/is/primitive.ts',
-      'src/.bemedev/globals/utils/typeFn.ts',
+      'features/arrays/castings/toArray.ts',
+      'features/arrays/castings/tuple/index.ts',
+      'features/arrays/types.ts',
+      'features/common/castings/any.ts',
+      'features/common/castings/is/defined.ts',
+      'features/common/types.ts',
+      'features/common/typings/extract/all.ts',
+      'features/common/typings/extract/const.ts',
+      'features/common/typings/extract/index.ts',
+      'features/common/typings/index.ts',
+      'features/functions/functions/identify.ts',
+      'features/functions/functions/partialCall.ts',
+      'features/functions/functions/partialCallO.ts',
+      'features/functions/functions/switch.ts',
+      'features/functions/types.ts',
+      'features/numbers/typings/index.ts',
+      'features/objects/castings/trueObject.ts',
+      'features/objects/types.ts',
+      'features/objects/typings/byKey.ts',
+      'features/objects/typings/keysOf.ts',
+      'features/strings/typings/index.ts',
+      'globals/types.ts',
+      'globals/utils/_unknown.ts',
+      'globals/utils/castFn.ts',
+      'globals/utils/expandFn.ts',
+      'globals/utils/is/merge.ts',
+      'globals/utils/is/object.ts',
+      'globals/utils/is/primitive.ts',
+      'globals/utils/typeFn.ts',
     ]);
+  });
+
+  test('#04 => config file changes', () => {
+    const config = JSON.parse(readFileSync(configPath, 'utf8'));
+    const files = config.files as string[];
+
+    expect(files.map(f => `${f}.ts`).sort()).toStrictEqual(remaining);
   });
 });

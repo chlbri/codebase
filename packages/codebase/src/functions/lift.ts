@@ -58,7 +58,7 @@ const removeUnusedDeclarations = (
   isInsideFolder: (filePath: string) => boolean,
   exceptions: string[],
   counter: {
-    tokens: number;
+    tokens: string[];
   },
 ): boolean => {
   const declarations = project
@@ -105,7 +105,7 @@ const removeUnusedDeclarations = (
 
     if (refCount === 0) {
       toDelete.push(decl);
-      counter.tokens++;
+      counter.tokens.push(name);
     }
   }
 
@@ -138,7 +138,7 @@ const removeUnusedImports = (
   isInsideFolder: (filePath: string) => boolean,
   exceptions: string[],
   counter: {
-    imports: number;
+    imports: string[];
   },
 ): boolean => {
   const importDeclarations = project
@@ -213,12 +213,12 @@ const removeUnusedImports = (
   let anyRemoved = false;
   const log = (value: { getText: () => string }) => {
     console.log('   🗑️  Removed import :', '`' + value.getText() + '`');
+    counter.imports.push(value.getText());
   };
 
   for (const spec of specsToDelete) {
     if (!spec.wasForgotten()) {
       log(spec);
-      counter.imports++;
       spec.remove();
       anyRemoved = true;
     }
@@ -228,7 +228,6 @@ const removeUnusedImports = (
     if (!imp.wasForgotten()) {
       const hasNamed = imp.getNamedImports().length > 0;
       const hasNamespace = !!imp.getNamespaceImport();
-      counter.imports++;
       log(imp);
       if (!hasNamed && !hasNamespace) {
         imp.remove();
@@ -242,7 +241,6 @@ const removeUnusedImports = (
   for (const imp of impsToDelete) {
     if (!imp.wasForgotten()) {
       log(imp);
-      counter.imports++;
       imp.remove();
       anyRemoved = true;
     }
@@ -255,7 +253,6 @@ const removeUnusedImports = (
     const hasDefault = !!imp.getDefaultImport();
     const hasNamespace = !!imp.getNamespaceImport();
     if (!hasNamed && !hasDefault && !hasNamespace) {
-      counter.imports++;
       log(imp);
       imp.remove();
       anyRemoved = true;
@@ -283,6 +280,9 @@ const cleanEmptySourceFiles = (
   entriesWithExports: [string, any][],
   folderPath: string,
   jsonConfigPath: string,
+  counter: {
+    files: string[];
+  },
 ) => {
   const sourceFiles = project.getSourceFiles();
   const emptyFiles = sourceFiles.filter(
@@ -333,6 +333,7 @@ const cleanEmptySourceFiles = (
     const relPath = relative(folderPath, filePath).replace(/\\/g, '/');
     const key = relPath.replace(/\.tsx?$/, '');
     deletedKeys.add(key);
+    counter.files.push(key);
   }
 
   // Batch update and save the JSON configuration
@@ -364,6 +365,9 @@ const cleanEmptyDirectories = (
   project: Project,
   entriesWithExports: [string, any][],
   srcDir: string,
+  counter: {
+    directories: string[];
+  },
 ): number => {
   let deletedDirectories = 0;
   if (!existsSync(dir) || !statSync(dir).isDirectory())
@@ -378,6 +382,7 @@ const cleanEmptyDirectories = (
         project,
         entriesWithExports,
         srcDir,
+        counter,
       );
     }
   }
@@ -407,11 +412,19 @@ const cleanEmptyDirectories = (
       }
     }
     console.log('  🗑️  Deleted empty folder:', dir);
+    counter.directories.push(relative(srcDir, dir).replace(/\\/g, '/'));
     rmdirSync(dir);
     deletedDirectories++;
   }
 
   return deletedDirectories;
+};
+
+export type LiftOutput = {
+  tokens: string[];
+  imports: string[];
+  directories: string[];
+  files: string[];
 };
 
 /**
@@ -424,7 +437,7 @@ const cleanEmptyDirectories = (
  * @param CODEBASE_ANALYSIS - The full codebase analysis configuration object.
  * @param exceptions - An array of identifiers to preserve during pruning.
  * @param project - An optional ts-morph project instance to reuse.
- * @returns True if successful, false otherwise.
+ * @returns type {@linkcode LiftOutput} if successful, false otherwise.
  */
 const _lift = (
   root: string,
@@ -432,16 +445,22 @@ const _lift = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   exceptions: string[],
   project?: Project,
-): boolean => {
+): LiftOutput => {
   consoleStars();
   console.log('📂 Lifting the codebase ....');
   consoleStars();
+  const out: LiftOutput = {
+    tokens: [],
+    imports: [],
+    directories: [],
+    files: [],
+  };
 
   const folderPath = getFolderPath(root);
 
   if (!existsSync(folderPath)) {
     console.log(`Folder not found: ${folderPath}`);
-    return false;
+    return out;
   }
 
   const tsConfigFilePath = join(process.cwd(), 'tsconfig.json');
@@ -488,10 +507,7 @@ const _lift = (
   console.log();
 
   let changed = true;
-  const counters = {
-    tokens: 0,
-    imports: 0,
-  };
+
   while (changed) {
     changed = false;
 
@@ -500,7 +516,7 @@ const _lift = (
       proj,
       isInsideFolder,
       allExceptions,
-      counters,
+      out,
     );
 
     if (changed) continue;
@@ -510,7 +526,7 @@ const _lift = (
       proj,
       isInsideFolder,
       allExceptions,
-      counters,
+      out,
     );
 
     if (changed) continue;
@@ -519,14 +535,14 @@ const _lift = (
   console.log();
   console.log();
 
-  if (counters.tokens > 0) {
-    console.log(`${counters.tokens} unused tokens deleted`);
+  if (out.tokens.length > 0) {
+    console.log(`${out.tokens.length} unused tokens deleted`);
   } else console.log('No unused tokens found');
 
   console.log();
 
-  if (counters.imports > 0) {
-    console.log(`${counters.imports} unused imports deleted`);
+  if (out.imports.length > 0) {
+    console.log(`${out.imports.length} unused imports deleted`);
   } else console.log('No unused imports found');
 
   console.log();
@@ -541,11 +557,15 @@ const _lift = (
     entriesWithExports,
     folderPath,
     jsonConfigPath,
+    out,
   );
 
   if (emptyFilesCount > 0) {
     console.log(`${emptyFilesCount} empty files deleted`);
   } else console.log('No empty files found');
+
+  // Save changes
+  proj.saveSync();
 
   console.log();
   console.log();
@@ -559,8 +579,10 @@ const _lift = (
     proj,
     entriesWithExports,
     folderPath,
+    out,
   );
 
+  console.log();
   if (emptyDirectoriesCount > 0) {
     console.log(`${emptyDirectoriesCount} empty directories deleted`);
   } else console.log('No empty directories found');
@@ -570,11 +592,13 @@ const _lift = (
   console.log();
   console.log();
 
-  // Save changes
-  proj.saveSync();
+  out.directories.sort();
+  out.files.sort();
+  out.imports.sort();
+  out.tokens.sort();
 
   console.log('Lifting done !!');
-  return true;
+  return out;
 };
 
 /**
@@ -592,7 +616,7 @@ export const lift = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   jsonConfigPath: string,
   ...args: any[]
-): boolean => {
+) => {
   const exceptions: string[] = [];
   let project: Project | undefined;
 

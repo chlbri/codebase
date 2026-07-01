@@ -132,21 +132,32 @@ up imports within a target folder, automatically deleting files and
 folders that become empty.
 
 ```typescript
-import { lift } from '@bemedev/codebase';
+import { lift, LiftOutput } from '@bemedev/codebase';
 import { Project } from 'ts-morph';
 import analysis from './codebase.json';
 
 // Prune unused code and perform tree shaking using the codebase configuration path and optional exceptions
-lift(
+// It returns a detailed report of deleted elements
+const result: LiftOutput = lift(
   analysis.CODEBASE_ANALYSIS,
   '.project-codebase.json',
   'exceptionVar1',
   'exceptionVar2',
 );
 
+/*
+result is of type:
+{
+  tokens: string[];      // Names of deleted unused tokens
+  imports: string[];     // Text of removed imports
+  files: string[];       // Paths of deleted empty files
+  directories: string[]; // Paths of deleted empty directories
+}
+*/
+
 // Optionally pass an existing ts-morph Project instance to reuse
 const project = new Project({ tsConfigFilePath: 'tsconfig.json' });
-lift(
+const result2 = lift(
   analysis.CODEBASE_ANALYSIS,
   '.project-codebase.json',
   'exceptionVar1',
