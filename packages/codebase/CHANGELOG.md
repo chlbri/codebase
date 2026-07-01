@@ -1,5 +1,30 @@
 ## CHANGELOG
 
+<br>
+
+<details>
+<summary>
+
+## **[2.2.0] - 01/07/2026** => _12:31_
+
+</summary>
+
+- Enhance `lift` function to automatically detect exports from files
+  outside the target folder and preserve them as exceptions during
+  pruning
+- Add optional `Project` parameter to the `lift` function to allow
+  reusing an existing ts-morph project instance
+- Enhance `hasNoDeclarations` helper to consider live re-exports (files
+  re-exporting from non-forgotten source files are no longer treated as
+  empty)
+- Refactor empty file deletion in `lift` to batch JSON configuration
+  updates instead of saving after each individual file removal
+- Enhance `lift` to skip `node_modules` and declaration files when
+  resolving outside-folder exports for improved performance
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
 <br/>
 
 <details>
@@ -9,7 +34,8 @@
 
 </summary>
 
-- Update `softInit` function to save the generated type files list into the codebase JSON config file
+- Update `softInit` function to save the generated type files list into
+  the codebase JSON config file
 - <u>Test coverage **_100%_**</u>
 
 </details>
@@ -23,11 +49,18 @@
 
 </summary>
 
-- Add `hasNoDeclarations` helper function to determine if a TypeScript file has no declarations, and export it in the public API
-- Update empty file pruning in `lift` function to check for the absence of declarations using `hasNoDeclarations` rather than checking for whitespace-only text
-- Enhance `softInit` function to recursively create the target directory if it does not exist
-- Enhance codebase lifting to resolve exporting file paths using the correct target folder path
-- Fix reference-searching logic in unused imports and declarations pruning to prevent self-reference checks and ensure correct node comparison
+- Add `hasNoDeclarations` helper function to determine if a TypeScript
+  file has no declarations, and export it in the public API
+- Update empty file pruning in `lift` function to check for the absence
+  of declarations using `hasNoDeclarations` rather than checking for
+  whitespace-only text
+- Enhance `softInit` function to recursively create the target directory
+  if it does not exist
+- Enhance codebase lifting to resolve exporting file paths using the
+  correct target folder path
+- Fix reference-searching logic in unused imports and declarations
+  pruning to prevent self-reference checks and ensure correct node
+  comparison
 - <u>Test coverage **_100%_**</u>
 
 </details>

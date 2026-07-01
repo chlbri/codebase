@@ -1,16 +1,46 @@
 import edit from 'edit-json-file';
-import {
-  existsSync,
-  readdirSync,
-  rmdirSync,
-  statSync,
-  unlinkSync,
-} from 'fs';
+import { existsSync, readdirSync, rmdirSync, statSync } from 'fs';
 import { join, relative, resolve } from 'path';
-import { Node, Project } from 'ts-morph';
+import {
+  Node,
+  Project,
+  SyntaxKind,
+  type ImportDeclaration,
+  type ImportSpecifier,
+} from 'ts-morph';
 import { FILES_PROPERTY, PATH_PROPERTY } from '../constants';
-import { getFolderPath, hasNoDeclarations } from '../helpers';
+import {
+  consoleStars,
+  getFolderPath,
+  hasNoDeclarations,
+} from '../helpers';
 import { CodebaseAnalysis } from '../schemas';
+
+/**
+ * Helper function to check if a declaration node is exported.
+ */
+const isDeclarationExported = (decl: Node): boolean => {
+  if (Node.isVariableDeclaration(decl)) {
+    const statement = decl.getVariableStatement();
+    if (statement && statement.isExported()) return true;
+  } else if (
+    'isExported' in decl &&
+    typeof (decl as any).isExported === 'function'
+  ) {
+    if ((decl as any).isExported()) return true;
+  }
+
+  // Check if it is exported via export statements at the bottom of the file
+  const sf = decl.getSourceFile();
+  const exportedDeclarations = sf.getExportedDeclarations();
+  for (const exportedDecls of exportedDeclarations.values()) {
+    if (exportedDecls.includes(decl as any)) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 /**
  * Scans all declarations (type aliases, interfaces, variables, functions, classes, enums)
@@ -27,6 +57,9 @@ const removeUnusedDeclarations = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
   exceptions: string[],
+  counter: {
+    tokens: number;
+  },
 ): boolean => {
   const declarations = project
     .getSourceFiles()
@@ -42,6 +75,8 @@ const removeUnusedDeclarations = (
       ];
     });
 
+  const toDelete: typeof declarations = [];
+
   for (const decl of declarations) {
     if (decl.wasForgotten()) continue;
 
@@ -51,26 +86,39 @@ const removeUnusedDeclarations = (
     const name = nameNode.getText();
     if (exceptions.includes(name)) continue;
 
-    const declPath = decl.getSourceFile().getFilePath();
-    const referencedSymbols = nameNode.findReferences();
+    const sf = decl.getSourceFile();
+    const declPath = sf.getFilePath();
+    const isExported = isDeclarationExported(decl);
     let refCount = 0;
 
-    for (const refSymbol of referencedSymbols) {
-      for (const ref of refSymbol.getReferences()) {
-        const refPath = ref.getSourceFile().getFilePath();
-        const check1 = refPath !== declPath;
-        const check2 = ref.getNode() !== nameNode;
-        if (check1 && check2) refCount++;
+    if (isExported) {
+      const referencedSymbols = nameNode.findReferences();
+      for (const refSymbol of referencedSymbols) {
+        for (const ref of refSymbol.getReferences()) {
+          const refPath = ref.getSourceFile().getFilePath();
+          const check1 = refPath !== declPath;
+          const check2 = ref.getNode() !== nameNode;
+          if (check1 && check2) refCount++;
+        }
       }
     }
 
     if (refCount === 0) {
-      decl.remove();
-      return true;
+      toDelete.push(decl);
+      counter.tokens++;
     }
   }
 
-  return false;
+  let anyRemoved = false;
+  for (const decl of toDelete) {
+    if (!decl.wasForgotten()) {
+      console.log('   🗑️  Removed token :', '`' + decl.getName() + '`');
+      decl.remove();
+      anyRemoved = true;
+    }
+  }
+
+  return anyRemoved;
 };
 
 /**
@@ -89,11 +137,18 @@ const removeUnusedImports = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
   exceptions: string[],
+  counter: {
+    imports: number;
+  },
 ): boolean => {
   const importDeclarations = project
     .getSourceFiles()
     .filter(sf => isInsideFolder(sf.getFilePath()))
     .flatMap(sf => sf.getImportDeclarations());
+
+  const specsToDelete: ImportSpecifier[] = [];
+  const impsToDelete: ImportDeclaration[] = [];
+  const defaultImpsToRemove: ImportDeclaration[] = [];
 
   for (const imp of importDeclarations) {
     if (imp.wasForgotten()) continue;
@@ -109,22 +164,12 @@ const removeUnusedImports = (
       const name = nameNode.getText();
       if (exceptions.includes(name)) continue;
 
-      const declPath = spec.getSourceFile().getFilePath();
-      const referencedSymbols = nameNode.findReferences();
-      let refCount = 0;
-      for (const refSymbol of referencedSymbols) {
-        for (const ref of refSymbol.getReferences()) {
-          const refSource = ref.getSourceFile();
-          const refPath = refSource.getFilePath();
-          const check1 = refPath !== declPath;
-          const check2 = ref.getNode() !== nameNode;
-          const check3 = refSource === sf;
-          if (check1 && check2 && check3) refCount++;
-        }
-      }
-      if (refCount === 0) {
-        spec.remove();
-        return true;
+      // Imports are local to the file, check occurrences in the same file.
+      const localIdentifiers = sf
+        .getDescendantsOfKind(SyntaxKind.Identifier)
+        .filter(id => id.getText() === name);
+      if (localIdentifiers.length <= 1) {
+        specsToDelete.push(spec);
       }
     }
 
@@ -137,28 +182,11 @@ const removeUnusedImports = (
     ) {
       const name = defaultImport.getText();
       if (!exceptions.includes(name)) {
-        const declPath = defaultImport.getSourceFile().getFilePath();
-        const referencedSymbols = defaultImport.findReferences();
-        let refCount = 0;
-        for (const refSymbol of referencedSymbols) {
-          for (const ref of refSymbol.getReferences()) {
-            const refSource = ref.getSourceFile();
-            const refPath = refSource.getFilePath();
-            const check1 = refPath !== declPath;
-            const check2 = ref.getNode() !== defaultImport;
-            const check3 = refSource === sf;
-            if (check1 && check2 && check3) refCount++;
-          }
-        }
-        if (refCount === 0) {
-          const hasNamed = imp.getNamedImports().length > 0;
-          const hasNamespace = !!imp.getNamespaceImport();
-          if (!hasNamed && !hasNamespace) {
-            imp.remove();
-          } else {
-            imp.removeDefaultImport();
-          }
-          return true;
+        const localIdentifiers = sf
+          .getDescendantsOfKind(SyntaxKind.Identifier)
+          .filter(id => id.getText() === name);
+        if (localIdentifiers.length <= 1) {
+          defaultImpsToRemove.push(imp);
         }
       }
     }
@@ -172,36 +200,69 @@ const removeUnusedImports = (
     ) {
       const name = namespaceImport.getText();
       if (!exceptions.includes(name)) {
-        const referencedSymbols = namespaceImport.findReferences();
-        let refCount = 0;
-        for (const refSymbol of referencedSymbols) {
-          for (const ref of refSymbol.getReferences()) {
-            if (
-              ref.getSourceFile() === sf &&
-              ref.getNode() !== namespaceImport
-            ) {
-              refCount++;
-            }
-          }
-        }
-        if (refCount === 0) {
-          imp.remove();
-          return true;
+        const localIdentifiers = sf
+          .getDescendantsOfKind(SyntaxKind.Identifier)
+          .filter(id => id.getText() === name);
+        if (localIdentifiers.length <= 1) {
+          impsToDelete.push(imp);
         }
       }
     }
+  }
 
-    // 4. Empty import declarations
+  let anyRemoved = false;
+  const log = (value: { getText: () => string }) => {
+    console.log('   🗑️  Removed import :', '`' + value.getText() + '`');
+  };
+
+  for (const spec of specsToDelete) {
+    if (!spec.wasForgotten()) {
+      log(spec);
+      counter.imports++;
+      spec.remove();
+      anyRemoved = true;
+    }
+  }
+
+  for (const imp of defaultImpsToRemove) {
+    if (!imp.wasForgotten()) {
+      const hasNamed = imp.getNamedImports().length > 0;
+      const hasNamespace = !!imp.getNamespaceImport();
+      counter.imports++;
+      log(imp);
+      if (!hasNamed && !hasNamespace) {
+        imp.remove();
+      } else {
+        imp.removeDefaultImport();
+      }
+      anyRemoved = true;
+    }
+  }
+
+  for (const imp of impsToDelete) {
+    if (!imp.wasForgotten()) {
+      log(imp);
+      counter.imports++;
+      imp.remove();
+      anyRemoved = true;
+    }
+  }
+
+  // 4. Empty import declarations
+  for (const imp of importDeclarations) {
+    if (imp.wasForgotten()) continue;
     const hasNamed = imp.getNamedImports().length > 0;
     const hasDefault = !!imp.getDefaultImport();
     const hasNamespace = !!imp.getNamespaceImport();
     if (!hasNamed && !hasDefault && !hasNamespace) {
+      counter.imports++;
+      log(imp);
       imp.remove();
-      return true;
+      anyRemoved = true;
     }
   }
 
-  return false;
+  return anyRemoved;
 };
 
 /**
@@ -212,7 +273,6 @@ const removeUnusedImports = (
  * @param project - The ts-morph project instance.
  * @param isInsideFolder - A function that returns true if a file path is inside the target folder.
  * @param entriesWithExports - Codebase analysis entries containing exported files.
- * @param srcDir - The absolute codebase source directory path.
  * @param folderPath - The absolute codebase target folder path.
  * @param jsonConfigPath - The codebase JSON config filepath.
  * @returns `true` if at least one file was deleted; false otherwise.
@@ -223,70 +283,71 @@ const cleanEmptySourceFiles = (
   entriesWithExports: [string, any][],
   folderPath: string,
   jsonConfigPath: string,
-): boolean => {
+) => {
   const sourceFiles = project.getSourceFiles();
+  const emptyFiles = sourceFiles.filter(
+    sf => isInsideFolder(sf.getFilePath()) && hasNoDeclarations(sf),
+  );
+
+  if (emptyFiles.length === 0) return 0;
   const json = join(process.cwd(), jsonConfigPath);
   const file = edit(json);
+  const deletedKeys = new Set<string>();
 
-  for (const sf of sourceFiles) {
+  for (const sf of emptyFiles) {
     const filePath = sf.getFilePath();
-    const check = isInsideFolder(filePath) && hasNoDeclarations(sf);
+    const deletedPathWithoutExt = filePath.replace(/\.tsx?$/, '');
 
-    if (check) {
-      const deletedPathWithoutExt = filePath.replace(/\.tsx?$/, '');
+    for (const [, fileAnalysis] of entriesWithExports) {
+      const exportingFilePath = join(
+        folderPath,
+        fileAnalysis.relativePath,
+      );
 
-      for (const [, fileAnalysis] of entriesWithExports) {
-        const exportingFilePath = join(
-          folderPath,
-          fileAnalysis.relativePath,
-        );
+      const exportingSf = project.getSourceFile(exportingFilePath);
 
-        const exportingSf = project.getSourceFile(exportingFilePath);
+      if (exportingSf) {
+        const exportDecls = exportingSf.getExportDeclarations();
 
-        if (exportingSf) {
-          const exportDecls = exportingSf.getExportDeclarations();
+        for (const decl of exportDecls) {
+          const moduleSpecifier = decl.getModuleSpecifierValue();
 
-          for (const decl of exportDecls) {
-            const moduleSpecifier = decl.getModuleSpecifierValue();
+          if (moduleSpecifier) {
+            const resolvedSpec = resolve(
+              exportingSf.getDirectoryPath(),
+              moduleSpecifier,
+            ).replace(/\.tsx?$/, '');
 
-            if (moduleSpecifier) {
-              const resolvedSpec = resolve(
-                exportingSf.getDirectoryPath(),
-                moduleSpecifier,
-              ).replace(/\.tsx?$/, '');
-
-              if (resolvedSpec === deletedPathWithoutExt) decl.remove();
-            }
+            if (resolvedSpec === deletedPathWithoutExt) decl.remove();
           }
         }
       }
+    }
 
-      project.removeSourceFile(sf);
-      if (existsSync(filePath)) unlinkSync(filePath);
+    sf.delete();
+    // if (existsSync(filePath)) unlinkSync(filePath);
+    console.log('  ❌ Deleted file', filePath);
+    console.log();
 
-      // Remove the file from jsonConfigPath
-      const relPath = relative(folderPath, filePath).replace(
-        /\\/g,
-        '/',
+    // Collect the key to remove from the jsonConfigPath
+    const relPath = relative(folderPath, filePath).replace(/\\/g, '/');
+    const key = relPath.replace(/\.tsx?$/, '');
+    deletedKeys.add(key);
+  }
+
+  // Batch update and save the JSON configuration
+  if (deletedKeys.size > 0 && existsSync(json)) {
+    const files = file.get(FILES_PROPERTY) as string[] | undefined;
+    if (files) {
+      file.set(
+        FILES_PROPERTY,
+        files.filter(f => !deletedKeys.has(f)),
       );
-      const key = relPath.replace(/\.tsx?$/, '');
-
-      if (existsSync(json)) {
-        const files = file.get(FILES_PROPERTY) as string[] | undefined;
-        if (files) {
-          file.set(
-            FILES_PROPERTY,
-            files.filter(f => f !== key),
-          );
-          file.save();
-        }
-      }
-
-      return true;
+      file.save();
     }
   }
 
-  return false;
+  return emptyFiles.length;
 };
 
 /**
@@ -303,14 +364,16 @@ const cleanEmptyDirectories = (
   project: Project,
   entriesWithExports: [string, any][],
   srcDir: string,
-): void => {
-  if (!existsSync(dir) || !statSync(dir).isDirectory()) return;
+): number => {
+  let deletedDirectories = 0;
+  if (!existsSync(dir) || !statSync(dir).isDirectory())
+    return deletedDirectories;
 
   const files = readdirSync(dir);
   for (const file of files) {
     const fullPath = join(dir, file);
     if (statSync(fullPath).isDirectory()) {
-      cleanEmptyDirectories(
+      deletedDirectories += cleanEmptyDirectories(
         fullPath,
         project,
         entriesWithExports,
@@ -343,8 +406,12 @@ const cleanEmptyDirectories = (
         }
       }
     }
+    console.log('  🗑️  Deleted empty folder:', dir);
     rmdirSync(dir);
+    deletedDirectories++;
   }
+
+  return deletedDirectories;
 };
 
 /**
@@ -356,6 +423,7 @@ const cleanEmptyDirectories = (
  * @param jsonConfigPath - The codebase JSON config filepath.
  * @param CODEBASE_ANALYSIS - The full codebase analysis configuration object.
  * @param exceptions - An array of identifiers to preserve during pruning.
+ * @param project - An optional ts-morph project instance to reuse.
  * @returns True if successful, false otherwise.
  */
 const _lift = (
@@ -363,69 +431,149 @@ const _lift = (
   jsonConfigPath: string,
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   exceptions: string[],
+  project?: Project,
 ): boolean => {
+  consoleStars();
+  console.log('📂 Lifting the codebase ....');
+  consoleStars();
+
   const folderPath = getFolderPath(root);
 
   if (!existsSync(folderPath)) {
-    console.warn(`Folder not found: ${folderPath}`);
+    console.log(`Folder not found: ${folderPath}`);
     return false;
   }
 
   const tsConfigFilePath = join(process.cwd(), 'tsconfig.json');
-  const project = existsSync(tsConfigFilePath)
-    ? new Project({ tsConfigFilePath })
-    : new Project();
+  const proj =
+    project ||
+    (existsSync(tsConfigFilePath)
+      ? new Project({ tsConfigFilePath })
+      : new Project());
 
-  // Add all source files recursively
-  project.addSourceFilesAtPaths(join(folderPath, '**/*.ts'));
-  project.addSourceFilesAtPaths(join(folderPath, '**/*.tsx'));
+  if (!project) {
+    // Add all source files recursively if they weren't preloaded
+    proj.addSourceFilesAtPaths(join(folderPath, '**/*.ts'));
+    proj.addSourceFilesAtPaths(join(folderPath, '**/*.tsx'));
+    proj.resolveSourceFileDependencies();
+  }
 
   const isInsideFolder = (filePath: string) => {
     return filePath.startsWith(folderPath);
   };
 
-  let changed = true;
-  while (changed) {
-    changed = false;
+  // Optimize outsideExports by avoiding querying declaration files & node_modules.
+  const outsideExports = proj
+    .getSourceFiles()
+    .filter(sf => {
+      const path = sf.getFilePath();
+      return (
+        !isInsideFolder(path) &&
+        !path.includes('node_modules') &&
+        !sf.isDeclarationFile()
+      );
+    })
+    .flatMap(sf => Array.from(sf.getExportedDeclarations().keys()))
+    .filter(name => name !== 'default');
 
-    // Phase A: Declarations
-    changed = removeUnusedDeclarations(
-      project,
-      isInsideFolder,
-      exceptions,
-    );
-    if (changed) continue;
-
-    // Phase B: Imports
-    changed = removeUnusedImports(project, isInsideFolder, exceptions);
-  }
+  const allExceptions = [...exceptions, ...outsideExports];
 
   const entriesWithExports = Object.entries(CODEBASE_ANALYSIS).filter(
     ([, val]) => val.exports && val.exports.length > 0,
   );
 
-  // Phase C: Clean empty files
-  let deletedAnyFile = true;
-  while (deletedAnyFile) {
-    deletedAnyFile = cleanEmptySourceFiles(
-      project,
+  consoleStars();
+  console.log('🧹 Removing unused tokens ....');
+  consoleStars();
+  console.log();
+
+  let changed = true;
+  const counters = {
+    tokens: 0,
+    imports: 0,
+  };
+  while (changed) {
+    changed = false;
+
+    // Phase A: Declarations
+    changed = removeUnusedDeclarations(
+      proj,
       isInsideFolder,
-      entriesWithExports,
-      folderPath,
-      jsonConfigPath,
+      allExceptions,
+      counters,
     );
+
+    if (changed) continue;
+
+    // Phase B: Imports
+    changed = removeUnusedImports(
+      proj,
+      isInsideFolder,
+      allExceptions,
+      counters,
+    );
+
+    if (changed) continue;
   }
 
-  // Phase D: Clean empty directories
-  cleanEmptyDirectories(
+  console.log();
+  console.log();
+
+  if (counters.tokens > 0) {
+    console.log(`${counters.tokens} unused tokens deleted`);
+  } else console.log('No unused tokens found');
+
+  console.log();
+
+  if (counters.imports > 0) {
+    console.log(`${counters.imports} unused imports deleted`);
+  } else console.log('No unused imports found');
+
+  console.log();
+  console.log();
+  consoleStars();
+  console.log('🧹 Cleaning empty files ....');
+  consoleStars();
+
+  const emptyFilesCount = cleanEmptySourceFiles(
+    proj,
+    isInsideFolder,
+    entriesWithExports,
     folderPath,
-    project,
+    jsonConfigPath,
+  );
+
+  if (emptyFilesCount > 0) {
+    console.log(`${emptyFilesCount} empty files deleted`);
+  } else console.log('No empty files found');
+
+  console.log();
+  console.log();
+  consoleStars();
+  console.log('🧹 Cleaning empty directories ....');
+  consoleStars();
+
+  // Phase D: Clean empty directories
+  const emptyDirectoriesCount = cleanEmptyDirectories(
+    folderPath,
+    proj,
     entriesWithExports,
     folderPath,
   );
 
+  if (emptyDirectoriesCount > 0) {
+    console.log(`${emptyDirectoriesCount} empty directories deleted`);
+  } else console.log('No empty directories found');
+
+  console.log();
+  console.log();
+  console.log();
+  console.log();
+
   // Save changes
-  project.saveSync();
+  proj.saveSync();
+
+  console.log('Lifting done !!');
   return true;
 };
 
@@ -435,7 +583,7 @@ const _lift = (
  *
  * @param CODEBASE_ANALYSIS - The full codebase analysis config.
  * @param jsonConfigPath - The codebase JSON config filepath.
- * @param exceptions - A parameter array of variable, function, class, or type names to preserve.
+ * @param args - A parameter list of variable, function, class, or type names to preserve, optionally ending with a ts-morph Project to reuse.
  * @returns `true` if the codebase lifting was successfully completed.
  *
  * throws {@linkcode Error} if the root folder configuration is not found.
@@ -443,8 +591,19 @@ const _lift = (
 export const lift = (
   CODEBASE_ANALYSIS: CodebaseAnalysis,
   jsonConfigPath: string,
-  ...exceptions: string[]
+  ...args: any[]
 ): boolean => {
+  const exceptions: string[] = [];
+  let project: Project | undefined;
+
+  for (const arg of args) {
+    if (arg instanceof Project) {
+      project = arg;
+    } else if (typeof arg === 'string') {
+      exceptions.push(arg);
+    }
+  }
+
   const json = join(process.cwd(), jsonConfigPath);
   const file = edit(json);
   const root = file.get(PATH_PROPERTY);
@@ -453,5 +612,11 @@ export const lift = (
     throw new Error('Root path not found in codebase configuration.');
   }
 
-  return _lift(root, jsonConfigPath, CODEBASE_ANALYSIS, exceptions);
+  return _lift(
+    root,
+    jsonConfigPath,
+    CODEBASE_ANALYSIS,
+    exceptions,
+    project,
+  );
 };

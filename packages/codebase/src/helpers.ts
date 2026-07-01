@@ -176,6 +176,13 @@ export const createTypesStructure = (
  * @returns `true` if the file has no declarations; `false` otherwise.
  */
 export const hasNoDeclarations = (sourceFile: SourceFile): boolean => {
+  const hasLiveReExports = sourceFile
+    .getExportDeclarations()
+    .some(decl => {
+      const target = decl.getModuleSpecifierSourceFile();
+      return target && !target.wasForgotten();
+    });
+
   return (
     sourceFile.getClasses().length === 0 &&
     sourceFile.getFunctions().length === 0 &&
@@ -183,6 +190,7 @@ export const hasNoDeclarations = (sourceFile: SourceFile): boolean => {
     sourceFile.getTypeAliases().length === 0 &&
     sourceFile.getInterfaces().length === 0 &&
     sourceFile.getEnums().length === 0 &&
-    sourceFile.getModules().length === 0
+    sourceFile.getModules().length === 0 &&
+    !hasLiveReExports
   );
 };

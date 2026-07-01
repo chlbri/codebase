@@ -22,7 +22,7 @@ comprehensive analyses of your source code.
 
 ## 📋 Prerequisites
 
-- **Node.js** ≥ 22.0.0
+- **Node.js** ≥ 24.0.0
 - **pnpm** (recommended) or npm/yarn
 
 ## 🛠️ Installation
@@ -133,6 +133,7 @@ folders that become empty.
 
 ```typescript
 import { lift } from '@bemedev/codebase';
+import { Project } from 'ts-morph';
 import analysis from './codebase.json';
 
 // Prune unused code and perform tree shaking using the codebase configuration path and optional exceptions
@@ -141,6 +142,15 @@ lift(
   '.project-codebase.json',
   'exceptionVar1',
   'exceptionVar2',
+);
+
+// Optionally pass an existing ts-morph Project instance to reuse
+const project = new Project({ tsConfigFilePath: 'tsconfig.json' });
+lift(
+  analysis.CODEBASE_ANALYSIS,
+  '.project-codebase.json',
+  'exceptionVar1',
+  project,
 );
 ```
 
@@ -156,6 +166,7 @@ const project = new Project();
 const sf = project.createSourceFile('test.ts', 'export const a = 1;');
 
 // Check if a source file contains no declarations (types, variables, classes, functions, enums, interfaces, namespaces)
+// Also considers files with live re-exports as non-empty
 console.log(hasNoDeclarations(sf)); // false
 ```
 

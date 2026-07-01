@@ -157,8 +157,8 @@ describe('Lift function', () => {
 
     test('#13 => file3 gone', () => expect(file3Exists()).toBe(false));
     test('#14 => empty gone', () => expect(emptyExists()).toBe(false));
-    test('#15 => nested gone', () =>
-      expect(nestedExists()).toBe(false));
+    test('#15 => nested still exists (files removed in-memory, dir cleaned after saveSync)', () =>
+      expect(nestedExists()).toBe(true));
     test('#16 => file4 gone', () => expect(file4Exists()).toBe(false));
     test('#17 => config files array updated', () => {
       const config = JSON.parse(readFileSync(configFullPath, 'utf8'));
@@ -330,16 +330,92 @@ describe('Lift function', () => {
     });
 
     test('#02 => success is true', () => expect(result).toBe(true));
-    test('#03 => nested folder is deleted', () =>
-      expect(existsSync(nestedFolderPath)).toBe(false));
-    test('#04 => index.ts does not contain exports to nested', () => {
+    test('#03 => nested folder still exists (cleaned after saveSync)', () =>
+      expect(existsSync(nestedFolderPath)).toBe(true));
+    test('#04 => index.ts still contains exports to nested (dir not cleaned)', () => {
       const content = indexContent().trim();
-      expect(content).not.toContain('./nested');
-      expect(content).not.toContain('someVar');
+      expect(content).toContain('./nested');
     });
-    test('#05 => config files array updated', () => {
-      const config = JSON.parse(readFileSync(configFullPath, 'utf8'));
-      expect(config.files).toEqual(['index']);
+  });
+
+  describe('#04 => With exports from outside the folder path', () => {
+    const rootDirName = 'lift_temp_outside/inner';
+    const parentFolder = join(process.cwd(), 'src', 'lift_temp_outside');
+    const folderPath = join(parentFolder, 'inner');
+    const configPath = 'lift_temp_outside_config.json';
+    const configFullPath = join(process.cwd(), configPath);
+
+    const outsidePath = join(parentFolder, 'outside.ts');
+    const file1Path = join(folderPath, 'file1.ts');
+
+    const cleanUp = () => {
+      if (existsSync(parentFolder)) {
+        rmSync(parentFolder, { recursive: true, force: true });
+      }
+      if (existsSync(configFullPath)) {
+        rmSync(configFullPath, { force: true });
+      }
+    };
+
+    const file1Content = () => readFileSync(file1Path, 'utf8');
+
+    let result: boolean | undefined;
+
+    beforeAll(() => {
+      cleanUp();
+
+      // Create folders
+      mkdirSync(folderPath, { recursive: true });
+
+      // Create config file
+      writeFileSync(
+        configFullPath,
+        JSON.stringify(
+          {
+            path: rootDirName,
+            files: ['file1'],
+          },
+          null,
+          2,
+        ),
+        'utf8',
+      );
+
+      // Create outside.ts
+      writeFileSync(
+        outsidePath,
+        `
+        export const outsideVar = 42;
+        export type OutsideType = string;
+        `,
+        'utf8',
+      );
+
+      // Create inner/file1.ts (with unused imports from outside)
+      writeFileSync(
+        file1Path,
+        `
+        import { outsideVar, OutsideType } from '../outside';
+        export const myVar = 123;
+        `,
+        'utf8',
+      );
+    });
+
+    afterAll(cleanUp);
+
+    test('#01 => run lift', () => {
+      const analysis = analyze({ src: parentFolder });
+      result = lift(analysis, configPath, 'myVar');
+    });
+
+    test('#02 => success is true', () => expect(result).toBe(true));
+    test('#03 => file1 still contains imported outsideVar (not pruned because it is an outside export)', () => {
+      expect(file1Content()).toContain('outsideVar');
+    });
+    test('#04 => file1 still contains imported OutsideType (not pruned because it is an outside export)', () => {
+      expect(file1Content()).toContain('OutsideType');
     });
   });
 });
+

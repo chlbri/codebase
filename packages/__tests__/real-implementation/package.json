@@ -1,12 +1,10 @@
 {
-  "name": "implementation",
+  "name": "real-implementation",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
     "_ci": "pnpm run test",
     "test": "vitest run",
-    "codegen": "codebase",
-    "pretest": "pnpm run codegen",
     "test:only": "vitest run --no-coverage",
     "test:watch": "vitest"
   },
