@@ -96,21 +96,9 @@ const removeUnusedDeclarations = (
       for (const refSymbol of referencedSymbols) {
         for (const ref of refSymbol.getReferences()) {
           const refPath = ref.getSourceFile().getFilePath();
-          if (refPath !== declPath) {
-            refCount++;
-          } else {
-            const refNode = ref.getNode();
-            const isRecursive = refNode.getAncestors().includes(decl);
-            const isNameNode = refNode === nameNode;
-            const isExport = refNode.getAncestors().some(ancestor => {
-              const kind = ancestor.getKindName();
-              return (
-                kind === 'ExportAssignment' ||
-                kind === 'ExportSpecifier'
-              );
-            });
-            if (!isRecursive && !isNameNode && !isExport) refCount++;
-          }
+          const check1 = refPath !== declPath;
+          const check2 = ref.getNode() !== nameNode;
+          if (check1 && check2) refCount++;
         }
       }
     }
@@ -337,6 +325,7 @@ const cleanEmptySourceFiles = (
     }
 
     sf.delete();
+    // if (existsSync(filePath)) unlinkSync(filePath);
     console.log('  ❌ Deleted file', filePath);
     console.log();
 
