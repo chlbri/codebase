@@ -5,14 +5,33 @@
 <details>
 <summary>
 
+## **[2.5.0] - 01/07/2026** => _23:54_
+
+</summary>
+
+- Refactor `lift` function by splitting `src/functions/lift.ts` into a modular directory structure under `src/functions/lift/`
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[2.4.0] - 01/07/2026** => _22:50_
 
 </summary>
 
-- Fix reference-searching logic in `removeUnusedDeclarations` to ignore recursive self-references and prevent incorrect external reference counts
-- Enhance `removeUnusedImports` to correctly identify and prune unused type-only imports and individual type-only import specifiers
-- Fix module specifier resolution in `cleanEmptySourceFiles` to use `resolveModuleSpecifier`
-- Refactor and reorganize workspace implementation tests and typings structure
+- Fix reference-searching logic in `removeUnusedDeclarations` to ignore
+  recursive self-references and prevent incorrect external reference
+  counts
+- Enhance `removeUnusedImports` to correctly identify and prune unused
+  type-only imports and individual type-only import specifiers
+- Fix module specifier resolution in `cleanEmptySourceFiles` to use
+  `resolveModuleSpecifier`
+- Refactor and reorganize workspace implementation tests and typings
+  structure
 - <u>Test coverage **_100%_**</u>
 
 </details>
