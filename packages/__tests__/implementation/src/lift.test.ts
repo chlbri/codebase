@@ -421,4 +421,115 @@ describe('Lift function', () => {
       expect(file1Content()).toContain('OutsideType');
     });
   });
+
+  describe('#04 => Recursive types and functions', () => {
+    const rootDirName = 'lift_recursive_temp';
+    const folderPath = join(process.cwd(), 'src', rootDirName);
+    const configPath = 'lift_recursive_temp_config.json';
+    const configFullPath = join(process.cwd(), configPath);
+
+    const file1Path = join(folderPath, 'file1.ts');
+
+    const cleanUp = () => {
+      if (existsSync(folderPath)) {
+        rmSync(folderPath, { recursive: true, force: true });
+      }
+      if (existsSync(configFullPath)) {
+        rmSync(configFullPath, { force: true });
+      }
+    };
+
+    const file1Content = () => readFileSync(file1Path, 'utf8');
+
+    let result: any;
+
+    beforeAll(() => {
+      cleanUp();
+
+      // Create folders
+      mkdirSync(folderPath, { recursive: true });
+
+      // Create config file
+      writeFileSync(
+        configFullPath,
+        JSON.stringify(
+          {
+            path: rootDirName,
+            files: ['file1'],
+          },
+          null,
+          2,
+        ),
+        'utf8',
+      );
+
+      // Create file1.ts
+      writeFileSync(
+        file1Path,
+        `
+        export type RecursiveType = {
+          self?: RecursiveType;
+          other: string;
+        };
+
+        export type UsedRecursiveType = {
+          self?: UsedRecursiveType;
+          value: number;
+        };
+
+        export type HolderType = {
+          ref: UsedRecursiveType;
+        };
+
+        export function recursiveFunc(n: number): number {
+          if (n <= 1) return 1;
+          return n * recursiveFunc(n - 1);
+        }
+
+        export function usedRecursiveFunc(n: number): number {
+          if (n <= 1) return 1;
+          return n * usedRecursiveFunc(n - 1);
+        }
+
+        export function callerFunc(): number {
+          return usedRecursiveFunc(5);
+        }
+        `,
+        'utf8',
+      );
+    });
+
+    afterAll(cleanUp);
+
+    test('#01 => run lift', () => {
+      const analysis = analyze({ src: folderPath });
+      result = lift(analysis, configPath, 'HolderType', 'callerFunc');
+    });
+
+    test('#02 => success is true', () => expect(result).toBeDefined());
+    
+    test('#03 => file1 contains HolderType', () => {
+      expect(file1Content()).toContain('HolderType');
+    });
+
+    test('#04 => file1 contains UsedRecursiveType', () => {
+      expect(file1Content()).toContain('UsedRecursiveType');
+    });
+
+    test('#05 => file1 does not contain RecursiveType', () => {
+      expect(file1Content()).not.toContain('type RecursiveType');
+    });
+
+    test('#06 => file1 contains callerFunc', () => {
+      expect(file1Content()).toContain('callerFunc');
+    });
+
+    test('#07 => file1 contains usedRecursiveFunc', () => {
+      expect(file1Content()).toContain('usedRecursiveFunc');
+    });
+
+    test('#08 => file1 does not contain recursiveFunc', () => {
+      expect(file1Content()).not.toContain('function recursiveFunc');
+    });
+  });
 });

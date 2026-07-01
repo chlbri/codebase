@@ -5,6 +5,23 @@
 <details>
 <summary>
 
+## **[2.3.1] - 01/07/2026** => _16:38_
+
+</summary>
+
+- Fix recursive reference checks in `removeUnusedDeclarations` to ignore
+  self-references in recursive functions and types, enabling them to be
+  correctly pruned if unused
+- Add unit tests for recursive types and functions pruning behavior
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br>
+
+<details>
+<summary>
+
 ## **[2.3.0] - 01/07/2026** => _15:08_
 
 </summary>
