@@ -67,7 +67,6 @@ describe('Lift function', () => {
     );
 
     result = lift(codebaseJson.CODEBASE_ANALYSIS, '.bemedev.json');
-    console.log(result);
 
     const allFiles = getFilesRecursively(codebaseDir);
     remaining = allFiles
@@ -75,7 +74,7 @@ describe('Lift function', () => {
       .sort();
   }, 60000);
 
-  afterAll(restore);
+  // afterAll(restore);
   test('#01 => lift result is true', () =>
     expect(result).toBeDefined());
   test('#02 => file count is 29', () =>

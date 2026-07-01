@@ -330,8 +330,11 @@ describe('Lift function', () => {
     });
 
     test('#02 => success is true', () => expect(result).toBeDefined());
-    test('#03 => nested folder is removed', () =>
-      expect(existsSync(nestedFolderPath)).toBe(false));
+
+    test('#03 => nested folder is removed', () => {
+      expect(existsSync(nestedFolderPath)).toBe(false);
+    });
+    
     test('#04 => index.ts still contains exports to nested (dir not cleaned)', () => {
       const content = indexContent().trim();
       expect(content).toContain('./nested');
