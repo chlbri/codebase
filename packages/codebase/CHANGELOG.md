@@ -5,6 +5,22 @@
 <details>
 <summary>
 
+## **[2.8.0] - 02/07/2026** => _08:24_
+
+</summary>
+
+- Fix namespace export checks in `getOutsideImportsAndExports` to
+  support non-aliased wildcard namespace exports
+- Fix dependency extraction in `getDependencies` to inspect identifiers
+  within function overload signatures
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[2.7.0] - 02/07/2026** => _01:57_
 
 </summary>

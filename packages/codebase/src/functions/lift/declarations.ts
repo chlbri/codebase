@@ -26,7 +26,15 @@ export const getOutsideImportsAndExports = (
 
         const isNamedExport = sf.getExportDeclarations().some(d => {
           if (d.isNamespaceExport()) {
-            return d.getNamespaceExport()?.getName() === name;
+            const nsExport = d.getNamespaceExport();
+            if (nsExport) {
+              return nsExport.getName() === name;
+            } else {
+              const targetSf = d.getModuleSpecifierSourceFile();
+              return (
+                targetSf?.getExportedDeclarations().has(name) ?? false
+              );
+            }
           }
           return d
             .getNamedExports()
@@ -174,7 +182,16 @@ const getDependencies = (
   allDeclarationsSet: Set<Node>,
 ): Set<Node> => {
   const deps = new Set<Node>();
-  const identifiers = decl.getDescendantsOfKind(SyntaxKind.Identifier);
+  const identifiers = [
+    ...decl.getDescendantsOfKind(SyntaxKind.Identifier),
+  ];
+  if (Node.isFunctionDeclaration(decl)) {
+    for (const overload of decl.getOverloads()) {
+      identifiers.push(
+        ...overload.getDescendantsOfKind(SyntaxKind.Identifier),
+      );
+    }
+  }
   for (const id of identifiers) {
     try {
       const defs = id.getDefinitionNodes();
