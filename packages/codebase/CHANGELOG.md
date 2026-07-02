@@ -5,6 +5,22 @@
 <details>
 <summary>
 
+## **[2.6.0] - 02/07/2026** => _01:23_
+
+</summary>
+
+- Add `cleanup` function to the public API to programmatically remove generated folders, clean up codebase configurations, or delete both
+- Refactor codebase `lift` implementation to execute unused imports and declarations pruning in a single-pass routine
+- Enhance `lift` function to automatically execute full codebase cleanup when outside exports and imports list is empty
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[2.5.0] - 01/07/2026** => _23:54_
 
 </summary>

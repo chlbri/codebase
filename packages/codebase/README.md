@@ -94,7 +94,7 @@ configurations and selectively add/remove files using their regular
 slash-separated paths (instead of dot-parsed notation).
 
 ```typescript
-import { init, softInit, add, remove } from '@bemedev/codebase';
+import { init, softInit, add, remove, cleanup } from '@bemedev/codebase';
 import analysis from './codebase.json';
 
 // Initialize the project workspace
@@ -122,6 +122,15 @@ remove(
   '.project-codebase.json',
   'nested/Tooltip',
 );
+
+// Reset target folder files list configuration to an empty array
+cleanup.files('.project-codebase.json');
+
+// Delete the generated target directory
+cleanup('my-project-src');
+
+// Delete the target directory and remove the configuration JSON file
+cleanup.all('my-project-src', '.project-codebase.json');
 ```
 
 #### Pruning unused code programmatically
