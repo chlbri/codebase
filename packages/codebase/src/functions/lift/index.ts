@@ -12,6 +12,7 @@ import {
 } from './declarations';
 import { cleanEmptyDirectories } from './directories';
 import { cleanEmptySourceFiles } from './files';
+import { removeUnusedImports } from './imports';
 import type { LiftOutput } from './types';
 export type { LiftOutput };
 
@@ -100,6 +101,14 @@ const _lift = (
     exceptions,
     outsideExports,
     outsideImports,
+    out,
+  );
+
+  removeUnusedImports(
+    proj,
+    isInsideFolder,
+    exceptions,
+    outsideExports,
     out,
   );
 
