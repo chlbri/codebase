@@ -1,6 +1,7 @@
 packages:
   - 'packages/codebase'
   - 'packages/__tests__/real-implementation'
+  - 'packages/__tests__/real-nothing'
 
 allowBuilds:
   esbuild: true

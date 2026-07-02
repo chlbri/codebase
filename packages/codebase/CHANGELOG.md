@@ -9,7 +9,8 @@
 
 </summary>
 
-- Refactor `lift` function by splitting `src/functions/lift.ts` into a modular directory structure under `src/functions/lift/`
+- Refactor `lift` function by splitting `src/functions/lift.ts` into a
+  modular directory structure under `src/functions/lift/`
 - <u>Test coverage **_100%_**</u>
 
 </details>

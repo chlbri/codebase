@@ -99,6 +99,36 @@ importers:
         specifier: 4.1.9
         version: 4.1.9(@types/node@26.0.1)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(vite@8.1.2(@types/node@26.0.1)(esbuild@0.28.1)(tsx@4.22.4))
 
+  packages/__tests__/real-nothing:
+    devDependencies:
+      '@bemedev/codebase':
+        specifier: workspace:^
+        version: link:../../codebase
+      '@bemedev/decompose':
+        specifier: ^2.2.0
+        version: 2.2.0(@bemedev/types@0.4.2)
+      '@types/shelljs':
+        specifier: ^0.10.0
+        version: 0.10.0
+      cmd-ts:
+        specifier: ^0.15.0
+        version: 0.15.0
+      edit-json-file:
+        specifier: ^1.8.1
+        version: 1.8.1
+      shelljs:
+        specifier: ^0.10.0
+        version: 0.10.0
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      valibot:
+        specifier: ^1.4.2
+        version: 1.4.2(typescript@6.0.3)
+      vitest:
+        specifier: 4.1.9
+        version: 4.1.9(@types/node@26.0.1)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(vite@8.1.2(@types/node@26.0.1)(esbuild@0.28.1)(tsx@4.22.4))
+
   packages/codebase:
     dependencies:
       cmd-ts:
@@ -917,6 +947,9 @@ packages:
 
   '@types/set-value@4.0.3':
     resolution: {integrity: sha512-tSuUcLl6kMzI+l0gG7FZ04xbIcynxNIYgWFj91LPAvRcn7W3L1EveXNdVjqFDgAZPjY1qCOsm8Sb1C70SxAPHw==}
+
+  '@types/shelljs@0.10.0':
+    resolution: {integrity: sha512-OEfyhE5Ox+FeoHbhrEDwm0kXxntO6nsyMRCFvNsIBHPZu5rV1w2OjPcLclaC/IZ1TlzZPgbeMfwAZEi5N238yQ==}
 
   '@vitest/coverage-v8@4.1.9':
     resolution: {integrity: sha512-G9/lgqibheLVBDRuya45EbsEXTYcWoSG+TLg7i2axuzx0Eq62eXn+aWXyaVdV5vKvFSWd6ywcX8hA7la9Pvu8g==}
@@ -2229,6 +2262,11 @@ snapshots:
       undici-types: 8.3.0
 
   '@types/set-value@4.0.3': {}
+
+  '@types/shelljs@0.10.0':
+    dependencies:
+      '@types/node': 26.0.1
+      fast-glob: 3.3.3
 
   '@vitest/coverage-v8@4.1.9(vitest@4.1.9)':
     dependencies:
