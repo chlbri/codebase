@@ -1,5 +1,6 @@
 import { Node, Project, SyntaxKind } from 'ts-morph';
 
+//TODO: handle cases of ourside exports "*"
 export const getOutsideImportsAndExports = (
   project: Project,
   isInsideFolder: (filePath: string) => boolean,
