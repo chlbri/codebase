@@ -5,6 +5,23 @@
 <details>
 <summary>
 
+## **[2.9.0] - 21/07/2026** => _18:00_
+
+</summary>
+
+- Move `typescript` to dependencies in `package.json`
+- Update devDependencies (`@bemedev/dev-utils`, `@types/node`,
+  `rolldown`, `tsx`)
+- Remove unused `ci:admin` script from `package.json`
+- <u>Test coverage **_100%_**</u>
+
+</details>
+
+<br/>
+
+<details>
+<summary>
+
 ## **[2.8.0] - 02/07/2026** => _08:24_
 
 </summary>

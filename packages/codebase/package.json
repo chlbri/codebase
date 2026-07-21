@@ -1,6 +1,6 @@
 {
   "name": "@bemedev/codebase",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "description": "The CLI for to generate codebase, and import partially a library. From @bemedev.",
   "author": {
     "email": "bri_lvi@icloud.com",
@@ -66,7 +66,6 @@
     "build": "pnpm rm:lib && pnpm run codegen && pnpm run rolldown && chmod +x lib/cli/index.js",
     "_ci": "pnpm run config:off && pnpm run lint && pnpm run test",
     "ci": "CI_START=$(date +%s) && pnpm run _ci && pnpm run p-q  && echo \"\n✅ CI takes $(($(date +%s) - CI_START))s\n\"",
-    "ci:admin": "CI_START=$(date +%s) && pnpm run rm && pnpm run upgrade && pnpm run _ci && echo \"\n✅ CI_ADMIN takes $(($(date +%s) - CI_START))s\n\"",
     "codegen": "tsx ./src/cli/index.ts",
     "config": "pnpm install",
     "config:off": "pnpm run config --offline",
@@ -104,18 +103,18 @@
     }
   ],
   "devDependencies": {
-    "@bemedev/dev-utils": "^0.8.3",
+    "@bemedev/dev-utils": "^1.1.0",
     "@size-limit/file": "^12.1.0",
-    "@types/node": "^26.0.1",
-    "rolldown": "1.1.3",
+    "@types/node": "^26.1.1",
+    "rolldown": "^1.2.0",
     "size-limit": "^12.1.0",
-    "tsx": "^4.22.4",
-    "typescript": "^6.0.3"
+    "tsx": "^4.23.1"
   },
   "dependencies": {
     "cmd-ts": "^0.15.0",
     "edit-json-file": "^1.8.1",
     "ts-morph": "^28.0.0",
+    "typescript": "6.0.3",
     "valibot": "^1.4.2"
   }
 }
